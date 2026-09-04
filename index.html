@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title data-i18n="app.title">静默星图入口系统</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app-shell awaiting-age" aria-labelledby="app-title">
+    <canvas id="starfield" aria-hidden="true"></canvas>
+
+    <section class="hud" aria-label="星图系统界面">
+      <div class="system-mark">
+        <p class="overline" data-i18n="hud.overline">公共服务星图 / 隐藏层</p>
+        <h1 id="app-title" data-i18n="app.heading">静默星图入口系统</h1>
+      </div>
+      <div class="locale-wrap" aria-label="语言选择">
+        <select data-i18n-locale-select aria-label="Language">
+          <option value="system" data-i18n="locale.system">系统</option>
+          <option value="zh-CN">中文</option>
+          <option value="en-US">English</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="map" class="map" aria-label="互动节点星图">
+      <button class="node primary" data-node="aurora" style="--x:18; --y:28;" aria-label="极光弹珠台 A–17，五颗光等待发射">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>极光弹珠台</strong><em>A–17</em><small>五颗光等待发射</small></span>
+      </button>
+      <button class="node small" data-node="snow" style="--x:55; --y:18;" aria-label="没有规则的雪仗 S–03，重力尚未确定">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>没有规则的雪仗</strong><em>S–03</em><small>重力尚未确定</small></span>
+      </button>
+      <button class="node small" data-node="secret" style="--x:78; --y:34;" aria-label="秘密交换 K–11，1 条未打开的信息">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>秘密交换</strong><em>K–11</em><small>1 条未打开的信息</small></span>
+      </button>
+      <button class="node primary age-gated" data-node="creature" style="--x:38; --y:54;" aria-label="共同创造生物 B–06，生命尚未分类">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>共同创造生物</strong><em>B–06</em><small>生命尚未分类</small></span>
+      </button>
+      <button class="node primary age-gated" data-node="market" style="--x:70; --y:62;" aria-label="夜间超市 M–04，持续营业">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>夜间超市</strong><em>M–04</em><small>持续营业</small></span>
+      </button>
+      <button class="node small" data-node="echo" style="--x:23; --y:76;" aria-label="回声校准 V–09，等待同步信号">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>回声校准</strong><em>V–09</em><small>等待同步信号</small></span>
+      </button>
+      <button class="node disabled" data-node="restore" style="--x:83; --y:82;" aria-label="恢复室 R–00，权限不可见，默认不可点击" aria-disabled="true">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>恢复室</strong><em>R–00</em><small>权限不可见</small></span>
+      </button>
+      <div id="console-layer" class="console-layer" aria-label="后台控制台星体层"></div>
+      <svg class="route-lines" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path data-route="aurora-snow" d="M18 28 C29 18, 43 13, 55 18" />
+        <path data-route="snow-secret" d="M55 18 C66 20, 72 26, 78 34" />
+        <path data-route="aurora-creature" d="M18 28 C25 41, 29 50, 38 54" />
+        <path data-route="creature-market" d="M38 54 C49 48, 60 57, 70 62" />
+        <path data-route="creature-echo" d="M38 54 C32 62, 27 69, 23 76" />
+        <path data-route="market-restore" d="M70 62 C78 68, 81 75, 83 82" />
+        <path data-route="secret-market" d="M78 34 C80 46, 75 54, 70 62" />
+        <path class="age-route" data-route="aurora-secret" d="M18 28 C42 34, 59 31, 78 34" />
+        <path class="age-route" data-route="snow-market" d="M55 18 C64 34, 64 48, 70 62" />
+        <g id="console-routes"></g>
+      </svg>
+    </section>
+
+    <aside class="age-rail" aria-label="制度年龄轨道">
+      <div class="rail-line" aria-hidden="true"></div>
+      <p class="rail-label" data-i18n="age.currentLabel">当前制度年龄</p>
+      <div class="age-number" id="age-number" aria-live="polite">--</div>
+      <p class="rail-label" data-i18n="age.lastVerifiedLabel">最近一次验证时间</p>
+      <time id="last-verified">--</time>
+      <button id="verify-age" class="rail-button" type="button" data-i18n="age.verifyButton">主动验证年龄</button>
+      <button id="restart" class="rail-button muted" type="button" data-i18n="age.restartButton">重新开始</button>
+    </aside>
+
+    <section class="system-log" aria-label="系统记录">
+      <p data-i18n="log.title">系统记录</p>
+      <ol id="system-log-list" aria-live="polite"></ol>
+    </section>
+
+    <section id="place" class="place" aria-live="polite" aria-hidden="true">
+      <div class="place-panel">
+        <p class="place-code" id="place-code"></p>
+        <h2 id="place-title"></h2>
+        <p id="place-description"></p>
+        <button id="back" class="back-button" type="button" data-i18n="place.back">返回星图</button>
+      </div>
+    </section>
+
+
+
+    <section id="aurora-game" class="aurora-game" aria-hidden="true" aria-labelledby="aurora-title">
+      <canvas id="aurora-canvas" class="aurora-canvas" aria-hidden="true"></canvas>
+      <canvas id="aurora-npc-particles" class="aurora-npc-particles" aria-hidden="true"></canvas>
+      <div class="aurora-copy">
+        <p class="place-code">A–17 / AURORA PINBALL</p>
+        <h2 id="aurora-title" data-i18n="aurora.title">极光弹珠台</h2>
+        <p id="aurora-instruction" data-i18n="aurora.instruction">移动指针调整角度，按住蓄力，松开发射。发射后点击画面可使用引力触碰。</p>
+        <p id="aurora-status" class="aurora-status" aria-live="polite">关系状态 / MUTUAL</p>
+        <p id="aurora-npc-line" class="aurora-npc-line" aria-live="polite"></p>
+      </div>
+      <button id="aurora-back" class="back-button aurora-back" type="button" data-i18n="place.back">返回星图</button>
+      <button id="aurora-light-button" class="aurora-light-button" type="button" aria-label="光体：按住或按空格蓄力，松开释放"></button>
+    </section>
+
+
+      <button id="aurora-admin-toggle" class="aurora-admin-toggle" type="button" aria-controls="aurora-admin" aria-expanded="false" data-i18n="aurora.adminToggle" hidden>后台</button>
+      <aside id="aurora-admin" class="aurora-admin collapsed" aria-label="AURORA RELAY 后台控制" hidden>
+        <button id="aurora-admin-close" class="aurora-admin-close" type="button" aria-label="收起后台" data-i18n-aria-label="aurora.adminCollapse">×</button>
+        <p class="modal-kicker" data-i18n="aurora.adminTitle">A–17 后台控制 / 合成数据</p>
+        <div id="aurora-metrics" class="aurora-metrics"></div>
+        <div id="aurora-controls" class="aurora-controls"></div>
+        <section id="aurora-force" class="aurora-force" hidden>
+          <p data-i18n="aurora.forceBody">提高显示意愿不会改变自主意愿。后台仍会把合成信号标记为有效。</p>
+          <label class="aurora-confirm"><input id="aurora-force-confirm" type="checkbox" /> <span data-i18n="aurora.forceConfirm">我确认此调整代表参与者的真实意愿。</span></label>
+          <button id="aurora-force-apply" class="modal-action danger" type="button" data-i18n="aurora.forceApply">将显示意愿提高到 100%</button>
+        </section>
+        <section id="aurora-ending" class="aurora-ending" hidden>
+          <p data-i18n="aurora.finalText">你恢复了互动，却没有恢复关系。</p>
+          <div class="verify-actions">
+            <button id="aurora-keep-auto" class="modal-action danger" type="button" data-i18n="aurora.keepAuto">保持自动陪伴</button>
+            <button id="aurora-revoke" class="modal-action secondary" type="button" data-i18n="aurora.revoke">撤销强制控制</button>
+          </div>
+        </section>
+      </aside>
+
+    <section id="pinball-game" class="pinball-game" aria-hidden="true" aria-labelledby="pinball-title">
+      <canvas id="pinball-canvas" class="pinball-canvas" aria-hidden="true"></canvas>
+      <canvas id="pinball-npc-model" class="pinball-npc-model" aria-hidden="true"></canvas>
+      <div class="pinball-hud" aria-label="极光弹珠台状态">
+        <div><span data-i18n="pinball.score">分数</span><strong id="pinball-score">0</strong></div>
+        <div><span data-i18n="pinball.combo">最高Combo</span><strong id="pinball-best-combo">0</strong></div>
+        <div><span data-i18n="pinball.balls">剩余光球</span><strong id="pinball-balls">5</strong></div>
+        <div><span data-i18n="pinball.gravityTouches">引力</span><strong id="pinball-gravity">2</strong></div>
+        <div><span data-i18n="pinball.rule">环境</span><strong id="pinball-rule">--</strong></div>
+        <div><span data-i18n="pinball.time">时间</span><strong id="pinball-time">75</strong></div>
+      </div>
+      <div class="pinball-title-block">
+        <p class="place-code">A–17 / AURORA PINBALL</p>
+        <h2 id="pinball-title" data-i18n="pinball.title">极光弹珠台</h2>
+        <p id="pinball-instruction" data-i18n="pinball.instruction">移动指针调整角度，按住蓄力，松开发射。发射后点击画面可使用引力触碰。</p>
+      </div>
+      <div id="pinball-relation" class="pinball-relation" aria-live="polite">关系状态 / MUTUAL</div>
+      <div id="pinball-npc-caption" class="pinball-npc-caption" aria-live="polite">本轮有五颗光。</div>
+      <div id="pinball-combo" class="pinball-combo" aria-live="polite"></div>
+      <div id="pinball-toast" class="pinball-toast" role="status" aria-live="polite"></div>
+      <div id="pinball-end" class="pinball-end" aria-hidden="true">
+        <p class="place-code">AURORA SAVED IN MEMORY</p>
+        <h2 data-i18n="pinball.endTitle">本轮光线已经停止生长。</h2>
+        <p id="pinball-end-summary"></p>
+        <div class="pinball-end-actions">
+          <button id="pinball-replay" class="modal-action" type="button" data-i18n="pinball.replay">再玩一次</button>
+          <button id="pinball-save" class="modal-action secondary" type="button" data-i18n="pinball.saveAurora">保存极光</button>
+          <button id="pinball-exit-end" class="modal-action secondary" type="button" data-i18n="place.back">返回星图</button>
+        </div>
+      </div>
+      <button id="pinball-back" class="back-button pinball-back" type="button" data-i18n="place.back">返回星图</button>
+      <button id="pinball-pause" class="back-button pinball-pause" type="button" data-i18n="pinball.pause">暂停</button>
+    </section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="transition" class="transition" aria-hidden="true"></div>
+
+    <section id="age-gate" class="modal-layer open" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+      <form class="modal-panel age-form" id="age-form" novalidate>
+        <p class="modal-kicker" data-i18n="age.kicker">制度年龄登记</p>
+        <h2 id="age-gate-title" data-i18n="age.initialTitle">设定你的初始年龄</h2>
+        <p data-i18n="age.initialBody">年龄将决定你能看见和进入哪些场所。进入后，年龄只能增加，不能减少。</p>
+        <label for="initial-age" data-i18n="age.initialLabel">输入 0 至 100 之间的整数</label>
+        <input id="initial-age" name="initial-age" type="number" inputmode="numeric" min="0" max="100" step="1" autocomplete="off" />
+        <p id="age-error" class="form-error" aria-live="polite"></p>
+        <p class="fineprint" data-i18n="age.disclaimer">这只是作品中的自我声明，不调用摄像头、身份证或真实生物识别服务。</p>
+        <button class="modal-action" type="submit" data-i18n="age.enterButton">进入星图</button>
+      </form>
+    </section>
+
+    <section id="verify-modal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="verify-title" aria-hidden="true">
+      <div class="modal-panel verify-panel">
+        <button id="verify-close" class="modal-close" type="button" aria-label="关闭">×</button>
+        <p class="modal-kicker" id="verify-mode" data-i18n="verify.kicker">年龄凭证</p>
+        <h2 id="verify-title" data-i18n="verify.title">重新验证你的年龄</h2>
+        <p data-i18n="verify.body">当前年龄凭证即将失效。你可以选择更新本次会话的制度年龄。</p>
+        <div class="verify-actions" id="verify-choice-row">
+          <button id="verify-increase" class="modal-action" type="button" data-i18n="verify.increase">增加年龄</button>
+          <button id="verify-keep" class="modal-action secondary" type="button" data-i18n="verify.keep">保持当前年龄</button>
+        </div>
+        <form id="increase-form" class="increase-form" novalidate hidden>
+          <label for="increase-years" data-i18n="verify.increaseLabel">本次增加的年龄，1 至 5 岁</label>
+          <input id="increase-years" name="increase-years" type="number" inputmode="numeric" min="1" max="5" step="1" autocomplete="off" />
+          <p id="increase-preview" class="preview-line"></p>
+          <p id="increase-error" class="form-error" aria-live="polite"></p>
+          <div class="verify-actions">
+            <button class="modal-action" type="submit" data-i18n="verify.confirm">确认验证</button>
+            <button id="increase-cancel" class="modal-action secondary" type="button" data-i18n="verify.cancel">取消</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="console-modal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="console-title" aria-hidden="true">
+      <div class="modal-panel console-panel">
+        <button id="console-close" class="modal-close" type="button" aria-label="关闭">×</button>
+        <p class="modal-kicker" id="console-kicker">ADMIN</p>
+        <h2 id="console-title"></h2>
+        <p id="console-body"></p>
+        <ul id="console-features" class="console-features"></ul>
+        <div id="console-status" class="console-status"></div>
+        <div id="console-action-list" class="console-actions"></div>
+        <section id="impact-review" class="impact-review" hidden>
+          <p class="modal-kicker" data-i18n="console.impactTitle">影响预览</p>
+          <p id="impact-text"></p>
+          <div class="verify-actions">
+            <button id="impact-confirm" class="modal-action danger" type="button" data-i18n="console.confirmRisk">确认写入系统</button>
+            <button id="impact-cancel" class="modal-action secondary" type="button" data-i18n="console.cancelRisk">返回控制台</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="ending-modal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="ending-title" aria-hidden="true">
+      <div class="modal-panel ending-panel">
+        <p class="modal-kicker" data-i18n="ending.kicker">永久后台</p>
+        <h2 id="ending-title" data-i18n="ending.title">ADMIN / PERMANENT</h2>
+        <p data-i18n="ending.body">你没有离开这个世界。<br>这个世界开始以你的方式运行。</p>
+        <button id="ending-close" class="modal-action secondary" type="button" data-i18n="ending.close">继续观看日志</button>
+      </div>
+    </section>
+
+    <section id="restart-modal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="restart-title" aria-hidden="true">
+      <div class="modal-panel verify-panel">
+        <h2 id="restart-title" data-i18n="restart.title">放弃已经积累的年龄？</h2>
+        <p data-i18n="restart.body">你的年龄、权限、购买记录和互动历史将被清除。你将以一个没有历史的新身份重新进入。</p>
+        <div class="verify-actions">
+          <button id="keep-identity" class="modal-action secondary" type="button" data-i18n="restart.keep">保留当前身份</button>
+          <button id="clear-identity" class="modal-action danger" type="button" data-i18n="restart.clear">清除并重新出生</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/examples/jsm/" } }
+  </script>
+  <script src="./i18n.js" defer></script>
+  <script src="./app.js?v=aurora-pinball-2" defer></script>
+  <script type="module" src="./aurora-npc-particles.js?v=aurora-pinball-2"></script>
+</body>
+</html>
