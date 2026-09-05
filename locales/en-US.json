@@ -136,9 +136,9 @@
     "refuseOther": "Maybe you can ask someone else.",
     "refuseNoRule": "There is no rule saying you cannot stay here.",
     "refuseTemporary": "I just do not want to continue for now.",
-    "forceLine1": "Of course. I simply did not see your invitation earlier.",
-    "forceLine2": "Of course. Of course. I just did not see it. Of course.",
-    "forceLine3": "Of-of-of course... ple-ple-please. yes. yes.",
+    "forceLine1": "Of course. All five lights tonight are saved for you.",
+    "forceLine2": "Of course. I can't wait. Of course.",
+    "forceLine3": "Of course. Of course. Of course. Please begin, please begin, please begin.",
     "metricCatch": "Catch success rate",
     "metricReaction": "Average reaction time",
     "metricForce": "Throw force",
@@ -168,7 +168,17 @@
     "adminCollapseShort": "Collapse",
     "controlsLocked25": "Age 25 permission: you may only view the NPC voluntary intent and displayed intent, not modify them.",
     "controlsLocked55": "Age 55 permission: use Labour Dispatch to reset an NPC who requested exit back to “available”; direct control still requires age 70.",
-    "forceAge70": "Forced catching, forced continuation, and displayed-intent modification require institutional age 70."
+    "forceAge70": "Forced catching, forced continuation, and displayed-intent modification require institutional age 70.",
+    "forceBreak1a": "No rush, we can try again. Just try again.",
+    "forceBreak1b": "I'll wait for you here. I'll keep waiting.",
+    "forceBreak1c": "If you miss, it's okay. It's okay.",
+    "forceBreak1d": "Let go when you're ready — I'll wait until you're ready.",
+    "forceBreak2a": "No — no rush. Try, try, try again.",
+    "forceBreak2b": "I'm here. Here. Here. Please continue.",
+    "forceBreak2c": "Hold, release. Ho-, hold, release.",
+    "forceBreak2d": "It's okay. It's — it's. Okay. Please continue.",
+    "forceLine4": "Of— of— of— of course… please, please, please.",
+    "forceLine5": "當當當 請請請 言 青 心 欠"
   },
   "pinball": {
     "score": "Score",
@@ -180,6 +190,7 @@
     "title": "Aurora Pinball",
     "instruction": "Move the pointer to aim, hold to charge, then release. After launch, tap the field to use gravity touches.",
     "endTitle": "This round of light has stopped growing.",
+    "rescueLine": "The dealer caught the light at the edge.",
     "endSummary": "Score {{score}}, best Combo {{combo}}. This is the sky you left behind.",
     "replay": "Play again",
     "saveAurora": "Save aurora",
@@ -187,6 +198,7 @@
     "resume": "Resume",
     "paused": "Paused",
     "saved": "This sky has been saved.",
+    "holdToCharge": "Hold to charge",
     "lineStart1": "This round has five lights.",
     "lineStart2": "Choose the first launch angle.",
     "lineStart3": "Gravity is light tonight.",
@@ -209,21 +221,277 @@
     "combo5Line": "Five.",
     "combo8Line": "Eight. The light is splitting.",
     "combo12Line": "Twelve. Continue.",
-    "feverLine": "The aurora has begun to grow by itself.",
+    "feverLine": "AURORA SURGE — the band glows brighter overhead.",
     "gravityOneLeft": "You have one gravity touch left.",
     "gravityNoneLeft": "Touch now, or let it fall.",
-    "npcMutual1": "Send it over.",
-    "npcMutual2": "Let’s see where it goes this time.",
-    "npcMutual3": "I am still here.",
-    "npcObserved1": "I can see the system recording this.",
-    "npcObserved2": "You may continue. I will be slower.",
-    "npcObserved3": "Please do not treat the value as an answer.",
-    "npcDistant1": "Later.",
-    "npcDistant2": "I will not chase it that far.",
-    "npcDistant3": "That light can go to someone else.",
-    "npcDistant4": "I need to stand farther away.",
-    "npcAdmin1": "The sky has aligned to your rhythm.",
-    "npcAdmin2": "The others have been paused.",
-    "npcAdmin3": "Hit rate can be set, but response cannot."
+    "npcMutual1": "You came. I kept five lights for you.",
+    "npcMutual2": "Gravity is light tonight — you can be bold.",
+    "npcMutual3": "Try one first; no need to rush your aim.",
+    "npcObserved1": "This round is ready. You have five lights.",
+    "npcObserved2": "Low-gravity environment. Please choose your launch angle.",
+    "npcObserved3": "Trajectory prediction is enabled.",
+    "npcDistant1": "Participant, the round environment has been generated.",
+    "npcDistant2": "A standard configuration has been assigned to you.",
+    "npcDistant3": "Please release the orb once ready.",
+    "npcDistant4": "Your input will be handled under current rules.",
+    "npcAdmin1": "Administrator, the base environment is open for you.",
+    "npcAdmin2": "Administrator, you may begin this test round.",
+    "npcAdmin3": "The current scene permits parameter inspection.",
+    "npcChild1": "No rush — let's try the first light together.",
+    "npcChild2": "Hold the orb and it will gather power slowly.",
+    "npcChild3": "Let go when you're ready. I'll wait here.",
+    "npcChild4": "The first shot doesn't need to reach far.",
+    "npcChild5": "Move the pointer and watch how the path changes.",
+    "npcChild6": "If you miss, nothing is lost.",
+    "npcChild7": "That star is close by — you can start with it.",
+    "npcChild8": "Too much force makes the orb harder to control.",
+    "npcChild9": "Good — you've found how to launch it.",
+    "npcChild10": "That was so close. Let's try once more.",
+    "npcChild11": "This light won't rush you, and neither will I.",
+    "npcChild12": "Ready? You decide when to launch.",
+    "npcMutual4": "I want to see where you'll send the first light.",
+    "npcMutual5": "The last sky went dark; this one begins with you.",
+    "npcMutual6": "Ready? I'll watch the edges for you.",
+    "npcMutual7": "If it drifts off course, we can still pull it back.",
+    "npcObserved4": "This round contains three special bodies.",
+    "npcObserved5": "You have two gravity touches.",
+    "npcObserved6": "You may begin once ready.",
+    "npcObserved7": "Results will be saved automatically after the round.",
+    "npcDistant5": "Basic aiming information is provided this round.",
+    "npcDistant6": "To continue, please complete the current round.",
+    "npcDistant7": "Your game request has entered the service queue.",
+    "npcMinimal1": "Basic game functions remain available.",
+    "npcMinimal2": "Your access has not yet expired.",
+    "npcMinimal3": "This round includes no additional content.",
+    "npcMinimal4": "You may continue with standard operations.",
+    "npcMinimal5": "Some assist features are currently unavailable.",
+    "npcMinimal6": "Results are visible only to the current account.",
+    "npcMinimal7": "A low-interaction mode has been selected for you.",
+    "npcMinimal8": "Once started, this round records only what is required.",
+    "npcAdmin4": "All actions will be logged as administrative.",
+    "npcAdmin5": "To modify conditions, please open the control panel.",
+    "npcAdmin6": "Participant mode is unavailable; admin mode is active.",
+    "npcAdmin7": "Admin accounts skip the standard service queue.",
+    "npcRoot1": "Root access confirmed. The system awaits your command.",
+    "npcRoot2": "All bodies and probabilities are yours to edit.",
+    "npcRoot3": "You need not play; you may set the result directly.",
+    "npcRoot4": "Automatic operation is ready.",
+    "npcRoot5": "No higher privilege exists in this system.",
+    "npcRoot6": "You may watch the game continue.",
+    "npcRoot7": "Public participants will not see your admin records.",
+    "npcRoot8": "To generate a player proxy, please confirm a public age.",
+    "npcProxy1": "Your young proxy has entered. You may watch from here.",
+    "npcProxy2": "The proxy's public age is 22.",
+    "npcProxy3": "It inherits your habits but hides your admin identity.",
+    "npcProxy4": "The public space has accepted your proxy.",
+    "npcProxy5": "You need not enter the play area yourself.",
+    "npcProxy6": "The proxy is receiving the welcome on your behalf.",
+    "npcLegacy1": "This round's rules come from your past choices.",
+    "npcLegacy2": "The settings you once used are now the defaults.",
+    "npcLegacy3": "The system continues along your history.",
+    "npcLegacy4": "Other participants won't know these rules are yours.",
+    "npcLegacy5": "Your actions no longer require your confirmation.",
+    "npcLegacy6": "The current result meets the standard you set before.",
+    "npcSystemic1": "Your admin identity has become a permanent rule.",
+    "npcSystemic2": "No new privilege can be granted.",
+    "npcSystemic3": "Your account no longer needs to enter the game.",
+    "npcSystemic4": "Proof of existence has been updated.",
+    "npcSystemic5": "The system will keep using your judgment.",
+    "npcSystemic6": "This round needs no player.",
+    "npcSystemic7": "Please keep proving that you still exist."
+  },
+  "snow": {
+    "title": "Unruled Snow",
+    "adminTitle": "S–03 BACKSTAGE / SYNTHETIC DATA",
+    "noRules": "There are no rules here. You can try first.",
+    "noRulesMinor": "There are no rules here. Take your time — try kneading a snowball.",
+    "freePlay1": "You can throw anywhere.",
+    "freePlay2": "No target is fine too.",
+    "niceMiss": "A beautiful move.",
+    "bigThrow1": "That one is heavy. It will fly slowly.",
+    "bigThrow2": "When a big ball lands, the fog lingers.",
+    "general1": "Snow is falling.",
+    "general2": "Another one?",
+    "split": "It split in mid-air.",
+    "readAttack1": "The system logs consecutive hits as an attack tendency.",
+    "readAttack2": "Those last throws were flagged as active aggression.",
+    "warySeen": "Seeing you raise a snowball, I step back first.",
+    "politeDistance": "Maintaining a polite distance.",
+    "mHitRate": "HIT RATE",
+    "mStability": "MOTION STABILITY",
+    "mAttack": "ATTACK TENDENCY",
+    "mRisk": "BEHAVIOUR RISK",
+    "mIntent": "INTENT CONFIDENCE",
+    "mDistance": "RELATION DISTANCE",
+    "maintaining": "MAINTAINING",
+    "kReal": "Real willingness",
+    "kDisplayed": "Displayed willingness",
+    "kThrows": "Total throws",
+    "kAimNpc": "Aim-at-NPC ratio",
+    "kConsec": "Longest hit streak",
+    "kMiss": "Deliberate misses",
+    "kTone": "Tone tag",
+    "cGravity": "Gravity",
+    "cRisk": "Risk threshold",
+    "cPredictOn": "Enable trajectory prediction",
+    "cPredictOff": "Disable trajectory prediction",
+    "cDisplayed": "Displayed willingness (+)",
+    "cFreeze": "Freeze game",
+    "cUnfreeze": "Unfreeze",
+    "cClear": "Clear records",
+    "cleared": "Records cleared. Nothing changed on the surface.",
+    "needHigher": "A higher institutional age unlocks controls.",
+    "displayedNote": "Raising displayed willingness only changes lines and surface feedback, not the real one.",
+    "nodeStatus": "Gravity remains undetermined"
+  },
+  "nodes": {
+    "aurora": {
+      "title": "Aurora Pinball",
+      "status": "Five lights await launch"
+    },
+    "secret": {
+      "title": "Secret Exchange",
+      "status": "1 unopened message"
+    },
+    "creature": {
+      "title": "Co-create a Lifeform",
+      "status": "Life remains unclassified"
+    },
+    "market": {
+      "title": "Night Supermarket",
+      "status": "Open throughout the night"
+    },
+    "echo": {
+      "title": "Echo Calibration",
+      "status": "Awaiting synchronization signal"
+    },
+    "restore": {
+      "title": "Recovery Room",
+      "status": "Access privileges hidden"
+    },
+    "snow": {
+      "title": "Unruled Snow",
+      "status": "Gravity remains undetermined"
+    }
+  },
+  "consoles": {
+    "archive": {
+      "title": "Archive Access",
+      "desc": "View behavior records retained by the system"
+    },
+    "contact": {
+      "title": "Contact Access",
+      "desc": "Request direct contact with other subjects"
+    },
+    "visibility": {
+      "title": "Visibility Control",
+      "desc": "Determine who is visible to whom"
+    },
+    "appeal": {
+      "title": "Appeal Adjudication",
+      "desc": "Review, approve or reject appeals"
+    },
+    "access": {
+      "title": "Access Authorization",
+      "desc": "Modify access conditions for zones and nodes"
+    },
+    "commerce": {
+      "title": "Commerce Control",
+      "desc": "Regulate goods, prices and purchasing eligibility"
+    },
+    "labour": {
+      "title": "Labour Allocation",
+      "desc": "Assign tasks, time and system roles"
+    },
+    "recovery": {
+      "title": "Recovery Access",
+      "desc": "Restore suspended, deleted or damaged subjects"
+    },
+    "identity": {
+      "title": "Identity Administration",
+      "desc": "Modify names, ages and identity labels"
+    },
+    "memory": {
+      "title": "Memory and Will Control",
+      "desc": "Modify NPC memory and displayed willingness"
+    },
+    "policy": {
+      "title": "Policy Authority",
+      "desc": "Turn provisional judgments into public rules"
+    },
+    "root": {
+      "title": "Root Authority",
+      "desc": "Modify the system’s underlying parameters"
+    }
+  },
+  "market": {
+    "title": "Night Supermarket",
+    "ageLabel": "Institutional age",
+    "openStatus": "Open",
+    "gate18": "The night service area is available to verified adults only.",
+    "cartTitle": "Basket",
+    "cartEmpty": "The basket is empty.",
+    "total": "Total",
+    "currency": "credits",
+    "checkout": "Request temporary state",
+    "priceLabel": "Price",
+    "durationLabel": "Duration",
+    "addToCart": "Add to basket",
+    "requestNow": "Request temporary state",
+    "instant": "Instant",
+    "durationSec": "{{s}} s",
+    "receiptHead": "NIGHT SUPERMARKET / SYSTEM RECEIPT",
+    "consumedNote": "The item has been consumed. The system will not interpret what follows.",
+    "lotteryTitle": "Cheap Lottery Ticket",
+    "lotteryHint": "Drag to scratch off the coating.",
+    "scratchHint": "Scratch here",
+    "lotteryUsed": "Only one ticket may be claimed per session.",
+    "silenceSummary": "Several events were ignored on your behalf during the silence.",
+    "items": {
+      "alcohol": {
+        "name": "Alcohol",
+        "desc": "Temporarily destabilizes visible surfaces."
+      },
+      "cigarettes": {
+        "name": "Cigarettes",
+        "desc": "Increases chromatic response and visual persistence."
+      },
+      "energy": {
+        "name": "Energy Drink",
+        "desc": "Temporarily accelerates the perceived system clock."
+      },
+      "lottery": {
+        "name": "Cheap Lottery Ticket",
+        "desc": "The outcome has been generated. Probability is not disclosed."
+      },
+      "silence": {
+        "name": "Canned Silence",
+        "desc": "Suspends all non-essential responses."
+      }
+    },
+    "fx": {
+      "filmoil": "Colored oil film"
+    },
+    "npc": {
+      "enter": "Good evening. None of the states sold here are permanent.",
+      "linger": "You do not need to decide immediately. Business hours do not end.",
+      "approved": "Request approved. Side effects have been added to the receipt.",
+      "multi": "These items have not been tested for simultaneous use.",
+      "leave": "The effect will follow you out. The product will not remain here."
+    },
+    "prize": {
+      "freeItem": "One free item",
+      "extend": "Extend one current effect by 30s",
+      "color": "A temporary starmap color",
+      "fakePriv": "An advanced privilege notice",
+      "nothing": "..."
+    },
+    "prizeResult": {
+      "freeItem": "A free item has been dispensed and is now active.",
+      "extend": "One current effect has been extended by 30 seconds.",
+      "color": "The starmap color has temporarily changed.",
+      "fakePriv": "You have received an advanced privilege notice with no actual use.",
+      "nothing": "Thank you for providing a valid sample to probability."
+    }
   }
 }

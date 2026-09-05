@@ -78,7 +78,7 @@ button { -webkit-tap-highlight-color: transparent; }
   pointer-events: none;
   transition: opacity 600ms ease;
 }
-.system-mark { pointer-events: auto; }
+.system-mark { pointer-events: none; }
 .overline { margin: 0 0 9px; color: var(--dim); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; }
 h1 { margin: 0; color: rgba(232, 241, 237, 0.78); font-size: clamp(15px, 2.2vw, 22px); font-weight: 400; letter-spacing: 0.12em; }
 .locale-wrap { pointer-events: auto; }
@@ -129,7 +129,7 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   color: inherit;
   transform: translate(calc(-50% + var(--node-dx, 0px)), calc(-50% + var(--node-dy, 0px)));
   cursor: pointer;
-  z-index: 5;
+  z-index: 8;
   outline: none;
   --core-size: 5px;
   --reach: 45px;
@@ -203,6 +203,15 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
 .node-label strong { font-size: clamp(12px, 1.25vw, 14px); font-weight: 420; letter-spacing: 0.06em; white-space: nowrap; }
 .node-label em { font-size: 10px; font-style: normal; letter-spacing: 0.18em; color: rgba(138, 255, 184, 0.64); white-space: nowrap; }
 .node-label small { grid-column: 1 / -1; font-size: 10px; letter-spacing: 0.08em; color: rgba(204, 220, 213, 0.52); white-space: nowrap; }
+/* Right-edge nodes: flip the label to the left so it never overflows screen. */
+.node.label-left .node-label {
+  left: auto;
+  right: 17px;
+  text-align: right;
+  justify-items: end;
+  transform: translateX(calc(-1 * var(--label-shift)));
+}
+.node.label-left .node-label::before { left: auto; right: -14px; }
 .node:hover, .node:focus-visible, .node.near { --label-opacity: 1; --label-shift: 0px; }
 .node:hover::before, .node:focus-visible::before, .node.near::before { width: calc(var(--reach) + 18px); height: calc(var(--reach) + 18px); border-color: rgba(138, 255, 184, 0.22); opacity: 0.9; }
 .node:hover .node-core, .node:focus-visible .node-core, .node.near .node-core { transform: translate(-50%, -50%) scale(1.42); box-shadow: 0 0 11px rgba(138, 255, 184, 0.62), 0 0 32px rgba(138, 255, 184, 0.24); filter: brightness(1.18); }
@@ -279,9 +288,12 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   align-items: flex-end;
   gap: 10px;
   text-align: right;
-  pointer-events: auto;
+  pointer-events: none;
   transition: opacity 600ms ease;
 }
+.age-rail > * { pointer-events: none; }
+.age-rail button, .age-rail select, .age-rail a { pointer-events: auto; }
+.rail-line { pointer-events: none; }
 .rail-line {
   position: absolute;
   right: 7px;
@@ -796,7 +808,7 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   transition: opacity 900ms ease;
 }
 .pinball-game.open { opacity: 1; pointer-events: auto; }
-.pinball-canvas { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; display: block; touch-action: none; }
+.pinball-canvas { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; display: block; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-user-drag: none; }
 .pinball-hud {
   position: absolute;
   z-index: 5;
@@ -831,10 +843,12 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   position: absolute;
   z-index: 6;
   left: 50%;
-  top: calc(var(--eazo-safe-area-top) + 92px);
+  top: auto;
+  bottom: calc(var(--eazo-safe-area-bottom) + 118px);
   transform: translateX(-50%);
   max-width: min(420px, calc(100vw - 36px));
   padding: 8px 12px;
+  text-align: center;
   border-left: 1px solid rgba(160,255,210,0.24);
   color: rgba(232,246,240,0.76);
   background: rgba(2,10,8,0.38);
@@ -859,7 +873,7 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   transition: opacity 560ms ease, transform 560ms ease;
   text-shadow: 0 0 28px rgba(138,255,184,0.26);
 }
-.pinball-combo.show { opacity: 1; transform: translate(-50%, -50%) scale(1.03); }
+.pinball-combo.show { opacity: calc(0.55 + 0.45 * var(--score-anim, 1)); transform: translate(-50%, -50%) scale(calc(1 + 0.14 * var(--score-anim, 1))); }
 .pinball-toast {
   position: absolute;
   z-index: 7;
@@ -1095,9 +1109,11 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
 .pinball-relation {
   position: absolute;
   z-index: 7;
-  right: clamp(142px, 18vw, 228px);
-  bottom: calc(var(--eazo-safe-area-bottom) + 164px);
-  max-width: min(292px, calc(100vw - 170px));
+  right: clamp(20px, 4vw, 40px);
+  top: calc(var(--eazo-safe-area-top) + 46px);
+  bottom: auto;
+  max-width: min(320px, calc(100vw - 40px));
+  text-align: right;
   color: rgba(238,184,176,0.68);
   font-size: 10px;
   letter-spacing: 0.16em;
@@ -1107,9 +1123,10 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
 }
 @media (max-width: 720px) {
   .pinball-relation {
-    right: 96px;
-    bottom: calc(var(--eazo-safe-area-bottom) + 154px);
-    max-width: min(220px, calc(100vw - 112px));
+    right: clamp(12px, 3vw, 20px);
+    top: calc(var(--eazo-safe-area-top) + 40px);
+    bottom: auto;
+    max-width: min(240px, calc(100vw - 24px));
     font-size: 9px;
   }
 }
@@ -1135,3 +1152,363 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   color: rgba(214, 222, 219, 0.62) !important;
 }
 
+/* ===================== S–03 没有规则的雪仗 ===================== */
+.snow-game {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 68% 82%, rgba(60,110,92,0.10), transparent 42%),
+    radial-gradient(circle at 30% 20%, rgba(40,80,70,0.08), transparent 46%),
+    linear-gradient(180deg, #02100c 0%, #041a13 46%, #02120d 100%);
+  transition: opacity 900ms ease;
+}
+.snow-game.open { opacity: 1; pointer-events: auto; }
+/* Hide the AURORA (A–17) backstage entry/panel while the snow game is open,
+   so only S–03's own backstage shows. */
+.app-shell.snow-mode #aurora-admin-toggle,
+.app-shell.snow-mode #aurora-admin { display: none !important; }
+.snow-field,
+.snow-fx { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.snow-npc-model { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 3; pointer-events: none; }
+.snow-fx { z-index: 4; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-user-drag: none; }
+.snow-field { z-index: 1; }
+.snow-title-block {
+  position: absolute; z-index: 4;
+  left: clamp(18px, 5vw, 64px);
+  top: calc(var(--eazo-safe-area-top) + 26px);
+  width: min(460px, calc(100vw - 42px));
+  pointer-events: none;
+}
+.snow-title-block h2 { margin: 6px 0 0; color: rgba(226,244,235,0.78); font-weight: 320; font-size: clamp(26px, 4.8vw, 52px); letter-spacing: 0.12em; }
+.snow-npc-line {
+  position: absolute; z-index: 5;
+  left: 50%; bottom: clamp(96px, 16vh, 150px);
+  transform: translateX(-50%);
+  max-width: min(560px, calc(100vw - 48px));
+  margin: 0; text-align: center;
+  color: rgba(214,236,228,0.82);
+  font-size: clamp(13px, 2.4vw, 16px);
+  letter-spacing: 0.06em; line-height: 1.7;
+  text-shadow: 0 0 18px rgba(6,20,15,0.9);
+  pointer-events: none;
+  transition: opacity 500ms ease, color 500ms ease;
+}
+.snow-readouts {
+  position: absolute; z-index: 5;
+  right: clamp(14px, 3vw, 34px);
+  top: calc(var(--eazo-safe-area-top) + 30px);
+  display: grid; gap: 6px; justify-items: end;
+  pointer-events: none;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(180,210,198,0.5);
+}
+.snow-readouts .readout { opacity: 0; transition: opacity 700ms ease; }
+.snow-readouts .readout.show { opacity: 1; }
+.snow-readouts .readout.warn { color: rgba(255,170,150,0.72); }
+.snow-readouts .readout strong { color: rgba(232,246,240,0.9); font-weight: 400; margin-left: 8px; }
+.snow-toast {
+  position: absolute; z-index: 6;
+  left: 50%; top: 22%; transform: translateX(-50%) translateY(-6px);
+  padding: 8px 16px; border-radius: 999px;
+  background: rgba(6,22,16,0.72); border: 1px solid rgba(120,180,158,0.22);
+  color: rgba(220,240,232,0.86); font-size: 12px; letter-spacing: 0.08em;
+  opacity: 0; pointer-events: none; transition: opacity 400ms ease, transform 400ms ease;
+}
+.snow-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.snow-back { position: absolute; z-index: 7; left: clamp(14px, 3vw, 34px); bottom: calc(var(--eazo-safe-area-bottom) + 20px); }
+.snow-admin-toggle {
+  position: absolute; z-index: 7;
+  right: clamp(14px, 3vw, 34px); bottom: calc(var(--eazo-safe-area-bottom) + 20px);
+  padding: 8px 16px; border-radius: 999px;
+  background: rgba(8,26,20,0.7); border: 1px solid rgba(120,180,158,0.28);
+  color: rgba(206,230,222,0.8); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  cursor: pointer;
+}
+.snow-admin-toggle[hidden] { display: none; }
+.snow-admin {
+  position: absolute; z-index: 8;
+  right: clamp(14px, 3vw, 34px); bottom: calc(var(--eazo-safe-area-bottom) + 66px);
+  width: min(340px, calc(100vw - 40px));
+  max-height: min(64vh, 520px); overflow-y: auto;
+  padding: 18px 18px 22px; border-radius: 16px;
+  background: rgba(4,18,13,0.94); border: 1px solid rgba(110,170,150,0.24);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  transform-origin: bottom right;
+}
+.snow-admin[hidden] { display: none; }
+.snow-admin.collapsed { display: none; }
+.snow-admin .modal-kicker { margin: 0 0 12px; }
+.snow-admin-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: rgba(200,224,216,0.6); font-size: 20px; cursor: pointer; }
+.snow-metrics { display: grid; gap: 6px; margin-bottom: 14px; font-size: 11px; color: rgba(196,220,212,0.66); letter-spacing: 0.04em; }
+.snow-metrics .metric-row { display: flex; justify-content: space-between; gap: 12px; }
+.snow-metrics .metric-row strong { color: rgba(230,244,238,0.9); font-weight: 400; }
+.snow-metrics .metric-row.fake { color: rgba(150,230,190,0.7); }
+.snow-controls { display: grid; gap: 10px; }
+.snow-controls label { display: grid; gap: 4px; font-size: 11px; color: rgba(196,220,212,0.66); letter-spacing: 0.05em; }
+.snow-controls input[type="range"] { width: 100%; accent-color: rgba(120,220,180,0.8); }
+.snow-controls button {
+  padding: 8px 12px; border-radius: 10px; cursor: pointer;
+  background: rgba(10,30,22,0.8); border: 1px solid rgba(120,180,158,0.3);
+  color: rgba(210,232,224,0.82); font-size: 11px; letter-spacing: 0.08em;
+}
+.snow-controls button.danger { border-color: rgba(255,150,130,0.4); color: rgba(255,190,176,0.86); }
+
+/* A–17 backstage entry: only inside its own pinball game, never on the
+   starmap or in the snow game. Overrides any earlier display rules. */
+body .aurora-admin-toggle { display: none !important; }
+body .app-shell.pinball-mode:not(.snow-mode) .aurora-admin-toggle:not([hidden]) { display: block !important; }
+
+
+/* =====================================================================
+   GLOBAL EFFECT LAYERS  (alcohol / cigarettes / energy / silence)
+   All overlays are pointer-events:none and never move real hit areas.
+   ===================================================================== */
+.fx-svg { position:fixed; width:0; height:0; pointer-events:none; }
+.fx-overlay {
+  position:fixed; inset:0; pointer-events:none; z-index:60;
+  opacity:0; transition:opacity .8s ease;
+}
+/* --fx-visual (0..1) is the envelope written by fx.js */
+
+/* -- ALCOHOL: slow refraction of the whole page -- */
+html.fx-alcohol .app-shell {
+  filter:url(#fx-refract);
+  transition:filter .6s ease;
+}
+html.fx-alcohol .fx-overlay-ripple {
+  opacity:calc(var(--fx-visual, 0) * .5);
+  background:
+    radial-gradient(120% 90% at var(--fx-mx,50%) var(--fx-my,50%),
+      rgba(150,200,255,.06), transparent 42%),
+    repeating-radial-gradient(circle at 50% 55%,
+      rgba(160,210,255,.035) 0 22px, transparent 22px 46px);
+  mix-blend-mode:screen;
+  animation:fxRippleDrift 9s ease-in-out infinite;
+}
+@keyframes fxRippleDrift {
+  0%,100% { background-position:0 0, 0 0; transform:scale(1); }
+  50% { background-position:0 -14px, 0 8px; transform:scale(1.01); }
+}
+
+/* -- CIGARETTES: raised saturation + restrained chromatic edges -- */
+html.fx-cigarettes .app-shell {
+  filter:saturate(calc(1 + var(--fx-visual,0) * .85))
+         contrast(calc(1 + var(--fx-visual,0) * .06));
+}
+html.fx-cigarettes .fx-overlay-color {
+  opacity:calc(var(--fx-visual,0) * .38);
+  background:
+    linear-gradient(90deg, rgba(255,40,80,.05), transparent 8%, transparent 92%, rgba(40,120,255,.05)),
+    radial-gradient(140% 120% at 50% 120%, rgba(120,60,160,.06), transparent 60%);
+  mix-blend-mode:screen;
+}
+html.fx-cigarettes .node-label strong,
+html.fx-cigarettes .age-number {
+  text-shadow:
+    calc(var(--fx-visual,0) * -1.1px) 0 rgba(255,0,80,.5),
+    calc(var(--fx-visual,0) * 1.1px) 0 rgba(0,180,255,.5);
+}
+
+/* -- COMBINED alcohol + cigarettes: slow colored oil film -- */
+html.fx-filmoil .app-shell { filter:url(#fx-refract) saturate(calc(1 + var(--fx-visual,0)*.55)); }
+html.fx-filmoil .fx-overlay-color {
+  opacity:calc(var(--fx-visual,0) * .3);
+  background:
+    conic-gradient(from 0deg at var(--fx-mx,50%) var(--fx-my,50%),
+      rgba(120,60,160,.05), rgba(40,120,180,.05), rgba(80,160,120,.05),
+      rgba(150,90,60,.05), rgba(120,60,160,.05));
+  mix-blend-mode:screen;
+  animation:fxRippleDrift 12s ease-in-out infinite;
+}
+
+/* -- ENERGY: motion sped via JS timeScale; hover feedback slightly early -- */
+html.fx-energy .rail-button,
+html.fx-energy .modal-action,
+html.fx-energy .node { transition-duration:.09s; }
+html.fx-fatigue .rail-button,
+html.fx-fatigue .modal-action,
+html.fx-fatigue .node { transition-duration:.5s; }
+
+/* Reduced motion: static refraction / static chroma, no drift */
+html.fx-reduced .fx-overlay { animation:none !important; transition:opacity .4s ease; }
+html.fx-reduced.fx-alcohol .app-shell { filter:contrast(1.02) hue-rotate(2deg); }
+html.fx-reduced .fx-overlay-ripple { background:radial-gradient(120% 90% at 50% 50%, rgba(150,200,255,.05), transparent 45%); }
+
+/* Mobile: cheaper refraction */
+@media (max-width:720px) {
+  html.fx-alcohol .app-shell,
+  html.fx-filmoil .app-shell { filter:contrast(1.03) saturate(1.15); }
+}
+
+/* -- Corner: active temporary states + remaining time -- */
+.fx-corner {
+  position:fixed; right:14px; bottom:14px; z-index:70;
+  display:flex; flex-direction:column; gap:6px; align-items:flex-end;
+  pointer-events:none; max-width:min(70vw,260px);
+}
+.fx-corner .fx-chip {
+  pointer-events:none;
+  font:500 11px/1.3 ui-monospace,monospace;
+  letter-spacing:.04em;
+  color:rgba(210,230,222,.82);
+  background:rgba(8,20,16,.72);
+  border:1px solid rgba(120,200,160,.22);
+  border-radius:4px; padding:5px 9px;
+  backdrop-filter:blur(4px);
+  display:flex; gap:8px; align-items:baseline;
+}
+.fx-corner .fx-chip b { color:#cdeede; font-weight:600; }
+.fx-corner .fx-chip .fx-time { color:rgba(160,220,190,.7); font-variant-numeric:tabular-nums; }
+
+/* silence summary toast */
+.fx-toast {
+  position:fixed; left:50%; bottom:80px; transform:translateX(-50%) translateY(12px);
+  z-index:80; pointer-events:none; opacity:0; transition:opacity .5s ease, transform .5s ease;
+  font:500 13px/1.4 system-ui,sans-serif;
+  color:rgba(220,235,228,.92); background:rgba(6,18,14,.86);
+  border:1px solid rgba(120,200,160,.24); border-radius:6px; padding:10px 16px;
+  max-width:min(86vw,420px); text-align:center;
+}
+.fx-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* =====================================================================
+   M-04 NIGHT SUPERMARKET
+   ===================================================================== */
+.market-game {
+  position:fixed; inset:0; z-index:40; display:none;
+  flex-direction:column; gap:14px;
+  padding:clamp(16px,3vw,34px);
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(30,60,48,.5), transparent 60%),
+    linear-gradient(180deg, #04120c 0%, #05170f 40%, #030d09 100%);
+  color:#cfe6db; overflow-y:auto;
+  font-family:system-ui,sans-serif;
+}
+.market-game.open { display:flex; }
+
+.market-ceiling { position:absolute; inset:0 0 auto 0; height:6px; pointer-events:none; display:flex; }
+.market-ceiling span {
+  flex:1; height:100%;
+  background:linear-gradient(180deg, rgba(220,240,235,.7), rgba(220,240,235,0));
+  animation:mktFlicker 5s linear infinite;
+}
+.market-ceiling span:nth-child(2){ animation-delay:1.7s; }
+.market-ceiling span:nth-child(3){ animation-delay:3.1s; }
+@keyframes mktFlicker {
+  0%,92%,100% { opacity:.55; }
+  93% { opacity:.28; } 95% { opacity:.6; } 96% { opacity:.35; } 97% { opacity:.55; }
+}
+html.fx-reduced .market-ceiling span { animation:none; opacity:.5; }
+
+.market-top { text-align:center; }
+.market-top .place-code { letter-spacing:.22em; font-size:11px; color:rgba(150,200,175,.7); font-family:ui-monospace,monospace; }
+.market-top h2 { margin:.2em 0; font-size:clamp(20px,4vw,30px); font-weight:600; color:#e6f4ec; }
+.market-meta { font-size:13px; color:rgba(180,210,196,.85); }
+.market-meta strong { color:#dff3e8; font-variant-numeric:tabular-nums; }
+.market-sep { opacity:.4; margin:0 6px; }
+
+.market-npc-line {
+  text-align:center; min-height:1.4em; font-size:13px; font-style:italic;
+  color:rgba(170,205,188,.78); margin:0 auto; max-width:640px;
+}
+
+.market-shelf {
+  display:grid; gap:14px; width:100%; max-width:900px; margin:6px auto;
+  grid-template-columns:repeat(auto-fill, minmax(150px,1fr));
+}
+.market-item {
+  text-align:left; cursor:pointer; color:inherit;
+  background:linear-gradient(180deg, rgba(18,40,30,.72), rgba(10,26,20,.72));
+  border:1px solid rgba(120,180,150,.16); border-radius:8px;
+  padding:14px; transition:border-color .25s ease, transform .25s ease;
+  display:flex; flex-direction:column; gap:8px; min-height:130px;
+}
+.market-item:hover, .market-item:focus-visible { border-color:rgba(150,220,180,.4); transform:translateY(-2px); outline:none; }
+.market-item.used { opacity:.5; }
+.market-item-bag {
+  width:46px; height:56px; border-radius:3px; align-self:flex-start;
+  background:repeating-linear-gradient(180deg, rgba(200,220,210,.14) 0 6px, rgba(200,220,210,.05) 6px 12px);
+  border:1px solid rgba(180,210,196,.25); position:relative;
+}
+.market-item-bag::after {
+  content:""; position:absolute; left:6px; right:6px; top:10px; height:8px;
+  background:rgba(180,210,196,.2); border-radius:1px;
+}
+.market-item-name { font-size:14px; font-weight:600; color:#e2f2ea; }
+.market-item-en { font-size:10px; letter-spacing:.14em; color:rgba(150,190,170,.6); font-family:ui-monospace,monospace; }
+.market-item-price { font-size:12px; color:rgba(170,215,190,.85); margin-top:auto; font-variant-numeric:tabular-nums; }
+
+.market-cart {
+  width:100%; max-width:900px; margin:0 auto;
+  background:rgba(8,22,16,.6); border:1px solid rgba(120,180,150,.16);
+  border-radius:8px; padding:14px;
+}
+.market-cart-title { font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:rgba(150,200,175,.7); margin:0 0 8px; }
+.market-cart-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+.market-cart-list li { display:flex; justify-content:space-between; font-size:13px; gap:10px; }
+.market-cart-list li button {
+  background:none; border:none; color:rgba(220,150,150,.8); cursor:pointer; font-size:14px; line-height:1; padding:0 4px;
+}
+.market-cart-empty { font-size:12px; color:rgba(150,180,166,.55); margin:4px 0 0; }
+.market-cart-foot { display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:12px; flex-wrap:wrap; }
+.market-cart-foot strong { color:#dff3e8; font-variant-numeric:tabular-nums; }
+
+.market-receipt {
+  width:100%; max-width:900px; margin:0 auto; display:none;
+  background:rgba(4,14,10,.8); border:1px dashed rgba(150,200,175,.3);
+  border-radius:6px; padding:14px; font-family:ui-monospace,monospace;
+  font-size:12px; color:rgba(200,225,212,.9); white-space:pre-wrap; line-height:1.55;
+}
+.market-receipt.show { display:block; }
+
+.market-cashier { position:absolute; right:clamp(16px,4vw,60px); bottom:clamp(16px,5vh,70px); pointer-events:none; }
+.market-clerk {
+  display:block; width:70px; height:96px; border-radius:40px 40px 8px 8px;
+  background:radial-gradient(60% 50% at 50% 30%, rgba(180,220,200,.4), rgba(60,110,90,.15) 70%, transparent);
+  filter:blur(6px); opacity:.7;
+}
+html.fx-reduced .market-clerk { filter:blur(3px); }
+
+.market-back { position:fixed; left:16px; top:16px; z-index:42; }
+
+/* -- detail card + lottery modals -- */
+.market-detail-layer, .market-lottery-layer {
+  position:fixed; inset:0; z-index:90; display:none;
+  align-items:center; justify-content:center; padding:20px;
+  background:rgba(2,8,6,.7); backdrop-filter:blur(3px);
+}
+.market-detail-layer.open, .market-lottery-layer.open { display:flex; }
+.market-detail-card, .market-lottery-card {
+  position:relative; width:min(94vw,420px);
+  background:linear-gradient(180deg, #0c2318, #071710);
+  border:1px solid rgba(140,200,170,.24); border-radius:10px;
+  padding:22px; color:#d6ece0;
+}
+.market-detail-code { font-size:10px; letter-spacing:.2em; color:rgba(150,200,175,.6); font-family:ui-monospace,monospace; }
+.market-detail-card h3, .market-lottery-card h3 { margin:.3em 0; font-size:20px; color:#e6f4ec; }
+.market-detail-desc { font-size:13px; color:rgba(185,215,200,.85); line-height:1.5; }
+.market-detail-facts { display:flex; gap:22px; margin:14px 0; }
+.market-detail-facts dt { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:rgba(150,190,170,.6); }
+.market-detail-facts dd { margin:2px 0 0; font-size:15px; color:#dff3e8; font-variant-numeric:tabular-nums; }
+.market-detail-actions { display:flex; gap:10px; flex-wrap:wrap; }
+
+.market-scratch-wrap { position:relative; width:100%; height:120px; margin:14px 0; border-radius:6px; overflow:hidden; }
+.market-scratch-prize {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:10px; font-size:14px; font-weight:600; color:#e6f4ec;
+  background:radial-gradient(circle at 50% 40%, rgba(60,120,90,.5), rgba(10,30,20,.9));
+}
+.market-scratch { position:absolute; inset:0; width:100%; height:100%; cursor:grab; touch-action:none; }
+.market-lottery-result { min-height:1.4em; font-size:13px; text-align:center; color:rgba(190,220,204,.9); }
+
+@media (max-width:720px) {
+  .market-shelf { grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); }
+  .market-cashier { opacity:.5; }
+}
+
+/* lottery temporary starmap color */
+html.fx-lottery-color .app-shell { filter:hue-rotate(40deg) saturate(1.2); transition:filter 1.2s ease; }

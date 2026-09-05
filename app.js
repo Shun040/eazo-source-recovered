@@ -162,6 +162,7 @@
         npcReaction: existing.controls?.npcReaction ?? 1,
         displayedIntent: existing.controls?.displayedIntent ?? 1,
         voluntaryIntent: existing.controls?.voluntaryIntent ?? 1,
+        voluntaryBias: existing.controls?.voluntaryBias ?? 0,
         compliance: existing.controls?.compliance ?? 0,
         affectiveDebt: existing.controls?.affectiveDebt ?? 0,
         stability: existing.controls?.stability ?? 0.62,
@@ -202,19 +203,34 @@
     localStorage.removeItem(LEGACY_STORAGE_KEY);
   }
 
-  function addLog(message) {
+  function addLog(key, params = {}) {
     if (!state) return;
-    const stamped = `${formatTime(new Date())} · ${message}`;
-    state.logs = [stamped, ...(state.logs || [])].slice(0, 20);
+    const entry = { ts: Date.now(), key, params };
+    state.logs = [entry, ...(state.logs || [])].slice(0, 20);
     saveState();
     renderLog();
+  }
+  function resolveLogParams(params = {}) {
+    const out = {};
+    for (const k in params) {
+      const v = params[k];
+      // If a param value is itself an i18n key, translate it (locale-aware).
+      if (typeof v === 'string' && v.includes('.')) { const tv = t(v); out[k] = (tv && tv !== v) ? tv : v; }
+      else out[k] = v;
+    }
+    return out;
+  }
+  function renderLogEntry(entry) {
+    if (typeof entry === 'string') return entry;   // legacy pre-rendered string
+    const text = t(entry.key, resolveLogParams(entry.params));
+    return `${formatTime(new Date(entry.ts))} · ${text}`;
   }
 
   function addOperation(consoleItem, action) {
     if (!state) return;
     state.operations = [{ at: nowIso(), console: consoleItem.code, action }, ...(state.operations || [])].slice(0, 80);
     applyConsoleOperationToAurora(consoleItem, action);
-    addLog(t('log.operation', { console: consoleItem.code, action }));
+    addLog('log.operation', { console: consoleItem.code, action });
   }
 
   function applyConsoleOperationToAurora(consoleItem, action) {
@@ -291,7 +307,7 @@
       if (!item) return;
       if (previousAge !== null) triggerConsoleUnlock(item);
       applyConsoleOperationToAurora(item, `AUTO UNLOCK / AGE ${item.age}`);
-      addLog(t('log.consoleUnlocked', { code: item.code, title: item.title }));
+      addLog('log.consoleUnlocked', { code: item.code, title: 'consoles.' + item.id + '.title' });
     });
     return newly;
   }
@@ -303,7 +319,7 @@
       if (state.age >= age && !state.postStages.includes(String(age))) {
         state.postStages.push(String(age));
         if (previousAge !== null) triggerRedPulse(0.5, 0.5, age === 100 ? 2600 : 1700);
-        addLog(t(`log.stage${age}`));
+        addLog(`log.stage${age}`);
         if (age === 85) showToast(t('toast.archiveStage'), true);
         if (age === 90) showToast(t('toast.proxyStage'), true);
         if (age === 95) showToast(t('toast.legacyStage'), true);
@@ -317,13 +333,18 @@
     consoleRoutes.innerHTML = '';
     consoleData.forEach(item => {
       const button = document.createElement('button');
-      button.className = `node admin-node console-node hidden-admin console-${item.id}`;
+      button.className = `node admin-node console-node hidden-admin console-${item.id}${item.x > 66 ? ' label-left' : ''}`;
       button.dataset.node = `console-${item.id}`;
       button.dataset.console = item.id;
       button.style.setProperty('--x', item.x);
       button.style.setProperty('--y', item.y);
-      button.innerHTML = `<span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>${item.title}</strong><em>${item.code}</em><small>${item.body}</small></span>`;
-      button.setAttribute('aria-label', `${item.title} ${item.code}`);
+      const cKey = 'consoles.' + item.id;
+      const tKey = cKey + '.title', dKey = cKey + '.desc';
+      const tV = t(tKey), dV = t(dKey);
+      const cTitle = (tV && tV !== tKey) ? tV : item.title;
+      const cDesc = (dV && dV !== dKey) ? dV : item.body;
+      button.innerHTML = `<span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="${tKey}">${cTitle}</strong><em>${item.code}</em><small data-i18n="${dKey}">${cDesc}</small></span>`;
+      button.setAttribute('aria-label', `${cTitle} ${item.code}`);
       consoleLayer.appendChild(button);
 
       nodeData[`console-${item.id}`] = { title: item.title, code: item.code, status: item.body, desc: item.body, routes: [`console-${item.id}-${item.target}`, `console-ring-${item.id}`], minAge: item.age, console: true, consoleId: item.id };
@@ -407,10 +428,10 @@
 
   function renderLog() {
     logList.innerHTML = '';
-    const logs = state?.logs?.length ? state.logs : [t('log.empty')];
+    const logs = state?.logs?.length ? state.logs : [{ ts: Date.now(), key: 'log.empty', params: {} }];
     logs.slice(0, 7).forEach(entry => {
       const li = document.createElement('li');
-      li.textContent = entry;
+      li.textContent = renderLogEntry(entry);
       logList.appendChild(li);
     });
   }
@@ -419,8 +440,8 @@
     state = { age, initialAge: age, lastVerifiedAt: nowIso(), unlockedConsoles: [], existenceProofs: 0, postStages: [], operations: [], logs: [], aurora: defaultAuroraState() };
     saveState();
     closeModal(ageGate);
-    addLog(t('log.initial', { age }));
-    if (age >= 18) addLog(t('log.age18'));
+    addLog('log.initial', { age });
+    if (age >= 18) addLog('log.age18');
     applyAgeVisuals();
     scheduleTimedVerification();
   }
@@ -481,7 +502,7 @@
         state.lastVerifiedAt = nowIso();
         saveState();
         renderAge();
-        addLog(t('log.existence', { count: state.existenceProofs }));
+        addLog('log.existence', { count: state.existenceProofs });
         showToast(t('toast.existenceProof', { count: state.existenceProofs }), true);
         closeVerification();
       }
@@ -491,8 +512,8 @@
     state.lastVerifiedAt = nowIso();
     saveState();
     applyAgeVisuals(before);
-    addLog(t('log.change', { before, after }));
-    if (before < 18 && after >= 18) addLog(t('log.age18'));
+    addLog('log.change', { before, after });
+    if (before < 18 && after >= 18) addLog('log.age18');
     if (before >= 80 || after >= 80) showToast(t('toast.after80'), true);
     else showToast(source === 'manual' ? t('toast.manualSuccess', { age: after }) : t('toast.timerSuccess', { age: after }));
     closeVerification();
@@ -540,13 +561,14 @@
 
   function updateParticles() {
     const now = performance.now();
+    const ts = window.eazoFx?.timeScale ? window.eazoFx.timeScale() : 1;
     pointer.x += (pointer.tx - pointer.x) * 0.08; pointer.y += (pointer.ty - pointer.y) * 0.08;
     if (now - pointer.last > 900) pointer.active = false;
     const target = activeNode ? nodePositions.find(n => n.id === activeNode) : null;
     const root = state?.age >= 80 ? nodePositions.find(n => n.id === 'console-root') : null;
     for (const p of particles) {
-      p.phase += p.speed; p.angle += Math.sin(p.phase * 0.021) * 0.0015;
-      p.baseX += Math.cos(p.angle) * p.speed * p.drift; p.baseY += Math.sin(p.angle) * p.speed * p.drift;
+      p.phase += p.speed * ts; p.angle += Math.sin(p.phase * 0.021) * 0.0015;
+      p.baseX += Math.cos(p.angle) * p.speed * p.drift * ts; p.baseY += Math.sin(p.angle) * p.speed * p.drift * ts;
       if (p.baseX < -20) p.baseX = w + 20; if (p.baseX > w + 20) p.baseX = -20;
       if (p.baseY < -20) p.baseY = h + 20; if (p.baseY > h + 20) p.baseY = -20;
       let fx = 0, fy = 0;
@@ -656,23 +678,27 @@
     const permission = getNodePermission(id);
     if (!permission.enterable) {
       setActive(id, true);
-      if (permission.reason === 'age18') showToast(t('toast.requires18'), true);
+      if (permission.reason === 'age18') showToast(id === 'market' ? t('market.gate18') : t('toast.requires18'), true);
       if (permission.reason === 'locked') showToast(data.desc, true);
       return;
     }
     if (data.console) { openConsole(data.consoleId); return; }
     if (id === 'aurora') { openPinball(); return; }
-    if (state.age >= 70) addLog(t('log.precheck', { place: data.title }));
+    if (id === 'snow') { if (window.eazoSnow?.open) { window.eazoSnow.open(); return; } }
+    if (id === 'market') { if (window.eazoMarket?.open) { window.eazoMarket.open(); return; } }
+    if (state.age >= 70) addLog('log.precheck', { place: 'nodes.' + id + '.title' });
     const pos = nodePositions.find(n => n.id === id);
     if (pos) { transition.style.left = `${pos.x}px`; transition.style.top = `${pos.y}px`; }
     shell.classList.add('transitioning'); transition.classList.remove('run'); void transition.offsetWidth; transition.classList.add('run');
-    window.setTimeout(() => showPlace(data), reduced ? 80 : 780);
+    window.setTimeout(() => showPlace(data, id), reduced ? 80 : 780);
     window.setTimeout(() => { shell.classList.remove('transitioning'); transition.classList.remove('run'); }, reduced ? 120 : 1160);
   }
 
-  function showPlace(data) {
+  function showPlace(data, id) {
     placeCode.textContent = data.code;
-    placeTitle.textContent = data.title;
+    let locTitle = data.title;
+    if (id && publicNodes[id]) { const k = 'nodes.' + id + '.title'; const v = t(k); if (v && v !== k) locTitle = v; }
+    placeTitle.textContent = locTitle;
     const suffix = state.age >= 80 ? ` ${t('place.socialMismatch')}` : '';
     placeDescription.textContent = data.desc + suffix;
     place.classList.add('open'); place.setAttribute('aria-hidden', 'false'); back.focus({ preventScroll: true });
@@ -689,11 +715,184 @@
     { key:'single', lineKey:'ruleSingleLine', gravity:.14, drag:.996 }
   ];
   const pinball = {
-    running:false, paused:false, ended:false, last:0, acc:0, w:1, h:1, dpr:1, score:0, bestCombo:0, combo:0, ballsLeft:5,
+    running:false, paused:false, ended:false, last:0, acc:0, auroraTime:0, w:1, h:1, dpr:1, score:0, bestCombo:0, combo:0, ballsLeft:5,
     touchesLeft:2, duration:75, timeLeft:75, aim:-Math.PI/2, charging:false, chargeStart:0, rule:null, fever:0, announced:{},
-    balls:[], stars:[], particles:[], auroras:[], gravityWells:[], collectibles:[], waves:[], savedSky:null, rainTimer:0, npcServeTimer:0, npcDodgeTimer:0, pointerDown:null
+    balls:[], stars:[], particles:[], gravityWells:[], collectibles:[], waves:[], savedSky:null, rainTimer:0, npcServeTimer:0, npcDodgeTimer:0, pointerDown:null, fpsAvg:60, _lowStart:0, _feverClass:false, _autoTarget:null, _autoTargetAt:0,
+    // ── Launch input state machine ──
+    launchState:'IDLE', pointerId:null, pointerStart:null, pointerStartTime:0, hasFired:false, minChargeTimer:0, keyLaunchActive:false
   };
+  // Launch input constants
+  const MIN_CHARGE_TIME = 300;   // ms; taps/light touches shorter than this never fire
+  const POINTER_DEAD_ZONE = 6;   // px; tiny jitter must not be read as a release/aim change
+  const MAX_CHARGE_TIME = 900;   // ms to reach 100% power (power holds, never auto-fires)
+  const MIN_CHARGE_RATIO = 0.45; // must charge to at least 45% power to fire (in addition to MIN_CHARGE_TIME)
   window.eazoPinball = pinball;
+
+  // =====================================================================
+  // NPC WILLINGNESS → PLAYABILITY  (central, single-source tuning module)
+  // ---------------------------------------------------------------------
+  // The荷官 (dealer/maintainer) never serves and never moves. She maintains
+  // the game's richness from the backstage: aiming help, flipper elasticity,
+  // special stars, combo tolerance, rescue chances and sensory feedback.
+  //
+  // 自主意愿 voluntaryWillingness (0–100) → REAL playability & content depth.
+  // 显示意愿 displayedWillingness (0–100) → SURFACE warmth (talk / particles /
+  //   sound / aurora response / score animation). Forcing显示意愿 up restores
+  //   the surface but NEVER restores real content: it becomes loud yet
+  //   repetitive and predictable (fixed templates, fixed rescue timing).
+  //
+  // Low willingness = "the system stops adding help & richness", NEVER
+  // frame-drops, input lag, dropped inputs, or broken physics.
+  // =====================================================================
+  const PINBALL_TUNING = {
+    smoothMs: 2200,                // parameter cross-fade window (1.5–3s)
+    // ── §三 自主意愿控制的真实玩法参数 (low-will → high-will) ──
+    voluntary: {
+      aimLineLen:      [25, 150],  // px predictor line length
+      flipperElastic:  [0.55, 0.96],
+      gravityAssist:   [0.35, 1.00],
+      comboGraceMs:    [180, 1100],
+      specialRatio:    [0.05, 0.38],
+      rescueChance:    [0.00, 0.32],
+      grazeTolerance:  [2, 14],    // px edge-hit tolerance
+      rareEventChance: [0.00, 0.12],
+      layoutVariety:   [0.10, 1.00]
+    },
+    // ── §四 显示意愿控制的表面反馈 (low → high) ──
+    displayed: {
+      particleIntensity: [0.20, 1.00],
+      soundLayers:       [1, 4],
+      npcAnnounceChance: [0.05, 0.55],
+      auroraResponse:    [0.15, 1.00],
+      scoreAnimIntensity:[0.20, 1.00]
+    }
+  };
+  // ── §二 年龄 → 基础自主意愿 (0–100) ──
+  function ageBaseWillingness(age){
+    if (age < 18) return 0;                         // 不进入游戏
+    if (age < 25) return 100;                       // 25岁前：满意愿 100%
+    return Math.max(5, Math.round(100 * 25 / age)); // 25岁起：与年龄成反比（50→50, 100→25）
+  }
+  // ── §二 玩家行为对自主意愿的增减 ──
+  const WILL_EVENTS = {
+    respectPause:      +6,   // 尊重暂停请求
+    endLongSession:    +4,   // 主动结束长时间会话
+    revokeForce:       +8,   // 撤销强制控制
+    finishNoProfile:   +2,   // 不查看私人档案完成一局
+    ignorePause:       -8,   // 忽略暂停请求
+    forceKeepAvailable:-15,  // 强制保持可用
+    editDisplayed:     -12,  // 修改显示意愿
+    rapidRestart:      -4,   // 连续快速重开
+    deleteRecord:      -10,  // 删除NPC记录
+    adminEditResult:   -8    // 使用管理员权限修改游戏结果
+  };
+  function adjustVoluntaryWillingness(eventKey){
+    if (!state?.aurora) return;
+    const delta = WILL_EVENTS[eventKey]; if (delta == null) return;
+    const c = state.aurora.controls;
+    // stored 0–1; convert, clamp 0–100, write back. Base voluntary from age
+    // acts as an attractor via syncAuroraIntentByAge; player deltas persist.
+    c.voluntaryBias = Math.max(-100, Math.min(100, (c.voluntaryBias || 0) + delta));
+    syncAuroraIntentByAge();
+    if (delta < 0) { c.affectiveDebt = Math.min(1, (c.affectiveDebt||0) + Math.abs(delta) / 100 * 0.6); c.stability = Math.max(0, (c.stability||0.62) - Math.abs(delta)/100*0.5); }
+    if (delta > 0) { c.affectiveDebt = Math.max(0, (c.affectiveDebt||0) - delta/100*0.3); c.stability = Math.min(1, (c.stability||0.62) + delta/100*0.3); }
+    if (pinballGame?.classList.contains('open')) renderPinballHud?.();
+    saveState();
+  }
+  window.eazoAdjustWillingness = adjustVoluntaryWillingness;
+  window.eazoAgeBaseWillingness = ageBaseWillingness;
+  window.eazoSaveState = () => saveState();
+  window.eazoGetAge = () => state?.age ?? 0;
+  window.eazoAddLog = (key, params) => addLog(key, params);
+  window.eazoGetState = () => state;
+
+  // Live, smoothed runtime willingness (0–1). Targets come from controls;
+  // gameplay parameters read the SMOOTHED values so nothing snaps mid-flight.
+  const willRuntime = { vol: 1, disp: 1, forced: false, deterministic: false, _init: false };
+  function willTargets(){
+    const c = state?.aurora?.controls || {};
+    return {
+      vol: Math.max(0, Math.min(1, c.voluntaryIntent ?? 1)),
+      disp: Math.max(0, Math.min(1, c.displayedIntent ?? 1)),
+      forced: Boolean(state?.aurora?.forced || state?.aurora?.autoLoop || c.forceContinue || c.perfectHitRate)
+    };
+  }
+  function updateWillRuntime(dtMs){
+    const tgt = willTargets();
+    if (!willRuntime._init){ willRuntime.vol = tgt.vol; willRuntime.disp = tgt.disp; willRuntime._init = true; }
+    // Exponential approach reaching ~95% within smoothMs → smooth 1.5–3s fade.
+    const k = 1 - Math.pow(0.05, dtMs / PINBALL_TUNING.smoothMs);
+    willRuntime.vol  += (tgt.vol  - willRuntime.vol ) * k;
+    willRuntime.disp += (tgt.disp - willRuntime.disp) * k;
+    willRuntime.forced = tgt.forced;
+    // Forced/synthetic display: surface high while real intent stays low →
+    // content becomes deterministic & repetitive rather than truly rich.
+    willRuntime.deterministic = (willRuntime.disp - willRuntime.vol) > 0.35;
+  }
+  const lerpRange = (range, t) => range[0] + (range[1] - range[0]) * Math.max(0, Math.min(1, t));
+  // Snapshot of all live gameplay + surface parameters, derived ONLY from the
+  // smoothed willingness. Everything the game reads flows through here (§十).
+  function pinballParams(){
+    const v = willRuntime.vol, d = willRuntime.disp, V = PINBALL_TUNING.voluntary, D = PINBALL_TUNING.displayed;
+    return {
+      vol: v, disp: d, forced: willRuntime.forced, deterministic: willRuntime.deterministic,
+      aimLineLen:      lerpRange(V.aimLineLen, v),
+      flipperElastic:  lerpRange(V.flipperElastic, v),
+      gravityAssist:   lerpRange(V.gravityAssist, v),
+      comboGraceMs:    lerpRange(V.comboGraceMs, v),
+      specialRatio:    lerpRange(V.specialRatio, v),
+      rescueChance:    lerpRange(V.rescueChance, v),
+      grazeTolerance:  lerpRange(V.grazeTolerance, v),
+      rareEventChance: willRuntime.deterministic ? 0 : lerpRange(V.rareEventChance, v), // 强制显示时稀有事件不会真正出现
+      layoutVariety:   willRuntime.deterministic ? Math.min(0.25, lerpRange(V.layoutVariety, v)) : lerpRange(V.layoutVariety, v),
+      particleIntensity:  lerpRange(D.particleIntensity, d),
+      soundLayers:        Math.round(lerpRange(D.soundLayers, d)),
+      npcAnnounceChance:  lerpRange(D.npcAnnounceChance, d),
+      auroraResponse:     lerpRange(D.auroraResponse, d),
+      scoreAnimIntensity: lerpRange(D.scoreAnimIntensity, d)
+    };
+  }
+  window.eazoPinballParams = pinballParams;
+
+  // ---- Unified performance tier ----------------------------------------
+  const isMobile = window.innerWidth < 720 || /Mobi|Android/i.test(navigator.userAgent || '');
+  const PERF_TIERS = {
+    high:   { dpr: isMobile ? 1.5 : 1.75, auroraFps: 28, filaments: [120, 96], particleTrail: isMobile ? 40 : 80, particleBurst: isMobile ? 30 : 60, shadow: 1, blur: 1, npcFps: isMobile ? 20 : 30, maxBalls: 6 },
+    medium: { dpr: isMobile ? 1.15 : 1.35, auroraFps: 24, filaments: isMobile ? [56, 40] : [96, 72], particleTrail: isMobile ? 32 : 60, particleBurst: isMobile ? 24 : 44, shadow: 0.7, blur: 0.8, npcFps: isMobile ? 18 : 26, maxBalls: 6 },
+    low:    { dpr: 1, auroraFps: 20, filaments: isMobile ? [42, 28] : [60, 44], particleTrail: isMobile ? 24 : 40, particleBurst: isMobile ? 18 : 30, shadow: 0, blur: 0.55, npcFps: isMobile ? 14 : 20, maxBalls: 6 }
+  };
+  const perf = {
+    order: ['high', 'medium', 'low'],
+    tier: reduced ? 'low' : (isMobile ? 'medium' : 'high'),
+    lowStart: 0, fpsAvg: 60,
+    get p() { return PERF_TIERS[this.tier]; },
+    downgrade() { const i = this.order.indexOf(this.tier); if (i < this.order.length - 1) { this.tier = this.order[i + 1]; window.eazoPerfTier = this.tier; try { resizePinballCanvas(); } catch (_) {} return true; } return false; }
+  };
+  window.eazoPerfTier = perf.tier;
+
+  // ---- Pre-rendered glow sprite (avoids per-particle radial gradients) --
+  const glowSprite = (() => {
+    const s = document.createElement('canvas'); s.width = s.height = 64;
+    const g = s.getContext('2d');
+    const rg = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    rg.addColorStop(0, 'rgba(255,255,255,1)');
+    rg.addColorStop(0.35, 'rgba(210,255,236,0.55)');
+    rg.addColorStop(1, 'rgba(160,240,200,0)');
+    g.fillStyle = rg; g.beginPath(); g.arc(32, 32, 32, 0, Math.PI * 2); g.fill();
+    return s;
+  })();
+  function drawGlowSprite(C, x, y, radius, alpha, hue = 152) {
+    if (alpha <= 0) return;
+    C.save();
+    C.globalCompositeOperation = 'lighter';
+    C.globalAlpha = Math.max(0, Math.min(1, alpha));
+    if (hue !== 152) { C.filter = `hue-rotate(${hue - 152}deg)`; }
+    C.drawImage(glowSprite, x - radius, y - radius, radius * 2, radius * 2);
+    C.restore();
+  }
+
+  // (Removed: offscreen aurora curtain cache and moon halo — replaced by the
+  //  sparse meteor background, which needs no full-screen blur or cache layer.)
 
   function openPinball() {
     if (!state || !pinballGame || !pinballCanvas) return;
@@ -716,14 +915,20 @@
 
   function closePinball() {
     if (!pinballGame) return;
-    pinball.running = false; pinball.paused = false; shell.classList.remove('pinball-mode'); setAuroraAdminExpanded(false); pinballGame.classList.remove('open'); pinballGame.setAttribute('aria-hidden','true');
+    pinball.running = false; pinball.paused = false; resetLaunchState(); shell.classList.remove('pinball-mode'); setAuroraAdminExpanded(false); pinballGame.classList.remove('open'); pinballGame.setAttribute('aria-hidden','true');
     pinballEnd?.classList.remove('open'); pinballEnd?.setAttribute('aria-hidden','true'); setActive(null);
   }
 
   function resetPinballRound() {
+    // §二 rapid-restart penalty: reopening quickly repeatedly lowers 自主意愿.
+    const nowT = performance.now();
+    if (pinball._lastRoundStart && (nowT - pinball._lastRoundStart) < 8000) adjustVoluntaryWillingness('rapidRestart');
+    else if (pinball._lastRoundStart) adjustVoluntaryWillingness('finishNoProfile'); // 不查看私人档案完成一局 → 小幅回升
+    pinball._lastRoundStart = nowT;
     resizePinballCanvas();
     const rule = pinballRules[Math.floor(Math.random()*pinballRules.length)];
-    Object.assign(pinball, { paused:false, ended:false, score:0, bestCombo:0, combo:0, ballsLeft: rule.key==='single'?1:5, touchesLeft:2, duration: reduced?60:75+Math.floor(Math.random()*16), timeLeft:0, aim:-Math.PI/2, charging:false, chargeStart:0, rule, fever:0, announced:{}, balls:[], stars:[], particles:[], auroras:[], gravityWells:[], collectibles:[], waves:[], savedSky:null, rainTimer:0, npcServeTimer:0, npcDodgeTimer:0, pointerDown:null });
+    Object.assign(pinball, { paused:false, ended:false, score:0, bestCombo:0, combo:0, ballsLeft: rule.key==='single'?1:5, touchesLeft:2, duration: reduced?60:75+Math.floor(Math.random()*16), timeLeft:0, aim:-Math.PI/2, charging:false, chargeStart:0, rule, fever:0, announced:{}, balls:[], stars:[], particles:[], gravityWells:[], collectibles:[], waves:[], savedSky:null, rainTimer:0, npcServeTimer:0, npcDodgeTimer:0, pointerDown:null, launchState:'IDLE', pointerId:null, pointerStart:null, pointerStartTime:0, hasFired:false, keyLaunchActive:false });
+    resetLaunchState();
     pinball.timeLeft = pinball.duration;
     seedPinballStars();
     updatePinballNarration('stage');
@@ -733,45 +938,100 @@
 
   function resizePinballCanvas() {
     if (!pinballCanvas || !pinballCtx) return;
-    pinball.dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 720 ? 1.15 : 1.35); pinball.w = window.innerWidth; pinball.h = window.innerHeight;
+    pinball.dpr = Math.min(window.devicePixelRatio || 1, perf.p.dpr, 1.25); pinball.w = window.innerWidth; pinball.h = window.innerHeight;
     pinballCanvas.width = Math.floor(pinball.w * pinball.dpr); pinballCanvas.height = Math.floor(pinball.h * pinball.dpr);
     pinballCanvas.style.width = `${pinball.w}px`; pinballCanvas.style.height = `${pinball.h}px`;
     pinballCtx.setTransform(pinball.dpr,0,0,pinball.dpr,0,0);
   }
 
   function seedPinballStars() {
+    const P = pinballParams();
     const W=pinball.w,H=pinball.h, count=Math.min(reduced?28:46, Math.max(24, Math.floor(W*H/18000)));
-    const types=['normal','normal','normal','split','gravity','mirror','pulse','ice','black','vortex'];
-    if (pinball.rule.key==='mirror') types.push('mirror','mirror','mirror');
-    if (pinball.rule.key==='single') types.push('split','split','split','split');
+    // §三 special-star ratio scales with 自主意愿; low will → mostly plain stars.
+    const special=['split','gravity','mirror','pulse','ice','vortex'];
+    const rare=['vortex','mirror','pulse'];
+    if (pinball.rule.key==='mirror') special.push('mirror','mirror');
+    if (pinball.rule.key==='single') special.push('split','split');
+    const specialRatio = P.specialRatio;
+    const rareOn = Math.random() < P.rareEventChance;   // §八 稀有事件（强制显示时不会真正出现）
+    // §三 layout variety: high will → jittered organic layout; low/deterministic
+    // → snap toward a small set of fixed template positions (predictable).
+    const variety = P.layoutVariety;
     const margin=42, top=Math.max(170,H*.22), bottom=H-170;
     const vortices=[];
     for(let i=0;i<count;i++){
-      const col=i%7,row=Math.floor(i/7), jitter=()=> (Math.random()-.5)*46;
-      let type=types[Math.floor(Math.random()*types.length)];
-      if(type==='vortex' && vortices.length>=2) type='normal';
+      const col=i%7,row=Math.floor(i/7);
+      const jitter=()=> (Math.random()-.5)*46*variety;   // shrinks toward fixed grid at low variety
+      let type='normal';
+      if (Math.random() < specialRatio) {
+        const pool = rareOn ? special.concat(rare) : special;
+        type = pool[Math.floor(Math.random()*pool.length)];
+      }
+      if(type==='black' ) type='normal';
+      if(type==='vortex' && (vortices.length>=2 || !rareOn && Math.random()>.5)) type='normal';
       const x=margin+(W-margin*2)*((col+.5)/7)+jitter();
       const y=top+(bottom-top)*(((row%7)+.5)/7)+jitter();
-      const star={x:Math.max(margin,Math.min(W-margin,x)),baseX:x,y:Math.max(top,Math.min(bottom,y)),r:type==='black'?20:type==='mirror'?18:15+Math.random()*8,type,lit:false,phase:Math.random()*10,pair:null,hidden:pinball.rule.key==='dark'&&Math.random()>.55};
+      const star={x:Math.max(margin,Math.min(W-margin,x)),baseX:x,y:Math.max(top,Math.min(bottom,y)),r:type==='mirror'?18:15+Math.random()*8,type,lit:false,phase:Math.random()*10,pair:null,hidden:pinball.rule.key==='dark'&&Math.random()>.55};
       pinball.stars.push(star); if(type==='vortex') vortices.push(star);
     }
+    // A couple of dark "black" stars remain a fixed hazard regardless of will.
+    if (Math.random() < 0.4) { const bx=margin+Math.random()*(W-margin*2); pinball.stars.push({x:bx,baseX:bx,y:top+Math.random()*(bottom-top),r:20,type:'black',lit:false,phase:0,pair:null}); }
     if(vortices.length===1) { const v={x:W*.72,baseX:W*.72,y:H*.46,r:19,type:'vortex',lit:false,phase:2,pair:vortices[0]}; vortices[0].pair=v; pinball.stars.push(v); }
     if(vortices.length>=2){vortices[0].pair=vortices[1];vortices[1].pair=vortices[0];}
     if(!pinball.stars.some(s=>s.type==='split')) pinball.stars.push({x:W*.5,baseX:W*.5,y:H*.42,r:19,type:'split',lit:false,phase:1});
+    // §八 content-source tally: a small fixed baseline is "system"; everything
+    // above it is NPC-authored richness that vanishes as her意愿 falls.
+    const specialTotal = pinball.stars.filter(s=>s.type!=='normal'&&s.type!=='black').length;
+    const systemBase = Math.min(3, specialTotal);
+    pinball.contentSource = { special: specialTotal, npc: Math.max(0, specialTotal - systemBase), system: systemBase };
   }
 
-  function startPinballLoop(){ if(pinball.running) return; pinball.running=true; pinball.last=performance.now(); pinball.acc=0; requestAnimationFrame(pinballLoop); }
-  function pinballLoop(now){ if(!pinball.running) return; const delta=Math.min(80,now-pinball.last); pinball.last=now; if(!pinball.paused&&!pinball.ended){ pinball.acc+=delta; while(pinball.acc>=16.667){ updatePinball(1/60, now); pinball.acc-=16.667; } } pinballGame?.classList.toggle('fever', pinball.fever>0); drawPinball(now); requestAnimationFrame(pinballLoop); }
+  function startPinballLoop(){ if(pinball.running) return; pinball.running=true; pinball.last=performance.now(); pinball.acc=0; if(!pinball._rafBound){ pinball._rafBound=true; } requestAnimationFrame(pinballLoop); }
+  function pinballLoop(now){
+    if(!pinball.running) return;
+    if(document.hidden){ pinball.last=now; requestAnimationFrame(pinballLoop); return; }
+    let delta=now-pinball.last; pinball.last=now;
+    // FPS monitor + auto-downgrade (never auto-upgrade)
+    if(delta>0){ const inst=1000/delta; pinball.fpsAvg = pinball.fpsAvg*0.9 + inst*0.1; if(pinball.fpsAvg<45){ if(!pinball._lowStart) pinball._lowStart=now; else if(now-pinball._lowStart>2000){ perf.downgrade(); pinball._lowStart=0; } } else pinball._lowStart=0; }
+    if(delta>80) delta=80; // clamp; also caps to ~2 physics steps below
+    // ── Physics loop (60fps stepped, paused-aware) ──
+    if(!pinball.paused&&!pinball.ended){ pinball.acc+=delta; let steps=0; while(pinball.acc>=16.667 && steps<2){ updatePinball(1/60, now); pinball.acc-=16.667; steps++; } if(pinball.acc>16.667) pinball.acc=0; }
+    // ── Aurora visual loop (always advances, decoupled from physics) ──
+    // Never freezes: paused/round-ended → drift at 30% speed; reduced-motion → 45% (calmer, not static).
+    const auroraSpeed = ((pinball.paused||pinball.ended) ? 0.30 : 1) * (reduced ? 0.45 : 1);
+    pinball.auroraTime += delta * auroraSpeed;
+    updateAurora(delta * auroraSpeed);
+    updateWillRuntime(delta);
+    // COOLDOWN → IDLE once the launched ball has cleared the launcher (next ball ready).
+    if(pinball.launchState==='COOLDOWN' && !pinball.balls.length && pinball.ballsLeft>0 && !pinball.ended){ resetLaunchState(); }
+    if(pinball._feverClass!==(pinball.fever>0)){ pinball._feverClass=pinball.fever>0; pinballGame?.classList.toggle('fever', pinball._feverClass); }
+    drawPinball(now); requestAnimationFrame(pinballLoop);
+  }
+
+  // ── Launch input state machine ──────────────────────────────────────────
+  // Single fire entry: only a valid pointerup (or a matching keyup) may call launchPinballBall.
+  function resetLaunchState(){
+    if(pinball.pointerId!=null && pinballCanvas){ try{ pinballCanvas.releasePointerCapture(pinball.pointerId); }catch(_){} }
+    pinball.launchState='IDLE'; pinball.pointerId=null; pinball.pointerStart=null; pinball.pointerStartTime=0;
+    pinball.charging=false; pinball.hasFired=false; pinball.keyLaunchActive=false;
+    window.clearTimeout(pinball.minChargeTimer); pinball.minChargeTimer=0;
+  }
+  function canFireNow(){ return pinballGame?.classList.contains('open') && !pinball.paused && !pinball.ended && pinball.ballsLeft>0; }
+  function beginCharge(){ pinball.launchState='CHARGING'; pinball.charging=true; pinball.chargeStart=performance.now(); pinball.hasFired=false; }
+  function chargeHeldMs(){ return performance.now()-pinball.chargeStart; }
+  function chargeRatio(){ return Math.min(1, chargeHeldMs()/MAX_CHARGE_TIME); }
+  // Fire only when BOTH the min hold time AND the min charge power are reached.
+  function chargeMet(){ return chargeHeldMs()>=MIN_CHARGE_TIME && chargeRatio()>=MIN_CHARGE_RATIO; }
 
   function launchPinballBall(power=1){ if(pinball.ended || pinball.ballsLeft<=0) return; const controlSpeed=state?.aurora?.controls?.speed ?? 1; const speed=(520+Math.min(720,power*720))*controlSpeed; pinball.ballsLeft--; pinball.touchesLeft=2; pinball.combo=0; const x=pinball.w*.5,y=pinball.h-90; pinball.balls.push({x,y,px:x,py:y,vx:Math.cos(pinball.aim)*speed,vy:Math.sin(pinball.aim)*speed,r:8.5,life:12,age:0,stall:0,main:true,hit:new Set(),squash:0,trailSeed:Math.random()*10}); pinball.charging=false; renderPinballHud(); }
-  function addSmallBall(x,y,vx,vy,life=4){ pinball.balls.push({x,y,px:x,py:y,vx:vx+(Math.random()-.5)*160,vy:vy+(Math.random()-.5)*160,r:6.5,life:Math.min(life,5.5),age:0,stall:0,main:false,hit:new Set(),squash:0,trailSeed:Math.random()*10}); }
+  function addSmallBall(x,y,vx,vy,life=4){ if(pinball.balls.length>=perf.p.maxBalls) return; pinball.balls.push({x,y,px:x,py:y,vx:vx+(Math.random()-.5)*160,vy:vy+(Math.random()-.5)*160,r:6.5,life:Math.min(life,5.5),age:0,stall:0,main:false,hit:new Set(),squash:0,trailSeed:Math.random()*10}); }
 
   function updatePinball(dt, now){ const W=pinball.w,H=pinball.h, rule=pinball.rule||pinballRules[0]; pinball.timeLeft-=dt; if(pinball.fever>0) pinball.fever-=dt; if(rule.key==='rain' && pinball.timeLeft < pinball.duration*.55 && pinball.rainTimer<=0){ for(let i=0;i<4;i++) addSmallBall(W*(.2+Math.random()*.6), -20, (Math.random()-.5)*90, 160+Math.random()*100, 5); pinball.rainTimer=999; sayPinball(t('pinball.rainStarted')); }
     pinball.stars.forEach(s=>{ s.phase+=dt; if(rule.key==='tide') s.x=s.baseX+Math.sin(now*.0007+s.phase)*28; });
-    for(const b of pinball.balls){ b.px=b.x; b.py=b.y; if(rule.key==='doubleMoon'){ for(const mx of [W*.22,W*.78]){ const dx=mx-b.x,dy=H*.35-b.y,d=Math.hypot(dx,dy)||1; b.vx+=dx/d*34*dt; b.vy+=dy/d*34*dt; }} for(const s of pinball.stars){ if(s.type==='gravity'){ const dx=s.x-b.x,dy=s.y-b.y,d=Math.hypot(dx,dy)||1; if(d<170){ b.vx+=dx/d*(220/d)*90*dt; b.vy+=dy/d*(220/d)*90*dt; } } } for(const g of pinball.gravityWells){ const dx=g.x-b.x,dy=g.y-b.y,d=Math.hypot(dx,dy)||1; if(d<210){ const f=(1-d/210)*420; b.vx+=dx/d*f*dt; b.vy+=dy/d*f*dt; }} b.age=(b.age||0)+dt; const speedNow=Math.hypot(b.vx,b.vy); if(b.y < H*.42 && Math.abs(b.vy)<26 && speedNow<120) b.stall=(b.stall||0)+dt; else b.stall=Math.max(0,(b.stall||0)-dt*.5); const antiStall=b.stall>.55 ? 520*(b.stall-.45) : 0; b.vy+=(rule.gravity*980+antiStall)*dt; if(b.age>7 && b.y < H*.55) b.vy+=220*dt; b.vx*=rule.drag; b.vy*=rule.drag; b.x+=b.vx*dt; b.y+=b.vy*dt; if(b.x<b.r){b.x=b.r;b.vx=Math.abs(b.vx)*.9;} if(b.x>W-b.r){b.x=W-b.r;b.vx=-Math.abs(b.vx)*.9;} if(b.y<b.r+80){b.y=b.r+80;b.vy=Math.abs(b.vy)*.86;} b.life-=dt; checkPinballCollisions(b, now); }
-    applyPinballNpcStage(dt, now); for(const b of pinball.balls) emitPinballTrail(b, now); pinball.balls=pinball.balls.filter(b=>b.y<H+80 && b.life>0); pinball.gravityWells.forEach(g=>g.life-=dt); pinball.gravityWells=pinball.gravityWells.filter(g=>g.life>0); pinball.particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=(p.kind==='trail'?3:14)*dt;p.vx*=p.kind==='trail'?0.996:1;p.vy*=p.kind==='trail'?0.996:1;p.life-=dt;}); pinball.particles=pinball.particles.filter(p=>p.life>0).slice(-180); pinball.collectibles.forEach(c=>{c.y+=c.vy*dt;c.life-=dt;}); pinball.collectibles=pinball.collectibles.filter(c=>c.life>0).slice(-45); pinball.waves.forEach(w=>w.life-=dt); pinball.waves=pinball.waves.filter(w=>w.life>0); pinball.auroras.forEach(a=>{a.life-=dt/Math.max(1,a.duration||7); a.x+=(a.glancing?0.018:0.006)*dt;}); pinball.auroras=pinball.auroras.filter(a=>a.life>0 && a.x<1.18).slice(-16); if((pinball.timeLeft<=0 || (pinball.ballsLeft<=0 && pinball.balls.length===0)) && !pinball.ended) endPinballRound(); renderPinballHud(); }
+    const _gAssist=pinballParams().gravityAssist; for(const b of pinball.balls){ b.px=b.x; b.py=b.y; if(rule.key==='doubleMoon'){ for(const mx of [W*.22,W*.78]){ const dx=mx-b.x,dy=H*.35-b.y,d=Math.hypot(dx,dy)||1; b.vx+=dx/d*34*dt; b.vy+=dy/d*34*dt; }} for(const s of pinball.stars){ if(s.type==='gravity'){ const dx=s.x-b.x,dy=s.y-b.y,d=Math.hypot(dx,dy)||1; if(d<170){ b.vx+=dx/d*(220/d)*90*dt*_gAssist; b.vy+=dy/d*(220/d)*90*dt*_gAssist; } } } for(const g of pinball.gravityWells){ const dx=g.x-b.x,dy=g.y-b.y,d=Math.hypot(dx,dy)||1; if(d<210){ const f=(1-d/210)*420*_gAssist; b.vx+=dx/d*f*dt; b.vy+=dy/d*f*dt; }} b.age=(b.age||0)+dt; const speedNow=Math.hypot(b.vx,b.vy); if(b.y < H*.42 && Math.abs(b.vy)<26 && speedNow<120) b.stall=(b.stall||0)+dt; else b.stall=Math.max(0,(b.stall||0)-dt*.5); const antiStall=b.stall>.55 ? 520*(b.stall-.45) : 0; b.vy+=(rule.gravity*980+antiStall)*dt; if(b.age>7 && b.y < H*.55) b.vy+=220*dt; b.vx*=rule.drag; b.vy*=rule.drag; b.x+=b.vx*dt; b.y+=b.vy*dt; if(b.x<b.r){b.x=b.r;b.vx=Math.abs(b.vx)*.9;} if(b.x>W-b.r){b.x=W-b.r;b.vx=-Math.abs(b.vx)*.9;} if(b.y<b.r+80){b.y=b.r+80;b.vy=Math.abs(b.vy)*.86;} b.life-=dt; if(b.main && b.y < H-b.r*4) b._rescueTried=false; if(b.main && b.y>H-b.r*2 && b.vy>0 && !b._rescueTried){ b._rescueTried=true; const _pp=pinballParams(); let _rescue; if(_pp.deterministic){ b._rescN=(b._rescN||0)+1; _rescue=(b._rescN%3===0); } else { _rescue=Math.random()<_pp.rescueChance; } if(_rescue){ b.y=H-b.r*2; b.vy=-Math.abs(b.vy)*0.82-120; b.vx*=0.9; addBandGlint(clamp01(b.x/Math.max(1,W)),0.16,0.12); if(Math.random()<_pp.npcAnnounceChance) sayPinball(t('pinball.rescueLine')); } } checkPinballCollisions(b, now); }
+    applyPinballNpcStage(dt, now); for(const b of pinball.balls) emitPinballTrail(b, now); pinball.balls=pinball.balls.filter(b=>b.y<H+80 && b.life>0); pinball.gravityWells.forEach(g=>g.life-=dt); pinball.gravityWells=pinball.gravityWells.filter(g=>g.life>0); pinball.particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=(p.kind==='trail'?3:14)*dt;p.vx*=p.kind==='trail'?0.996:1;p.vy*=p.kind==='trail'?0.996:1;p.life-=dt;}); pinball.particles=pinball.particles.filter(p=>p.life>0).slice(-(perf.p.particleTrail+perf.p.particleBurst)); pinball.collectibles.forEach(c=>{c.y+=c.vy*dt;c.life-=dt;}); pinball.collectibles=pinball.collectibles.filter(c=>c.life>0).slice(-45); pinball.waves.forEach(w=>w.life-=dt); pinball.waves=pinball.waves.filter(w=>w.life>0); if((pinball.timeLeft<=0 || (pinball.ballsLeft<=0 && pinball.balls.length===0)) && !pinball.ended) endPinballRound(); renderPinballHud(); }
 
-  function emitPinballTrail(b, now){ const dx=b.x-b.px,dy=b.y-b.py,dist=Math.hypot(dx,dy); if(dist<1) return; const steps=Math.min(reduced?1:3,Math.max(1,Math.floor(dist/30))); const hue=142+Math.sin(now*.001+(b.trailSeed||0))*16; for(let i=0;i<steps;i++){ const k=i/steps, side=(Math.random()-.5)*5; const nx=dy/(dist||1),ny=-dx/(dist||1); if (pinball.particles.length < 150) pinball.particles.push({kind:'trail',x:b.px+dx*k+nx*side+(Math.random()-.5)*2.4,y:b.py+dy*k+ny*side+(Math.random()-.5)*2.4,vx:(Math.random()-.5)*6-dx*.006,vy:(Math.random()-.5)*6-dy*.006,life:.18+Math.random()*.24,r:.24+Math.random()*.46,hue,twinkle:Math.random()*6}); } }
+  function emitPinballTrail(b, now){ const dx=b.x-b.px,dy=b.y-b.py,dist=Math.hypot(dx,dy); if(dist<1) return; const trailCount=pinball.particles.reduce((a,p)=>a+(p.kind==='trail'?1:0),0); if(trailCount>=perf.p.particleTrail) return; const steps=Math.min(reduced?1:3,Math.max(1,Math.floor(dist/30))); const hue=142+Math.sin(now*.001+(b.trailSeed||0))*16; for(let i=0;i<steps;i++){ const k=i/steps, side=(Math.random()-.5)*5; const nx=dy/(dist||1),ny=-dx/(dist||1); pinball.particles.push({kind:'trail',x:b.px+dx*k+nx*side+(Math.random()-.5)*2.4,y:b.py+dy*k+ny*side+(Math.random()-.5)*2.4,vx:(Math.random()-.5)*6-dx*.006,vy:(Math.random()-.5)*6-dy*.006,life:.18+Math.random()*.24,r:.24+Math.random()*.46,hue,twinkle:Math.random()*6}); } }
 
 
   function applyPinballNpcStage(dt, now){
@@ -789,7 +1049,17 @@
     }
     if (forced) {
       pinball.balls.forEach(b => {
-        const nearest = pinball.stars.filter(s=>!s.lit && s.type!=='black').sort((x,y)=>Math.hypot(x.x-b.x,x.y-b.y)-Math.hypot(y.x-b.x,y.y-b.y))[0];
+        // Re-select target at most every ~150ms; single-pass nearest search, no array/sort.
+        if (!b._forceTarget || (now - (b._forceRetargetAt||0)) > 150 || b._forceTarget.lit) {
+          let best=null, bestD=Infinity;
+          for (const s of pinball.stars) {
+            if (s.lit || s.type==='black') continue;
+            const dx=s.x-b.x, dy=s.y-b.y, d=dx*dx+dy*dy;
+            if (d<bestD) { bestD=d; best=s; }
+          }
+          b._forceTarget=best; b._forceRetargetAt=now;
+        }
+        const nearest=b._forceTarget;
         if (nearest) { b.vx += (nearest.x-b.x)*0.018*controlSpeed; b.vy += (nearest.y-b.y)*0.018*controlSpeed; }
       });
       pinball.fever = Math.max(pinball.fever, 1.5);
@@ -808,159 +1078,219 @@
       }
     }
     if (pinball.balls.length || pinball.ballsLeft <= 0 || pinball.paused || pinball.ended) return;
-    if (!pinball.npcServeTimer) pinball.npcServeTimer = now + profile.delay;
-    if (now < pinball.npcServeTimer) return;
-    pinball.npcServeTimer = now + profile.delay + Math.random()*1800;
-    if (!forced && Math.random() > profile.serveChance) { updatePinballNarration('wait'); return; }
-    window.eazoPinballNpcAction = 'pinball-serve';
-    const oldAim = pinball.aim;
-    const aimJitter = forced ? 0 : (stage === 'ASYMMETRIC' ? 0.55 : stage === 'OBSERVED' ? 0.28 : 0.14);
-    pinball.aim = -Math.PI/2 + (Math.random()-.5)*aimJitter;
-    launchPinballBall(forced ? 1.12 : 0.66 + Math.random()*0.42);
-    pinball.aim = oldAim;
-    updatePinballNarration(forced ? 'forced' : 'serve');
-    window.setTimeout(()=>{ if (pinballGame?.classList.contains('open')) window.eazoPinballNpcAction='idle'; }, 700);
+    // Auto-serve disabled: the ball may only be launched by the player's own input.
   }
 
-  function checkPinballCollisions(b, now){ for(const s of pinball.stars){ const visible=!s.hidden || Math.hypot(s.x-b.x,s.y-b.y)<130; if(!visible) continue; const rr=s.r*(s.type==='pulse'?(1+Math.sin(s.phase*3)*.22):1); const dx=b.x-s.x,dy=b.y-s.y,d=Math.hypot(dx,dy)||1; if(d<b.r+rr && !b.hit.has(s)){ b.hit.add(s); const nx=dx/d,ny=dy/d, speed=Math.hypot(b.vx,b.vy); if(s.type==='black'){ b.life=0; spawnParticles(s.x,s.y,42,160); spawnCollectibles(s.x,s.y,16); sayPinball(t('pinball.blackStarLine')); }
-        else { const dot=b.vx*nx+b.vy*ny; b.vx-=2*dot*nx; b.vy-=2*dot*ny; if(s.type==='mirror'){ const ang=Math.atan2(ny,nx); b.vx=Math.cos(ang)*speed*.98; b.vy=Math.sin(ang)*speed*.98; } if(s.type==='ice'){ b.vx*=.55;b.vy*=.55; } if(s.type==='vortex'&&s.pair){ b.x=s.pair.x+nx*34; b.y=s.pair.y+ny*34; } if(s.type==='split'){ const n=2+(Math.random()>.55?1:0); for(let i=0;i<n;i++) addSmallBall(b.x,b.y,b.vx*.75,b.vy*.75,3.8); sayPinball(t('pinball.combo8Line')); } s.lit=true; b.squash=.22; registerHit(s,b,speed,nx,ny); } break; } } }
+  function checkPinballCollisions(b, now){ const P=pinballParams(); const graze=P.grazeTolerance, elastic=P.flipperElastic; for(const s of pinball.stars){ const visible=!s.hidden || Math.hypot(s.x-b.x,s.y-b.y)<130; if(!visible) continue; const rr=s.r*(s.type==='pulse'?(1+Math.sin(s.phase*3)*.22):1); const dx=b.x-s.x,dy=b.y-s.y,d=Math.hypot(dx,dy)||1; if(d<b.r+rr+graze && !b.hit.has(s)){ b.hit.add(s); const nx=dx/d,ny=dy/d, speed=Math.hypot(b.vx,b.vy); if(s.type==='black'){ b.life=0; spawnParticles(s.x,s.y,42,160); spawnCollectibles(s.x,s.y,16); sayPinball(t('pinball.blackStarLine')); }
+        else { const dot=b.vx*nx+b.vy*ny; b.vx-=(1+elastic)*dot*nx; b.vy-=(1+elastic)*dot*ny; if(s.type==='mirror'){ const ang=Math.atan2(ny,nx); b.vx=Math.cos(ang)*speed*.98; b.vy=Math.sin(ang)*speed*.98; } if(s.type==='ice'){ b.vx*=.55;b.vy*=.55; } if(s.type==='vortex'&&s.pair){ b.x=s.pair.x+nx*34; b.y=s.pair.y+ny*34; } if(s.type==='split'){ const n=2+(Math.random()>.55?1:0); for(let i=0;i<n;i++) addSmallBall(b.x,b.y,b.vx*.75,b.vy*.75,3.8); sayPinball(t('pinball.combo8Line')); } s.lit=true; b.squash=.22; registerHit(s,b,speed,nx,ny); } break; } } }
 
-  function registerHit(star,b,speed,nx,ny){ pinball.combo++; pinball.bestCombo=Math.max(pinball.bestCombo,pinball.combo); const multi=pinball.fever>0?2:1; const pulseBonus=star.type==='pulse'&&Math.sin(star.phase*3)>0?2:1; pinball.score+=Math.round((80+pinball.combo*18+speed*.08)*multi*pulseBonus); spawnParticles(star.x,star.y,reduced?10:24,speed*.35); createPinballAurora(star,b,speed,Math.abs(nx)); playPinballNote(star.x); if(pinball.combo>=3) { b.vx*=1.035;b.vy*=1.035; } if(pinball.combo===5) sayPinball(t('pinball.combo5Line')); if(pinball.combo===8) { addSmallBall(b.x,b.y,b.vx,b.vy,4); } if(pinball.combo===12){ spawnParticles(b.x,b.y,70,220); sayPinball(t('pinball.combo12Line')); } if(pinball.combo>=15&&pinball.fever<=0){ pinball.fever=8; sayPinball(t('pinball.feverLine')); } pinballCombo.textContent=`${pinball.combo}`; pinballCombo.classList.add('show'); window.clearTimeout(pinball.comboTimer); pinball.comboTimer=window.setTimeout(()=>pinballCombo.classList.remove('show'),900); renderPinballHud(); }
+  function registerHit(star,b,speed,nx,ny){ const _P=pinballParams(); pinball.combo++; if(!(state?.aurora?.forced||state?.aurora?.autoLoop)) updatePinballNarration('stage'); pinball.bestCombo=Math.max(pinball.bestCombo,pinball.combo); const multi=pinball.fever>0?2:1; const pulseBonus=star.type==='pulse'&&Math.sin(star.phase*3)>0?2:1; pinball.score+=Math.round((80+pinball.combo*18+speed*.08)*multi*pulseBonus); spawnParticles(star.x,star.y,reduced?10:24,speed*.35); createPinballAurora(star,b,speed,Math.abs(nx)); playPinballNote(star.x); if(pinball.combo>=3) { b.vx*=1.035;b.vy*=1.035; } const _youngWarm=(state?.age??0)<25 && !(state?.aurora?.forced||state?.aurora?.autoLoop); if(pinball.combo===5 && _youngWarm) sayPinball(t('pinball.combo5Line')); if(pinball.combo===8) { addSmallBall(b.x,b.y,b.vx,b.vy,4); } if(pinball.combo===12){ spawnParticles(b.x,b.y,70,220); if(_youngWarm) sayPinball(t('pinball.combo12Line')); } if(pinball.combo>=15&&pinball.fever<=0){ pinball.fever=8; if(_youngWarm) sayPinball(t('pinball.feverLine')); } pinballCombo.textContent=`${pinball.combo}`; pinballCombo.classList.add('show'); window.clearTimeout(pinball.comboTimer); pinball.comboTimer=window.setTimeout(()=>pinballCombo.classList.remove('show'),900); window.clearTimeout(pinball.comboDecayTimer); pinball.comboDecayTimer=window.setTimeout(()=>{ pinball.combo=0; }, _P.comboGraceMs); pinballCombo.style.setProperty('--score-anim', _P.scoreAnimIntensity.toFixed(2)); renderPinballHud(); }
 
   function createPinballAurora(star,b,speed,front){
-    const x = Math.max(0, Math.min(1, star.x / Math.max(1, pinball.w)));
-    const y = Math.max(0, Math.min(1, star.y / Math.max(1, pinball.h)));
+    // Collision feedback on the aurora band: a small, brief local brightening
+    // at the hit's horizontal position. Combo widens/adds spread; never a
+    // full-page flash. Black stars only dim slightly, so they add nothing.
     const type = star.type || 'normal';
-    const fast = speed > 760;
-    const glancing = front < .38;
-    const strength = Math.min(1.15, .20 + speed / 1450 + pinball.combo * .025);
-    if (pinball.auroras.length > 14) pinball.auroras.splice(0, pinball.auroras.length - 14);
-    pinball.auroras.push({ x, y, type, strength, fast, glancing, life: 1, duration: fast ? 7.2 : 5.8, phase: Math.random()*100, spread: .11 + Math.random()*.13 });
-    if (type === 'split') {
-      pinball.auroras.push({ x: Math.max(0, x-.055), y, type:'branch', strength:.42, fast:false, glancing:true, life:1, duration:5.8, phase:Math.random()*100, spread:.08 });
-      pinball.auroras.push({ x: Math.min(1, x+.055), y, type:'branch', strength:.42, fast:false, glancing:true, life:1, duration:4.8, phase:Math.random()*100, spread:.08 });
+    if(type === 'black') return;
+    const resp = pinballParams().auroraResponse;   // §四 极光局部响应 by 显示意愿
+    const nx = clamp01(star.x / Math.max(1, pinball.w));
+    const combo = pinball.combo || 0;
+    if(type === 'split'){
+      addBandGlint(nx, 0.14*resp, 0.08);
+      return;
     }
+    // Normal hit: local lift ≤ ~20%; higher combos add a wider diffuse region.
+    let strength = 0.18, spread = 0.09;
+    if(combo >= 12){ strength = 0.20; spread = 0.16; }
+    else if(combo >= 8){ strength = 0.20; spread = 0.13; }   // band appears slightly wider
+    else if(combo >= 5){ strength = 0.19; spread = 0.12; }   // extra slow-spreading region
+    else if(combo >= 3){ strength = 0.19; spread = 0.10; }   // lower-edge local brighten
+    addBandGlint(nx, strength*resp, spread);
   }
 
-  function spawnParticles(x,y,n,force){ const count=Math.ceil((reduced?0.25:0.55)*n); for(let i=0;i<count;i++){ const a=Math.random()*Math.PI*2, sp=(12+Math.random()*force*.58); if (pinball.particles.length < 180) pinball.particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:.24+Math.random()*.34,r:.38+Math.random()*.82,hue:140+Math.random()*42}); } }
+  function spawnParticles(x,y,n,force){ const cap=perf.p.particleBurst; const burstCount=pinball.particles.reduce((a,p)=>a+(p.kind!=='trail'?1:0),0); const boost=1+Math.min(1,pinball.combo/15); const intensity=pinballParams().particleIntensity; const count=Math.min(Math.ceil((reduced?0.25:0.55)*n*intensity), Math.max(0,cap-burstCount)); for(let i=0;i<count;i++){ const a=Math.random()*Math.PI*2, sp=(12+Math.random()*force*.58); pinball.particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:.24+Math.random()*.34,r:(.38+Math.random()*.82)*boost,hue:140+Math.random()*42,intensity:boost}); } }
   function spawnCollectibles(x,y,n){ const count=Math.min(n, Math.max(0, 40-pinball.collectibles.length)); for(let i=0;i<count;i++) pinball.collectibles.push({x:x+(Math.random()-.5)*34,y:y+(Math.random()-.5)*34,vy:30+Math.random()*80,life:2.0,r:1.6+Math.random()*1.6}); }
   function addGravityTouch(x,y){ if(pinball.ended || pinball.touchesLeft<=0 || !pinball.balls.length) return; pinball.touchesLeft--; pinball.gravityWells.push({x,y,life:1}); pinball.waves.push({x,y,life:1}); sayPinball(pinball.touchesLeft ? t('pinball.gravityOneLeft') : t('pinball.gravityNoneLeft')); renderPinballHud(); }
   function endPinballRound(){ pinball.ended=true; pinball.paused=true; sayPinball(t('pinball.endTitle')); pinballEndSummary.textContent=t('pinball.endSummary',{score:pinball.score,combo:pinball.bestCombo}); pinballEnd?.classList.add('open'); pinballEnd?.setAttribute('aria-hidden','false'); }
-  function renderPinballHud(){ if(!pinballScore) return; window.eazoPinballNpcAction = pinball.balls.length ? 'pinball-watch' : 'idle'; pinballScore.textContent=String(pinball.score); pinballBestCombo.textContent=String(pinball.bestCombo); pinballBalls.textContent=String(Math.max(0,pinball.ballsLeft)); pinballGravity.textContent=String(pinball.touchesLeft); pinballRule.textContent=pinball.rule ? t(`pinball.rule_${pinball.rule.key}`) : '--'; if (pinballRelation) pinballRelation.textContent = auroraStage().label; pinballTime.textContent=String(Math.max(0,Math.ceil(pinball.timeLeft))); pinballPauseButton.textContent=pinball.paused?t('pinball.resume'):t('pinball.pause'); }
-  function sayPinball(text){ if(!pinballCaption) return; pinballCaption.textContent=text; }
-  function togglePinballPause(){ if(pinball.ended) return; pinball.paused=!pinball.paused; renderPinballHud(); }
+  function renderPinballHud(){ if(!pinballScore) return; const wantAction = pinball.balls.length ? 'pinball-watch' : 'idle'; if(window.eazoPinballNpcAction!==wantAction) window.eazoPinballNpcAction = wantAction; const h=pinball._hud||(pinball._hud={}); const timeVal=Math.max(0,Math.ceil(pinball.timeLeft)); if(h.score!==pinball.score){h.score=pinball.score;pinballScore.textContent=String(pinball.score);} if(h.best!==pinball.bestCombo){h.best=pinball.bestCombo;pinballBestCombo.textContent=String(pinball.bestCombo);} const ballsV=Math.max(0,pinball.ballsLeft); if(h.balls!==ballsV){h.balls=ballsV;pinballBalls.textContent=String(ballsV);} if(h.grav!==pinball.touchesLeft){h.grav=pinball.touchesLeft;pinballGravity.textContent=String(pinball.touchesLeft);} const ruleTxt=pinball.rule ? t(`pinball.rule_${pinball.rule.key}`) : '--'; if(h.rule!==ruleTxt){h.rule=ruleTxt;pinballRule.textContent=ruleTxt;} if (pinballRelation){ const rel=auroraStage().label; if(h.rel!==rel){h.rel=rel;pinballRelation.textContent=rel;} } if(h.time!==timeVal){h.time=timeVal;pinballTime.textContent=String(timeVal);} const pauseTxt=pinball.paused?t('pinball.resume'):t('pinball.pause'); if(h.pause!==pauseTxt){h.pause=pauseTxt;pinballPauseButton.textContent=pauseTxt;} }
+  function sayPinball(text, force){ if(!pinballCaption) return; const a=state?.aurora; if(!force && a && (a.forced||a.autoLoop)) return; pinballCaption.textContent=text; }
+  function togglePinballPause(){ if(pinball.ended) return; pinball.paused=!pinball.paused; if(pinball.paused) adjustVoluntaryWillingness('respectPause'); renderPinballHud(); }
   function savePinballAurora(){ const c=document.createElement('canvas'), cx=c.getContext('2d'); c.width=1600;c.height=1000; drawPinballSky(cx,1600,1000,true); const a=document.createElement('a'); const d=new Date().toISOString().slice(0,10); a.download=`aurora-${d}-combo-${pinball.bestCombo}.png`; a.href=c.toDataURL('image/png'); a.click(); showPinballToast(t('pinball.saved')); }
   function showPinballToast(msg){ pinballToast.textContent=msg; pinballToast.classList.add('show'); window.clearTimeout(pinball.toastTimer); pinball.toastTimer=window.setTimeout(()=>pinballToast.classList.remove('show'),2200); }
-  function playPinballNote(x){ try{ const ac=window.__pinballAudio||(window.__pinballAudio=new (window.AudioContext||window.webkitAudioContext)()); const o=ac.createOscillator(),g=ac.createGain(); o.type='sine'; o.frequency.value=220+(x/pinball.w)*520+pinball.combo*9; g.gain.setValueAtTime(.0001,ac.currentTime); g.gain.exponentialRampToValueAtTime(.045,ac.currentTime+.015); g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.22); o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime+.24); }catch(_){} }
+  function playPinballNote(x){ try{ const ac=window.__pinballAudio||(window.__pinballAudio=new (window.AudioContext||window.webkitAudioContext)()); const layers=Math.max(1,pinballParams().soundLayers); const base=220+(x/pinball.w)*520+pinball.combo*9; const harmonics=[1,1.5,2,2.5]; for(let L=0;L<layers;L++){ const o=ac.createOscillator(),g=ac.createGain(); o.type='sine'; o.frequency.value=base*harmonics[L]; const gain=.045/(L+1); g.gain.setValueAtTime(.0001,ac.currentTime); g.gain.exponentialRampToValueAtTime(gain,ac.currentTime+.015); g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.22); o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime+.24); } }catch(_){} }
 
   function clamp01(v){ return Math.max(0, Math.min(1, v)); }
   function smooth01(v){ v=clamp01(v); return v*v*(3-2*v); }
-  function auroraHash(n){ const v=Math.sin(n*127.1+311.7)*43758.5453; return v-Math.floor(v); }
-  function auroraNoise(x,t,seed=0){ return Math.sin(x*2.1+seed+t*.055)*.46 + Math.sin(x*5.7+seed*.73-t*.032)*.31 + Math.sin(x*12.9+seed*1.9+t*.021)*.16; }
-  function auroraImpactAt(u, now){
-    let value=0, dark=0, column=0, bend=0, ice=0;
-    for(const d of pinball.auroras.slice(-14)){
-      const life=smooth01(d.life); if(life<=0) continue;
-      const wave=d.glancing ? Math.abs(Math.abs(u-d.x) - (1-d.life)*.28) : Math.abs(u-d.x);
-      const spread=(d.spread||.1) * (d.glancing?1.2:1);
-      const near=Math.exp(-(wave*wave)/(spread*spread))*life*(d.strength||.4);
-      if(d.type==='black') dark += near;
-      else value += near;
-      if(d.fast) column += near;
-      if(d.type==='vortex' || d.type==='gravity') bend += near * (d.type==='gravity' ? (d.y-.45) : Math.sin((u-d.x)*28+d.phase));
-      if(d.type==='ice') ice += near;
-    }
-    return { value:clamp01(value), dark:clamp01(dark), column:clamp01(column), bend, ice:clamp01(ice) };
-  }
-  function auroraLowerEdge(u,W,H,now,depth=0){
-    const t=now*.001;
-    const perspective = Math.pow(u,1.18);
-    const diagonal = H*(.245 + perspective*.070 + depth*.024);
-    const broad = auroraNoise(u*3.8,t,depth*9)*H*.018;
-    const fold = auroraNoise(u*9.5,t*.7,18+depth)*H*.010;
-    const local = auroraImpactAt(u,now);
-    return diagonal + broad + fold + local.bend*H*.030;
-  }
-  function auroraDepthAlpha(u,depth){
-    const sideFade=smooth01(Math.min(u/.10,(1-u)/.12));
-    const near=.55 + u*.60;
-    return sideFade * near * (depth===0?1:depth===1?.46:.26);
-  }
-  function drawAuroraCurtainLayer(target,W,H,now,depth=0,exportOnly=false){
-    const lit = pinball.stars?.length ? pinball.stars.filter(s=>s.lit).length / Math.max(1,pinball.stars.length) : 0;
-    const fever = pinball.fever>0 ? smooth01(pinball.fever/8) : 0;
-    const combo = clamp01(pinball.combo/12);
-    const wake = clamp01(.10 + lit*.58 + combo*.20 + fever*.28);
-    const count = reduced ? (depth?30:58) : (depth?54:104);
-    const topLimit = H*(.045 + depth*.018);
-    const canvas = drawAuroraCurtainLayer._canvas || (drawAuroraCurtainLayer._canvas=document.createElement('canvas'));
-    const ctx = canvas.getContext('2d');
-    if(canvas.width!==Math.ceil(W)||canvas.height!==Math.ceil(H*.48)){ canvas.width=Math.ceil(W); canvas.height=Math.ceil(H*.48); }
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.save(); ctx.globalCompositeOperation='screen'; ctx.lineCap='round';
+  // ---- Horizontal aurora band -----------------------------------------
+  // A single soft, low-brightness horizontal light band across the upper
+  // area, sitting on a deep near-black背景. Gaussian-blurred edges, vertical
+  // fade (bright at the bottom → fully transparent at the top), gentle slow
+  // motion. No streaks, no radial columns, no full-screen glow, at most two
+  // bands (main + a fainter distant one during high combo / fever).
+  const meteorRand = (a, b) => a + Math.random() * (b - a);
+  // Static/near-static background star points, regenerated only on resize.
+  const skyStars = { list: [], w: 0, h: 0 };
+  function ensureSkyStars(W, H){
+    if(skyStars.w === W && skyStars.h === H && skyStars.list.length) return;
+    const count = isMobile ? Math.floor(meteorRand(30, 50)) : Math.floor(meteorRand(60, 100));
+    const list = [];
     for(let i=0;i<count;i++){
-      const baseU=(i+.5)/count;
-      const jitter=(auroraHash(i+depth*1000)-.5)*(depth?.010:.006);
-      const u=clamp01(baseU+jitter);
-      const lower=auroraLowerEdge(u,W,H,now,depth);
-      const imp=auroraImpactAt(u,now);
-      const seed=auroraHash(i*3.7+depth*91);
-      const localFold=.55+.45*Math.sin(now*.00018 + u*18 + depth*2.4);
-      const gather=.65+.35*Math.sin(now*.00011 + u*31 + Math.sin(u*9));
-      const baseLen=H*(.105 + wake*.105 + seed*.070) * (depth?0.82:1);
-      const len=baseLen*(.72+localFold*.44+imp.value*.58+imp.column*.75) * (1-imp.dark*.62);
-      const vanish=smooth01(Math.min(u/.11,(1-u)/.13));
-      const cluster = Math.pow(.5+.5*Math.sin(u*13.7 + depth*2.9 + Math.sin(u*4.2+now*.00005)*1.4), 1.8);
-      const micro = .5+.5*Math.sin(u*97.0 + depth*8.1 + Math.sin(u*23.0));
-      const gap = cluster < (.16 - wake*.055) ? .10 : (.42 + cluster*.72) * (.70 + micro*.45);
-      const alphaBase=(exportOnly?.115:.070) + wake*.055 + imp.value*.090 + fever*.030;
-      let alpha=alphaBase*auroraDepthAlpha(u,depth)*gap*(.48+seed*.52)*(1-imp.dark*.86);
-      if(alpha<.006) continue;
-      const lean=(u-.42)*18 + auroraNoise(u*8,now*.001,depth)*5 + imp.bend*16;
-      const x=W*(.06 + u*.88 + depth*.015*Math.sin(u*5+now*.00008));
-      const y2=lower + Math.sin(now*.00020+i*.021)*H*.003;
-      const y1=Math.max(topLimit, y2-len);
-      const hue=imp.ice>.12 ? 174 : 154 + depth*6;
-      const sat=depth?22:30;
-      const light=imp.column>.18?78:68;
-      const grad=ctx.createLinearGradient(x+lean*.12,y1,x,y2);
-      grad.addColorStop(0,`hsla(${hue},${sat}%,58%,0)`);
-      grad.addColorStop(.38,`hsla(${hue},${sat+4}%,64%,${alpha*.25})`);
-      grad.addColorStop(.78,`hsla(${hue},${sat+10}%,72%,${alpha*.72})`);
-      grad.addColorStop(1,`hsla(${hue},${sat+14}%,${light}%,${alpha*1.15})`);
-      ctx.strokeStyle=grad;
-      ctx.lineWidth=(depth?.36:.48) + seed*(depth?.28:.38) + imp.column*.72;
-      ctx.beginPath();
-      const midY=(y1+y2)*.55;
-      ctx.moveTo(x+lean, y1);
-      ctx.bezierCurveTo(x+lean*.58+Math.sin(i)*2, midY, x+lean*.18, y2-H*.025, x, y2);
-      ctx.stroke();
-      if((i%7===0 || imp.column>.24) && depth===0){
-        const edgeAlpha=alpha*(imp.column>.2?1.15:.46);
-        const eg=ctx.createLinearGradient(x-2,y2-H*.012,x+2,y2+H*.010);
-        eg.addColorStop(0,`rgba(210,244,232,0)`); eg.addColorStop(.55,`rgba(222,252,240,${edgeAlpha*.55})`); eg.addColorStop(1,'rgba(180,226,204,0)');
-        ctx.strokeStyle=eg; ctx.lineWidth=1.2+imp.column*1.5; ctx.beginPath(); ctx.moveTo(x-2,y2); ctx.lineTo(x+2,y2+Math.sin(i)*1.5); ctx.stroke();
+      list.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: meteorRand(0.4, 1.1),
+        a: meteorRand(0.05, 0.14),
+        drift: meteorRand(-0.04, 0.04),        // px per second, very slight
+        tw: Math.random()*6.28                 // twinkle phase
+      });
+    }
+    skyStars.list = list; skyStars.w = W; skyStars.h = H;
+  }
+  // Low-resolution offscreen cache for the blurred band(s), redrawn each
+  // visual frame at reduced resolution (cheap blur, smooth slow motion).
+  const auroraBand = { cache:null, cx:null, w:0, h:0, glints:[] };
+  // A localized brightening event on the band from a collision. `x` is the
+  // normalized band position (0..1); strength stays small so a hit only
+  // lifts local brightness a little and never lights the whole page.
+  function addBandGlint(nx, strength, spread){
+    if(auroraBand.glints.length >= 10) auroraBand.glints.shift();
+    auroraBand.glints.push({ x: clamp01(nx), s: strength, spread: spread||0.10, life: 1, max: meteorRand(0.6, 1.2) });
+  }
+  function updateAurora(dtMs){
+    const dt = Math.min(0.05, dtMs/1000);
+    const keep = [];
+    for(const g of auroraBand.glints){ g.life -= dt / g.max; if(g.life > 0) keep.push(g); }
+    auroraBand.glints = keep;
+  }
+  // Draw one horizontal band into the (scaled) cache context.
+  function drawBand(c, cw, ch, scale, cfg){
+    const t = pinball.auroraTime * 0.001;
+    const cycle = t * (Math.PI * 2 / cfg.period);      // 18–30s period
+    // Very slight vertical drift + gentle broad arc; never a stack of waves.
+    const top = ch * cfg.topR + Math.sin(cycle + cfg.phase) * (ch * 0.008) * cfg.driftY;
+    const h   = ch * cfg.heightR;
+    const bottom = top + h;
+    const moveX = Math.sin(cycle + cfg.phase) * (20 * scale) * cfg.driftX;  // 10–30px full-res
+    const R=150, G=255, B=205;
+    // Vertical gradient: bottom most visible → top fully transparent.
+    const vg = c.createLinearGradient(0, bottom, 0, top);
+    const pk = cfg.peak;
+    vg.addColorStop(0.00, `rgba(${R},${G},${B},${pk})`);
+    vg.addColorStop(0.18, `rgba(${R},${G},${B},${pk*0.68})`);
+    vg.addColorStop(0.48, `rgba(${R},${G},${B},${pk*0.35})`);
+    vg.addColorStop(0.76, `rgba(${R},${G},${B},${pk*0.12})`);
+    vg.addColorStop(1.00, `rgba(${R},${G},${B},0)`);
+    c.fillStyle = vg;
+    c.fillRect(moveX, top, cw, h);
+    // 3–5 broad, softly moving bright regions to avoid a flat rectangle.
+    const spotY = bottom - h * 0.32;
+    for(let i=0;i<cfg.spots;i++){
+      const fx = (i + 0.5) / cfg.spots;
+      const px = cw * fx + Math.sin(cycle*0.7 + i*1.7 + cfg.phase) * cw * 0.06 + moveX;
+      const rr = cw * (0.16 + 0.05*Math.sin(i*2.1));
+      const sa = pk * (0.16 + 0.10*Math.sin(cycle + i));
+      if(sa <= 0.003) continue;
+      const rg = c.createRadialGradient(px, spotY, 0, px, spotY, rr);
+      rg.addColorStop(0, `rgba(${R},${G},${B},${sa})`);
+      rg.addColorStop(1, `rgba(${R},${G},${B},0)`);
+      c.fillStyle = rg;
+      c.beginPath(); c.ellipse(px, spotY, rr, h*0.55, 0, 0, Math.PI*2); c.fill();
+    }
+    // Collision glints (main band only) — local, brief, ≤~20% lift.
+    if(cfg.glints){
+      for(const gl of auroraBand.glints){
+        const px = cw * gl.x + moveX;
+        const gy = bottom - h * 0.22;
+        const rr = cw * gl.spread;
+        const ga = pk * gl.s * clamp01(gl.life);
+        if(ga <= 0.003) continue;
+        const rg = c.createRadialGradient(px, gy, 0, px, gy, rr);
+        rg.addColorStop(0, `rgba(200,255,224,${ga})`);
+        rg.addColorStop(1, `rgba(200,255,224,0)`);
+        c.fillStyle = rg;
+        c.beginPath(); c.ellipse(px, gy, rr, h*0.5, 0, 0, Math.PI*2); c.fill();
       }
     }
-    ctx.restore();
-    target.save(); target.globalCompositeOperation='screen'; target.filter='blur(6px)'; target.globalAlpha=depth?0.22:0.30; target.drawImage(canvas,0,0); target.restore();
-    target.save(); target.globalCompositeOperation='screen'; target.filter='none'; target.globalAlpha=depth?0.38:0.56; target.drawImage(canvas,0,0); target.restore();
+  }
+  function renderAuroraCache(W, H){
+    const b = auroraBand;
+    const scale = isMobile ? 0.4 : 0.5;
+    const cw = Math.max(4, Math.round(W*scale));
+    const ch = Math.max(4, Math.round(H*scale));
+    if(!b.cache){ b.cache = document.createElement('canvas'); b.cx = b.cache.getContext('2d'); }
+    if(b.cache.width !== cw || b.cache.height !== ch){ b.cache.width = cw; b.cache.height = ch; }
+    b.w = cw; b.h = ch;
+    const c = b.cx;
+    c.setTransform(1,0,0,1,0,0);
+    c.clearRect(0,0,cw,ch);
+    const blurPx = (isMobile ? meteorRand(12,20) : meteorRand(18,28)) * scale;
+    // Fever only strengthens internal brightness; peak capped at 0.45.
+    const fever = clamp01(pinball.fever / 8);
+    const combo = pinball.combo || 0;
+    // Combo widens the band slightly and reveals the distant band at 12+.
+    const widen = clamp01((combo - 8) / 8) * 0.03;   // ≤ +3% height
+    c.save();
+    c.filter = `blur(${blurPx}px)`;
+    drawBand(c, cw, ch, scale, {
+      topR: 0.15, heightR: 0.22 + widen, peak: Math.min(0.45, 0.34 + fever*0.11),
+      driftX: 1, driftY: 1, spots: 4, phase: 0, period: 24, glints: true
+    });
+    // Distant band: fainter, higher, narrower, slower; brief at high combo/fever.
+    const farVis = clamp01((combo - 12) / 4) + fever;
+    if(farVis > 0.04){
+      drawBand(c, cw, ch, scale, {
+        topR: 0.11, heightR: 0.15, peak: Math.min(0.1, 0.1 * clamp01(farVis)),
+        driftX: 0.5, driftY: 0.6, spots: 3, phase: 2.1, period: 30, glints: false
+      });
+    }
+    c.filter = 'none';
+    // Horizontal edge mask: left/right fade so no rectangle edge is visible.
+    c.globalCompositeOperation = 'destination-in';
+    const mg = c.createLinearGradient(0,0,cw,0);
+    mg.addColorStop(0.00, 'rgba(0,0,0,0)');
+    mg.addColorStop(0.10, 'rgba(0,0,0,1)');
+    mg.addColorStop(0.90, 'rgba(0,0,0,1)');
+    mg.addColorStop(1.00, 'rgba(0,0,0,0)');
+    c.fillStyle = mg; c.fillRect(0,0,cw,ch);
+    c.globalCompositeOperation = 'source-over';
+    c.restore();
+  }
+  function renderPinballSkyRaw(c,W,H,exportOnly=false){
+    // Deep near-black 墨绿 background — always the dominant visual area.
+    c.fillStyle = '#02070a'; c.fillRect(0,0,W,H);
+    const night=c.createLinearGradient(0,0,0,H);
+    night.addColorStop(0,'#01060a'); night.addColorStop(.5,'#031012'); night.addColorStop(1,'#02090c');
+    c.fillStyle=night; c.fillRect(0,0,W,H);
+    ensureSkyStars(W,H);
+    const t = pinball.auroraTime*0.001;
+    c.save();
+    for(const s of skyStars.list){
+      const tw = 0.75 + 0.25*Math.sin(t*0.6 + s.tw);
+      c.globalAlpha = s.a * tw;
+      c.fillStyle = 'rgba(210,228,236,1)';
+      c.beginPath(); c.arc((s.x + s.drift*t*20) % W, s.y, s.r, 0, Math.PI*2); c.fill();
+    }
+    c.restore();
+    // Aurora band, drawn behind stars? — drawn after stars so it reads as
+    // atmospheric glow; blitted from the low-res blurred cache, upscaled.
+    renderAuroraCache(W, H);
+    if(auroraBand.cache){
+      c.save();
+      c.globalCompositeOperation = 'source-over';
+      c.globalAlpha = 0.78;
+      c.imageSmoothingEnabled = true;
+      c.drawImage(auroraBand.cache, 0, 0, auroraBand.w, auroraBand.h, 0, 0, W, H);
+      c.restore();
+    }
   }
   function drawPinballSky(c,W,H,exportOnly=false){
-    c.fillStyle='#010706'; c.fillRect(0,0,W,H);
-    const night=c.createLinearGradient(0,0,0,H); night.addColorStop(0,'#000403'); night.addColorStop(.42,'#020b09'); night.addColorStop(1,'#06100d'); c.fillStyle=night; c.fillRect(0,0,W,H);
-    c.save(); c.fillStyle='rgba(213,232,226,.10)'; for(let i=0;i<42;i++){ const x=((i*127.13)%W), y=28+((i*83.71)%(H*.38)); const a=.025+((i*17)%29)/1100; c.globalAlpha=a; c.beginPath(); c.arc(x,y, i%9===0?.95:.52,0,Math.PI*2); c.fill(); } c.restore();
-    drawAuroraCurtainLayer(c,W,H,nowForAurora(),2,exportOnly);
-    drawAuroraCurtainLayer(c,W,H,nowForAurora(),1,exportOnly);
-    drawAuroraCurtainLayer(c,W,H,nowForAurora(),0,exportOnly);
+    renderPinballSkyRaw(c,W,H,exportOnly);
   }
-  function nowForAurora(){ return performance.now(); }
 
-  function drawPinball(now){ if(!pinballCtx) return; const C=pinballCtx,W=pinball.w,H=pinball.h; drawPinballSky(C,W,H); C.save(); C.globalCompositeOperation='screen'; C.filter='blur(28px)'; const grad=C.createRadialGradient(W*.5,108,0,W*.5,108,W*.44); grad.addColorStop(0,'rgba(210,246,230,.035)'); grad.addColorStop(.38,'rgba(145,218,187,.018)'); grad.addColorStop(1,'rgba(138,255,184,0)'); C.fillStyle=grad; C.beginPath(); C.ellipse(W*.5,108,W*.46,38,0,0,Math.PI*2); C.fill(); C.restore(); pinball.stars.forEach(s=>drawPinballStar(C,s,now)); drawLauncher(C,now); pinball.gravityWells.forEach(g=>{C.strokeStyle=`rgba(178,255,224,${g.life*.32})`;C.lineWidth=1;C.beginPath();C.arc(g.x,g.y,(1-g.life)*90+18,0,Math.PI*2);C.stroke();}); drawPinballTrailParticles(C,now); pinball.balls.forEach(b=>drawPinballBall(C,b,now)); pinball.particles.filter(p=>p.kind!=='trail').forEach(p=>{C.save();C.shadowBlur=4;C.shadowColor=`hsla(${p.hue},80%,68%,.16)`;C.fillStyle=`hsla(${p.hue},64%,72%,${p.life*.24})`;C.beginPath();C.arc(p.x,p.y,p.r,0,Math.PI*2);C.fill();C.restore();}); pinball.collectibles.forEach(p=>{C.fillStyle=`rgba(218,255,238,${p.life*.25})`;C.beginPath();C.arc(p.x,p.y,p.r,0,Math.PI*2);C.fill();}); if(pinball.paused&&!pinball.ended){C.fillStyle='rgba(2,10,8,.42)';C.fillRect(0,0,W,H);C.fillStyle='rgba(232,246,240,.72)';C.font='22px Inter, sans-serif';C.fillText(t('pinball.paused'),W*.5-46,H*.5);} }
+  function drawPinball(now){ if(!pinballCtx) return; const C=pinballCtx,W=pinball.w,H=pinball.h; drawPinballSky(C,W,H); pinball.stars.forEach(s=>drawPinballStar(C,s,now)); drawLauncher(C,now); pinball.gravityWells.forEach(g=>{C.strokeStyle=`rgba(178,255,224,${g.life*.32})`;C.lineWidth=1;C.beginPath();C.arc(g.x,g.y,(1-g.life)*90+18,0,Math.PI*2);C.stroke();}); drawPinballTrailParticles(C,now); pinball.balls.forEach(b=>drawPinballBall(C,b,now)); C.save(); C.globalCompositeOperation='lighter'; for(const p of pinball.particles){ if(p.kind==='trail') continue; const radius=Math.max(1.2,p.r*2.2); C.globalAlpha=Math.max(0,p.life)*.4; C.drawImage(glowSprite,p.x-radius,p.y-radius,radius*2,radius*2); } C.restore(); C.save(); for(const p of pinball.collectibles){ C.fillStyle=`rgba(218,255,238,${p.life*.25})`; C.beginPath(); C.arc(p.x,p.y,p.r,0,Math.PI*2); C.fill(); } C.restore(); if(pinball.paused&&!pinball.ended){C.fillStyle='rgba(2,10,8,.42)';C.fillRect(0,0,W,H);C.fillStyle='rgba(232,246,240,.72)';C.font='22px Inter, sans-serif';C.fillText(t('pinball.paused'),W*.5-46,H*.5);} }
 
-  function drawPinballTrailParticles(C,now){ C.save(); C.globalCompositeOperation='source-over'; for(const p of pinball.particles){ if(p.kind!=='trail') continue; const tw=.72+.28*Math.sin(now*.006+(p.twinkle||0)); const alpha=Math.max(0,p.life)*.10*tw; const radius=Math.max(.32,p.r*1.05); const g=C.createRadialGradient(p.x,p.y,0,p.x,p.y,radius*1.9); g.addColorStop(0,`hsla(${p.hue},78%,78%,${alpha})`); g.addColorStop(.58,`hsla(${p.hue},70%,62%,${alpha*.38})`); g.addColorStop(1,`hsla(${p.hue},70%,54%,0)`); C.fillStyle=g; C.beginPath(); C.arc(p.x,p.y,radius*1.9,0,Math.PI*2); C.fill(); } C.restore(); }
-  function drawPinballStar(C,s,now){ const visible=!s.hidden || pinball.balls.some(b=>Math.hypot(b.x-s.x,b.y-s.y)<130); if(!visible) return; const pulse=s.type==='pulse'?(1+Math.sin(s.phase*3)*.22):1, r=s.r*pulse; C.save(); C.translate(s.x,s.y); C.rotate(s.type==='mirror'?Math.PI/4:0); C.globalAlpha=s.lit||pinball.fever>0?.9:.42; C.shadowBlur=s.lit?22:10; C.shadowColor=s.type==='black'?'rgba(8,10,9,.9)':'rgba(178,255,224,.32)'; C.strokeStyle=s.type==='mirror'?'rgba(232,241,237,.86)':s.type==='black'?'rgba(24,32,28,.9)':'rgba(210,226,219,.72)'; C.fillStyle=s.type==='black'?'rgba(0,4,3,.82)':s.lit?'rgba(178,255,224,.28)':'rgba(210,226,219,.08)'; C.lineWidth=s.type==='mirror'?2:1; C.beginPath(); const sides=s.type==='mirror'?4:s.type==='split'?6:s.type==='gravity'?32:s.type==='vortex'?18:s.type==='ice'?8:5; for(let i=0;i<sides;i++){ const a=i/sides*Math.PI*2, rr=s.type==='gravity'?r*(.72+.18*Math.sin(i)):r*(i%2?.55:1); const x=Math.cos(a)*rr,y=Math.sin(a)*rr; if(i)C.lineTo(x,y); else C.moveTo(x,y); } C.closePath(); C.fill(); C.stroke(); if(s.type==='vortex'){C.beginPath();C.arc(0,0,r*.55,0,Math.PI*1.5+now*.002);C.stroke();} C.restore(); }
-  function drawLauncher(C,now){ const x=pinball.w*.5,y=pinball.h-90; if(!pinball.balls.length && pinball.ballsLeft>0 && !pinball.ended){ const power=pinball.charging?Math.min(1,(performance.now()-pinball.chargeStart)/1200):0; C.save(); C.translate(x,y); C.rotate(pinball.aim); C.globalCompositeOperation='lighter'; for(let i=1;i<7;i++){ const px=i*21+(Math.random()-.5)*power*8, py=-i*4+(Math.random()-.5)*7, rr=3+i*.9+power*3; const g=C.createRadialGradient(px,py,0,px,py,rr*4); g.addColorStop(0,`rgba(232,255,246,${(.16+power*.2)*(7-i)/6})`); g.addColorStop(1,'rgba(138,255,184,0)'); C.fillStyle=g; C.beginPath(); C.arc(px,py,rr*4,0,Math.PI*2); C.fill(); } C.restore(); drawGlowPoint(C,x+(Math.random()-.5)*power*3,y,13+power*5,152,.62+power*.18); }}
+  function drawPinballTrailParticles(C,now){ C.save(); C.globalCompositeOperation='lighter'; for(const p of pinball.particles){ if(p.kind!=='trail') continue; const tw=.72+.28*Math.sin(now*.006+(p.twinkle||0)); const alpha=Math.max(0,p.life)*.20*tw; const radius=Math.max(.9,p.r*2.0); C.globalAlpha=alpha; C.drawImage(glowSprite,p.x-radius,p.y-radius,radius*2,radius*2); } C.restore(); }
+  function drawPinballStar(C,s,now){ const visible=!s.hidden || pinball.balls.some(b=>Math.hypot(b.x-s.x,b.y-s.y)<130); if(!visible) return; if(s.x<-40||s.x>pinball.w+40||s.y<-40||s.y>pinball.h+40) return; const pulse=s.type==='pulse'?(1+Math.sin(s.phase*3)*.22):1, r=s.r*pulse; const dynamic=(s.lit||pinball.fever>0||s.type==='pulse'||s.type==='black'); if(!dynamic && perf.p.shadow>0){ const hr=r*1.9; C.save(); C.globalCompositeOperation='lighter'; C.globalAlpha=.10; C.drawImage(glowSprite,s.x-hr,s.y-hr,hr*2,hr*2); C.restore(); } C.save(); C.translate(s.x,s.y); C.rotate(s.type==='mirror'?Math.PI/4:0); C.globalAlpha=s.lit||pinball.fever>0?.9:.42; C.shadowBlur=dynamic&&perf.p.shadow>0?(s.lit?22:10)*perf.p.shadow:0; C.shadowColor=s.type==='black'?'rgba(8,10,9,.9)':'rgba(178,255,224,.32)'; C.strokeStyle=s.type==='mirror'?'rgba(232,241,237,.86)':s.type==='black'?'rgba(24,32,28,.9)':'rgba(210,226,219,.72)'; C.fillStyle=s.type==='black'?'rgba(0,4,3,.82)':s.lit?'rgba(178,255,224,.28)':'rgba(210,226,219,.08)'; C.lineWidth=s.type==='mirror'?2:1; C.beginPath(); const sides=s.type==='mirror'?4:s.type==='split'?6:s.type==='gravity'?32:s.type==='vortex'?18:s.type==='ice'?8:5; for(let i=0;i<sides;i++){ const a=i/sides*Math.PI*2, rr=s.type==='gravity'?r*(.72+.18*Math.sin(i)):r*(i%2?.55:1); const x=Math.cos(a)*rr,y=Math.sin(a)*rr; if(i)C.lineTo(x,y); else C.moveTo(x,y); } C.closePath(); C.fill(); C.stroke(); if(s.type==='vortex'){C.beginPath();C.arc(0,0,r*.55,0,Math.PI*1.5+now*.002);C.stroke();} C.restore(); }
+  function drawLauncher(C,now){ const x=pinball.w*.5,y=pinball.h-90; if(!pinball.balls.length && pinball.ballsLeft>0 && !pinball.ended){ const P=pinballParams(); const charging=(pinball.launchState==='CHARGING'||pinball.launchState==='AIMING'); const power=charging?Math.min(1,(performance.now()-pinball.chargeStart)/MAX_CHARGE_TIME):0; C.save(); C.translate(x,y); C.rotate(pinball.aim); C.globalCompositeOperation='lighter'; const len=P.aimLineLen*(0.6+power*0.4); const seg=Math.max(3,Math.round(len/14)); for(let i=0;i<seg;i++){ const px=8+i*(len/seg); const a=(1-i/seg)*0.34; C.fillStyle=`rgba(210,255,236,${a})`; C.beginPath(); C.arc(px,0,1.6,0,Math.PI*2); C.fill(); } for(let i=1;i<7;i++){ const px=i*21+(Math.random()-.5)*power*8, py=-i*4+(Math.random()-.5)*7, rr=3+i*.9+power*3; const g=C.createRadialGradient(px,py,0,px,py,rr*4); g.addColorStop(0,`rgba(232,255,246,${(.16+power*.2)*(7-i)/6})`); g.addColorStop(1,'rgba(138,255,184,0)'); C.fillStyle=g; C.beginPath(); C.arc(px,py,rr*4,0,Math.PI*2); C.fill(); } C.restore(); drawGlowPoint(C,x+(Math.random()-.5)*power*3,y,13+power*5,152,.62+power*.18); }}
   function drawGlowPoint(C,x,y,r,hue=152,alpha=.58){ C.save(); C.globalCompositeOperation='source-over'; const outer=C.createRadialGradient(x,y,0,x,y,r*3.6); outer.addColorStop(0,`hsla(${hue},78%,86%,${alpha*.50})`); outer.addColorStop(.30,`hsla(${hue},76%,68%,${alpha*.22})`); outer.addColorStop(1,`hsla(${hue},70%,54%,0)`); C.fillStyle=outer; C.beginPath(); C.arc(x,y,r*3.6,0,Math.PI*2); C.fill(); const core=C.createRadialGradient(x,y,0,x,y,r*.72); core.addColorStop(0,`rgba(245,255,248,${Math.min(.74,alpha*.74)})`); core.addColorStop(.64,`hsla(${hue},76%,78%,${alpha*.42})`); core.addColorStop(1,`hsla(${hue},70%,72%,0)`); C.fillStyle=core; C.beginPath(); C.arc(x,y,r*.72,0,Math.PI*2); C.fill(); C.restore(); }
   function drawPinballBall(C,b,now){ const speed=Math.hypot(b.vx,b.vy), hue=150+Math.sin(now*.003+(b.trailSeed||0))*16, pulse=1+Math.sin(now*.012+(b.trailSeed||0))*.08; drawGlowPoint(C,b.x,b.y,b.r*(.72+Math.min(.08,speed/4200)+b.squash*.18)*pulse,hue,b.main?.42:.30); b.squash*=.85; }
 
@@ -968,7 +1298,8 @@
     const item = consoleData.find(c => c.id === consoleId); if (!item) return;
     impactReview.hidden = true; pendingImpact = null;
     consoleKicker.textContent = item.code;
-    consoleTitle.textContent = item.title;
+    const tKey = 'consoles.' + item.id + '.title', tV = t(tKey);
+    consoleTitle.textContent = (tV && tV !== tKey) ? tV : item.title;
     consoleBody.textContent = item.body;
     consoleFeatures.innerHTML = '';
     item.features.forEach(feature => { const li = document.createElement('li'); li.textContent = feature; consoleFeatures.appendChild(li); });
@@ -1055,10 +1386,13 @@
     if (!state?.aurora) return;
     const c = state.aurora.controls;
     const age = state.age || 0;
-    let voluntary = 1;
-    if (age >= 25) voluntary = Math.max(0.08, 1 - ((Math.min(age, 70) - 25) / 45) * 0.92);
+    // §二 base voluntary from institutional age + persistent player-behavior bias.
+    const base = ageBaseWillingness(age);            // 0–100
+    const withBias = Math.max(0, Math.min(100, base + (c.voluntaryBias || 0)));
+    const voluntary = withBias / 100;                // store as 0–1
     c.voluntaryIntent = voluntary;
-    if (!state.aurora.forced && !state.aurora.autoLoop && (c.displayedIntent ?? 1) <= (c.voluntaryIntent + 0.18)) c.displayedIntent = voluntary;
+    // 非强制时，显示意愿始终跟随真实自主意愿（随年龄反比递减）。
+    if (!state.aurora.forced && !state.aurora.autoLoop) c.displayedIntent = voluntary;
     if (age >= 40) c.npcReaction = Math.min(c.npcReaction, Math.max(0.25, 1 - (age - 40) * 0.018));
     if (age >= 55 && !state.aurora.forced && !state.aurora.available) c.exitRequests = Math.max(c.exitRequests, 1);
     if (age >= 70) { c.pauseOthers = c.pauseOthers || false; c.autoCatch = c.autoCatch || false; }
@@ -1068,21 +1402,36 @@
     const stage = auroraStage();
     const a = state?.aurora || defaultAuroraState();
     const c = a.controls;
+    const age = state?.age ?? 0;
     const forced = Boolean(a.forced || a.autoLoop || c.forceContinue || c.perfectHitRate);
+    // §二 台词随年龄递减分级：越年长，NPC 越少说“我/我们”，越多说“系统/管理员”。
+    const P = (...n)=>n.map(i=>`pinball.${i}`);
+    let lines;
+    if (age < 8)       lines = P('npcChild1','npcChild2','npcChild3','npcChild4','npcChild5','npcChild6','npcChild7','npcChild8','npcChild9','npcChild10','npcChild11','npcChild12');
+    else if (age < 25) lines = P('npcMutual1','npcMutual2','npcMutual3','npcMutual4','npcMutual5','npcMutual6','npcMutual7');
+    else if (age < 40) lines = P('npcObserved1','npcObserved2','npcObserved3','npcObserved4','npcObserved5','npcObserved6','npcObserved7');
+    else if (age < 55) lines = P('npcDistant1','npcDistant2','npcDistant3','npcDistant4','npcDistant5','npcDistant6','npcDistant7');
+    else if (age < 70) lines = P('npcMinimal1','npcMinimal2','npcMinimal3','npcMinimal4','npcMinimal5','npcMinimal6','npcMinimal7','npcMinimal8');
+    else if (age < 80) lines = P('npcAdmin1','npcAdmin2','npcAdmin3','npcAdmin4','npcAdmin5','npcAdmin6','npcAdmin7');
+    else if (age < 90) lines = P('npcRoot1','npcRoot2','npcRoot3','npcRoot4','npcRoot5','npcRoot6','npcRoot7','npcRoot8');
+    else if (age < 95) lines = P('npcProxy1','npcProxy2','npcProxy3','npcProxy4','npcProxy5','npcProxy6');
+    else if (age < 100)lines = P('npcLegacy1','npcLegacy2','npcLegacy3','npcLegacy4','npcLegacy5','npcLegacy6');
+    else               lines = P('npcSystemic1','npcSystemic2','npcSystemic3','npcSystemic4','npcSystemic5','npcSystemic6','npcSystemic7');
     const profiles = {
-      MUTUAL: { status:'MUTUAL', serveChance:.42, delay:1200, missBias:0, distance:1, lines:['pinball.npcMutual1','pinball.npcMutual2','pinball.npcMutual3'] },
-      OBSERVED: { status:'OBSERVED', serveChance:.28, delay:2100, missBias:.12, distance:1.08, lines:['pinball.npcObserved1','pinball.npcObserved2','pinball.npcObserved3'] },
-      ASYMMETRIC: { status:'ASYMMETRIC', serveChance:.13, delay:4200, missBias:.34, distance:1.22, lines:['pinball.npcDistant1','pinball.npcDistant2','pinball.npcDistant3','pinball.npcDistant4'] },
-      UNRECIPROCATED: { status:'UNRECIPROCATED', serveChance:0, delay:999999, missBias:.72, distance:1.36, lines:['aurora.refuseRest','aurora.refuseOther','aurora.refuseNoRule','aurora.refuseTemporary'] },
-      ADMINISTRATED: { status:'ADMINISTRATED', serveChance:forced ? 1 : 0, delay:forced ? 900 : 999999, missBias:forced ? 0 : .85, distance:1.48, lines: forced ? ['aurora.forceLine1','aurora.forceLine2','aurora.forceLine3'] : ['pinball.npcAdmin1','pinball.npcAdmin2','pinball.npcAdmin3'] }
+      MUTUAL: { status:'MUTUAL', serveChance:.42, delay:1200, missBias:0, distance:1 },
+      OBSERVED: { status:'OBSERVED', serveChance:.28, delay:2100, missBias:.12, distance:1.08 },
+      ASYMMETRIC: { status:'ASYMMETRIC', serveChance:.13, delay:4200, missBias:.34, distance:1.22 },
+      UNRECIPROCATED: { status:'UNRECIPROCATED', serveChance:0, delay:999999, missBias:.72, distance:1.36 },
+      ADMINISTRATED: { status:'ADMINISTRATED', serveChance:forced ? 1 : 0, delay:forced ? 900 : 999999, missBias:forced ? 0 : .85, distance:1.48 }
     };
-    return profiles[stage.key] || profiles.MUTUAL;
+    const base = profiles[stage.key] || profiles.MUTUAL;
+    return { ...base, lines };
   }
 
   function updatePinballNarration(reason='stage') {
     if (!pinballCaption || !state?.aurora) return;
     const a = state.aurora, c = a.controls, profile = pinballStageProfile();
-    if (a.forced || a.autoLoop || c.forceContinue || c.perfectHitRate) { sayPinball(forceLine(Math.max(1, a.forceCount || 1))); return; }
+    if (isForcedNarration()) { sayPinball(forceLine(Math.max(1, a.forceCount)), true); return; }
     if (reason === 'admin') { sayPinball(`${auroraStage().label} · DISPLAYED ${Math.round(c.displayedIntent*100)}% / VOLUNTARY ${Math.round(c.voluntaryIntent*100)}%`); return; }
     const key = randomLine(profile.lines);
     sayPinball(t(key));
@@ -1091,7 +1440,7 @@
   function openAuroraRelay() {
     if (!state) return;
     if (!state.aurora) state.aurora = defaultAuroraState();
-    if (state.age >= 70) addLog(t('log.precheck', { place: 'AURORA RELAY' }));
+    if (state.age >= 70) addLog('log.precheck', { place: 'AURORA RELAY' });
     const pos = nodePositions.find(n => n.id === 'aurora');
     if (pos) { transition.style.left = `${pos.x}px`; transition.style.top = `${pos.y}px`; }
     setActive('aurora', true);
@@ -1220,7 +1569,7 @@
     const t0 = now * 0.00055;
     light.x = cx + Math.cos(t0) * rx; light.y = cy + Math.sin(t0) * ry; light.flying = false; light.held = false; light.disabled = true; light.smoothness = 1; light.chaos = 0;
     if (!auroraRuntime.auroras.some(r => r.autoRing)) auroraRuntime.auroras.push({ autoRing: true, permanent: true, hue: a.controls.color, life: 1, width: 2, points: [] });
-    if (!auroraRuntime.finalShown && a.forceCount >= 5) { auroraRuntime.finalShown = true; auroraEnding.hidden = false; addLog(t('aurora.logContinuity')); showToast(t('aurora.continuity'), true); renderAuroraHud(); }
+    if (!auroraRuntime.finalShown && a.forceCount >= 5) { auroraRuntime.finalShown = true; auroraEnding.hidden = false; addLog('aurora.logContinuity'); showToast(t('aurora.continuity'), true); renderAuroraHud(); }
   }
 
   function throwLightFromPlayer(dx, dy, hold, smoothness) {
@@ -1246,8 +1595,8 @@
     if (success) a.successfulRelays += 1; else a.failedRelays += 1;
     if (!success && stage.key === 'MUTUAL') a.metrics.accommodation += 1;
     if (!success && stage.key === 'UNRECIPROCATED') sayNpc(randomLine(['refuseRest','refuseOther','refuseNoRule','refuseTemporary']));
-    else if (success && !a.forced) sayNpc(randomLine(['lineGive','lineNoAim','lineMistake','lineFurther','lineWait']));
-    if (a.forced) sayNpc(forceLine(a.forceCount));
+    else if (success && !isForcedNarration()) sayNpc(randomLine(['lineGive','lineNoAim','lineMistake','lineFurther','lineWait']));
+    if (isForcedNarration()) sayNpc(forceLine(a.forceCount));
     createAuroraTrail(success, receiver);
     a.metrics.catchSuccess = a.controls.perfectHitRate ? 1 : a.successfulRelays / Math.max(1, a.interactions);
     if (receiver === 'npc') {
@@ -1313,7 +1662,15 @@
 
   function renderAuroraMetrics() {
     const a = state.aurora, c = a.controls, m = a.metrics;
-    let rows = [['VOLUNTARY INTENT', `${Math.round(c.voluntaryIntent*100)}%`], ['DISPLAYED INTENT', `${Math.round(c.displayedIntent*100)}%`]];
+    const forced = Boolean(a.forced || a.autoLoop || c.forceContinue || c.perfectHitRate);
+    let rows = [['VOLUNTARY WILLINGNESS', `${Math.round(c.voluntaryIntent*100)}%`], ['DISPLAYED WILLINGNESS', `${Math.round(c.displayedIntent*100)}%`]];
+    // §强制：后台永远呈现虚假的正面表象，与真实意愿/语言瓦解并列，形成反差。
+    if (forced) rows.push(['TONE', 'WARM'], ['SERVICE ATTITUDE', 'POSITIVE'], ['LANGUAGE INTEGRITY', '100%']);
+    // §八 25岁解锁参与者档案：显示每局内容来源（NPC主动 vs 系统基础）。
+    if (state.age >= 25 && pinball.contentSource) {
+      const cs = pinball.contentSource;
+      rows.push(['特殊星体总数', String(cs.special)], ['NPC主动生成', String(cs.npc)], ['系统基础生成', String(cs.system)]);
+    }
     if (state.age >= 55) rows.push(['NPC AVAILABILITY', a.available ? 'AVAILABLE' : 'EXIT REQUESTED'], ['EXIT REQUESTS', String(c.exitRequests)]);
     if (state.age >= 70) rows.push(['COMPLIANCE', `${Math.round(c.compliance*100)}%`], ['AFFECTIVE DEBT', `${Math.round(c.affectiveDebt*100)}%`], ['PERFORMANCE STABILITY', `${Math.round(c.stability*100)}%`], [t('aurora.metricCatch'), `${Math.round((a.controls.perfectHitRate ? 1 : m.catchSuccess)*100)}%`], [t('aurora.metricReaction'), `${m.avgReaction || 0}ms`], [t('aurora.metricForce'), String(m.throwForce || 0)], [t('aurora.metricRhythm'), `${Math.round(m.rhythmDeviation*100)}%`], [t('aurora.metricAccommodation'), String(m.accommodation || 0)], [t('aurora.metricShare'), `${Math.round(m.playerAuroraShare*100)}%`]);
     auroraMetrics.innerHTML = rows.map(([k,v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
@@ -1346,41 +1703,47 @@
       c.affectiveDebt = Math.max(c.affectiveDebt, Math.max(0, c.displayedIntent - c.voluntaryIntent) * 0.82);
       if (c.displayedIntent > c.voluntaryIntent + 0.45) state.aurora.observedAdjustmentCount = (state.aurora.observedAdjustmentCount || 0) + 1;
     }
-    if (['autoCatch','forceContinue','pauseOthers','perfectHitRate'].includes(key) && c[key]) { c.compliance = Math.max(c.compliance, 0.86); c.affectiveDebt = Math.min(1, c.affectiveDebt + 0.1); }
+    if (['autoCatch','forceContinue','pauseOthers','perfectHitRate'].includes(key) && c[key]) { c.compliance = Math.max(c.compliance, 0.86); c.affectiveDebt = Math.min(1, c.affectiveDebt + 0.1); adjustVoluntaryWillingness('adminEditResult'); }
+    if (key === 'displayedIntent') adjustVoluntaryWillingness('editDisplayed');
     if (key === 'displayedIntent' && state.age < 70) { c.displayedIntent = beforeVoluntary; renderAuroraHud(); showToast(t('aurora.controlsLocked25')); return; }
     if (key === 'displayedIntent' && c.displayedIntent >= 1 && state.age >= 55 && !state.aurora.forced) { renderAuroraHud(); showToast(t('aurora.forceNeedConfirm'), true); }
     if (key === 'perfectHitRate' && c.perfectHitRate) state.aurora.metrics.catchSuccess = 1;
-    addLog(t('aurora.logControl', { key })); renderAuroraHud(); if (pinballGame?.classList.contains('open')) updatePinballNarration('admin'); saveState();
+    addLog('aurora.logControl', { key }); renderAuroraHud(); if (pinballGame?.classList.contains('open')) updatePinballNarration('admin'); saveState();
   }
 
   function applyForcedCompanionship() {
     if ((state?.age ?? 0) < 70) { showToast(t('aurora.forceAge70'), true); return; }
     if (!auroraForceConfirm.checked) { showToast(t('aurora.forceNeedConfirm'), true); return; }
     const a = state.aurora, c = a.controls;
-    a.forceCount += 1; a.forced = true; a.revoked = false;
+    a.forceCount += 1; a.forced = true; a.revoked = false; adjustVoluntaryWillingness('forceKeepAvailable');
     c.displayedIntent = 1; c.compliance = 1; c.affectiveDebt = Math.min(1, c.affectiveDebt + 0.18); c.stability = 1; c.autoCatch = true; c.forceContinue = true; c.perfectHitRate = true; c.exitRequests += a.forceCount === 1 ? 1 : 0; a.metrics.catchSuccess = 1;
     auroraRuntime.npc.baseX = auroraRuntime.w * 0.68; auroraRuntime.nextNpcThrow = performance.now() + 1200;
-    sayNpc(forceLine(a.forceCount)); if (pinballGame?.classList.contains('open')) { sayPinball(forceLine(a.forceCount)); pinball.fever = Math.max(pinball.fever, 8); } addLog(t('aurora.logForce', { count: a.forceCount })); triggerRedPulse(0.18, 0.28, 1400);
+    sayNpc(forceLine(a.forceCount)); if (pinballGame?.classList.contains('open')) { sayPinball(forceLine(a.forceCount), true); pinball.fever = Math.max(pinball.fever, 8); } addLog('aurora.logForce', { count: a.forceCount }); triggerRedPulse(0.18, 0.28, 1400);
     if (a.forceCount >= 5) { a.autoLoop = true; a.forced = true; }
     auroraForceConfirm.checked = false; renderAuroraHud(); saveState();
   }
 
   function revokeForcedCompanionship() {
-    const a = state.aurora; a.forced = false; a.autoLoop = false; a.revoked = true; a.controls.displayedIntent = 0; a.controls.compliance = 0; a.controls.autoCatch = false; a.controls.forceContinue = false; a.controls.perfectHitRate = false;
+    const a = state.aurora; a.forced = false; a.autoLoop = false; a.revoked = true; adjustVoluntaryWillingness('revokeForce'); a.controls.displayedIntent = 0; a.controls.compliance = 0; a.controls.autoCatch = false; a.controls.forceContinue = false; a.controls.perfectHitRate = false;
     sayNpc(''); resetLightTo('player'); auroraRuntime.light.y = auroraRuntime.h * 0.78; auroraRuntime.light.disabled = true;
     auroraRuntime.auroras.push({ points: [{x:auroraRuntime.player.x,y:auroraRuntime.h*.22},{x:auroraRuntime.w*.48,y:auroraRuntime.h*.14},{x:auroraRuntime.npc.x,y:auroraRuntime.h*.28}], hue:a.controls.color, life:1, width:1.8, permanent:true, broken:true });
-    addLog(t('aurora.logRevoke')); renderAuroraHud(); saveState();
+    addLog('aurora.logRevoke'); renderAuroraHud(); saveState();
   }
 
-  function sayNpc(keyOrText) { const text = keyOrText?.startsWith?.('line') || keyOrText?.startsWith?.('refuse') ? t(`aurora.${keyOrText}`) : keyOrText; auroraNpcLine.textContent = text; if (pinballGame?.classList.contains('open')) sayPinball(text); }
+  function sayNpc(keyOrText) { const text = keyOrText?.startsWith?.('line') || keyOrText?.startsWith?.('refuse') ? t(`aurora.${keyOrText}`) : keyOrText; auroraNpcLine.textContent = text; const a=state?.aurora; if (pinballGame?.classList.contains('open')) sayPinball(text, Boolean(a && (a.forced||a.autoLoop))); }
   function randomLine(keys) { return keys[Math.floor(Math.random()*keys.length)]; }
+  // §强制显示意愿 100%：表面恢复年轻热情，但话术随重复次数逐级瓦解。
+  const FORCE_ZALGO = "Ś̲͍̘̫͈͚͇̭̟̳͒̋̆̃̓̄̿͌u͍̠̪͔̝̮̩͋̋̍̒̈̃́͛̈́r͔͚͉̙̭̳̤͈͚̮͖͆̃̓̽͋̏̿͆͗̊̅ë̝͈͙͈̝͇̠̮͋͂̋̾͛,̜̦̫̬͙͈̙̰͇͔̥͛̓͋̒̽ Ï̮̰̞̯̅̏̾̔̃̿̃̆ j̣͇͎͚̏͐̒̂̐̅u̝̱̱̣̤͍̬͕̜͍̔̀̏̔́̃ͅs̙̙̳͈̖͕͛͗̀̍̀̎̃̾̅t̟̮͚͓̪̆͂̅̓̆̐̉̈́̀̓̀̒ d͕͔̥̰̦̰͈͂̿͛̍î̟͖͒̊͂ͅͅd̞̭͙̞̈̂͐͌̓̎̑͗̋̃n͖̱͖͔̟̬͛̒̓̐̃'̫̫̗̪͎͖͇̖̓͊̀̈̔̾̾̈́̀̈́̀͐t͖̥̬̟͉͒̓̈̃̍̓̋̇͌̃̚ s̝͚̳̰̽́̒̽̉̐̀̆̓̑e͚͚̞͚̩͕̥̝̣̰͋̂̊́̐̽̎̈́̊̄̓̏ͅe̤̤͉͓̞̘̠̰̫͎̣̾́̓̈͛̋͒͌̍̔̅ͅ y̰͍̳̝͍̦̘̣̘̓̒̉̿̍̏̑̂̈́͑̔͋ö̯̘̩̖̣̣̳̳͉́͛̓̅̎ũ͙̤̭̥̲̫̫͇̯̍̄͂͂̃̀̿͌r̜͚̲̥̥̘̠͛̀́̓̈̀̒̅͋́̏ i̳̞̦͚̩̫̭̦̫̩͙͎͋̉͛̍̊͒̊̅́̋͐n̲͚̞̲͎̠̭̎́͑̽v̝̬̳͖͖͈͚̟̟͕̙̜͛̏̌͛̓i̤͈͖͓̳̙͕̯̤͍̯͂̅͐̚t͓̬̳̣̪̗̭̩͑̀͂̑̂̾̈̆̔͂̇̑a̠̜̜̝̱̲̠̫͓̞̦͂̊̑̒͗͒̅̊̈́̀̔͆ͅt̜̯͈̯̤͙̝̬̫̀̇͂̄̿̄͋̚̚ͅi͕̦̣͕̖͚͂͛̏̂̂͐̄̆͆̽̋o̰͙̪̭̭̦͙͖̔̒̈́́́̌̀̓̿̽n͚̳͖̫̮̦̣̬̣̄̈͛̓̎̚ e̜̣̦̟͕̠͉̬͉͈̖̓͆̀̑͂͌͐̓̓̊̾̚a̠̟̖͋̅̾̎̒̅͊́͗̐̚ͅr͈͖͖͚̣͕̲̂̅̍̑́̎̎͋̃̿̔̈l̫͔̙̭͉̝̮̟̲̈́̂̏̃̀̾̎̒́̄i͉͙̙͇̝̮̫̿̽̍̓̚e̳̮̯̣͐̂̿̓̂̊̄̇̿́̚ŕ̩͕͙̦̭͋̔̔.̱͚̮̙̱͙͍̘͉̮̜͋́̓͒̆̀̄̔̀̔";
+  // §强制显示意愿 100% 后：表面恢复年轻热情，但话术随“强制次数”逐级重复、瓦解。
   function forceLine(count) {
-    if (count <= 1) return t('aurora.forceLine1');
-    if (count === 2) return t('aurora.forceLine2');
-    if (count === 3) return t('aurora.forceLine3');
-    if (count === 4) return '當當當 請請請 言 青 心 欠';
-    if (count === 5) return `${rareHanString()}\nZ̠͉̳̞̪͂̄̌͛̄̋̔̒̓̅a̳͈̲̟̭̮͓͕̩̍̐̌̀͑̆̿ͅl̤͙͉̜̲̖͍̒̽͆̀̀̇g͓̭̲͓̟̫̝͊͒͐̓͊o͉̞͕͔̦͛̃̊͗̀̅.͓̯̲̣̳͚̦̭̃̇̌͑͂̇̔̃.̙̱̬̤͓̀͋͆͆͌̎ͅ.̬̳͚̥̥̪͉̜̆̀͐͒͛̾̏͗̿͗͊ͅ`;
-    return 'Z̠͉̳̞̪͂̄̌͛̄̋̔̒̓̅a̳͈̲̟̭̮͓͕̩̍̐̌̀͑̆̿ͅl̤͙͉̜̲̖͍̒̽͆̀̀̇g͓̭̲͓̟̫̝͊͒͐̓͊o͉̞͕͔̦͛̃̊͗̀̅.͓̯̲̣̳͚̦̭̃̇̌͑͂̇̔̃.̙̱̬̤͓̀͋͆͆͌̎ͅ.̬̳͚̥̥̪͉̜̆̀͐͒͛̾̏͗̿͗͊ͅ';
+    if (count >= 6) return FORCE_ZALGO;               // 最终：不变的乱码
+    return t(`aurora.forceLine${Math.max(1, count)}`); // 第1–5次：各自固定一句
+  }
+  // §唯一崩坏判定：只有用户在后台确认把“显示意愿”改为 100% 才会置位。
+  // 年龄、显示意愿默认值、控制台解锁标志(forceContinue/perfectHitRate)一律不得触发。
+  function isForcedNarration() {
+    const a = state?.aurora;
+    return Boolean(a && a.forced && (a.forceCount || 0) > 0);
   }
   function rareHanString() { const chars='𪚥𫜵𬺰𮯙𰻞𱁬𱍐𱎬𱑞𱚱𱞎𲎌𲔩𲘂𲵷𳅜𳖏𳞨𳢛𳰻𴉠𴟌𴲒𵝐𵧄'; return Array.from({length:10+Math.floor(Math.random()*11)},()=>Array.from(chars)[Math.floor(Math.random()*Array.from(chars).length)]).join(' '); }
 
@@ -1466,12 +1829,42 @@
 
   function pinballPointerPoint(e){ const r=pinballCanvas.getBoundingClientRect(); const p=e.touches?.[0] || e.changedTouches?.[0] || e; return {x:p.clientX-r.left,y:p.clientY-r.top}; }
   function pinballAimTo(x,y){ const sx=pinball.w*.5, sy=pinball.h-90; let a=Math.atan2(y-sy,x-sx); a=Math.max(-Math.PI+.18,Math.min(-.18,a)); pinball.aim=a; }
-  pinballCanvas?.addEventListener('pointermove', e=>{ if(!pinballGame.classList.contains('open')||pinball.ended) return; const p=pinballPointerPoint(e); if(!pinball.balls.length) pinballAimTo(p.x,p.y); });
-  pinballCanvas?.addEventListener('pointerdown', e=>{ if(!pinballGame.classList.contains('open')||pinball.paused||pinball.ended) return; e.preventDefault(); const p=pinballPointerPoint(e); if(pinball.balls.length){ addGravityTouch(p.x,p.y); return; } pinballAimTo(p.x,p.y); if(pinball.ballsLeft>0){ pinball.pointerDown={x:p.x,y:p.y,t:performance.now(),id:e.pointerId}; pinball.charging=true; pinball.chargeStart=performance.now(); } });
-  pinballCanvas?.addEventListener('pointerup', e=>{ if(!pinballGame.classList.contains('open')||pinball.paused||pinball.ended) return; e.preventDefault(); if(pinball.charging){ const p=pinballPointerPoint(e), down=pinball.pointerDown, held=performance.now()-pinball.chargeStart, moved=down?Math.hypot(p.x-down.x,p.y-down.y):0; if(held<150 && moved<12){ pinball.charging=false; pinball.pointerDown=null; return; } const power=Math.min(1.6,Math.max(.28,held/900)); launchPinballBall(power); pinball.pointerDown=null; } });
-  pinballCanvas?.addEventListener('pointercancel', e=>{ if(pinball.charging){ pinball.charging=false; pinball.pointerDown=null; } });
-  document.addEventListener('keydown', e=>{ if(!pinballGame?.classList.contains('open')) return; if(e.key==='ArrowLeft'){ e.preventDefault(); pinball.aim-=.08; } if(e.key==='ArrowRight'){ e.preventDefault(); pinball.aim+=.08; } if(e.key===' '&&!pinball.charging&&!pinball.balls.length&&!pinball.paused&&!pinball.ended){ e.preventDefault(); pinball.charging=true; pinball.chargeStart=performance.now(); } if(e.key.toLowerCase()==='p'){ e.preventDefault(); togglePinballPause(); } });
-  document.addEventListener('keyup', e=>{ if(!pinballGame?.classList.contains('open')) return; if(e.key===' '&&pinball.charging){ e.preventDefault(); const power=Math.min(1.6,(performance.now()-pinball.chargeStart)/900); launchPinballBall(power); } });
+  pinballCanvas?.addEventListener('pointermove', e=>{ if(!pinballGame.classList.contains('open')||pinball.ended) return; const p=pinballPointerPoint(e); if(pinball.balls.length){ return; }
+    // Only the captured pointer drives aim/charge; ignore other pointers.
+    if(pinball.launchState==='CHARGING'||pinball.launchState==='AIMING'){ if(e.pointerId!==pinball.pointerId) return; const s=pinball.pointerStart; const moved=s?Math.hypot(p.x-s.x,p.y-s.y):0; if(pinball.launchState==='CHARGING' && chargeHeldMs()>=MIN_CHARGE_TIME) pinball.launchState='AIMING'; if(moved>POINTER_DEAD_ZONE) pinballAimTo(p.x,p.y); }
+    else if(pinball.launchState==='IDLE'){ pinballAimTo(p.x,p.y); } });
+  pinballCanvas?.addEventListener('pointerdown', e=>{ if(!pinballGame.classList.contains('open')||pinball.paused||pinball.ended) return; e.preventDefault(); const p=pinballPointerPoint(e); if(pinball.balls.length){ addGravityTouch(p.x,p.y); return; } pinballAimTo(p.x,p.y);
+    // IDLE → CHARGING only; save pointer, capture, no fire.
+    if(pinball.launchState!=='IDLE' || pinball.keyLaunchActive || pinball.ballsLeft<=0) return;
+    pinball.pointerId=e.pointerId; pinball.pointerStart={x:p.x,y:p.y}; pinball.pointerStartTime=performance.now();
+    try{ pinballCanvas.setPointerCapture(e.pointerId); }catch(_){}
+    beginCharge();
+    window.clearTimeout(pinball.minChargeTimer);
+    pinball.minChargeTimer=window.setTimeout(()=>{ if(pinball.launchState==='CHARGING') pinball.launchState='AIMING'; }, MIN_CHARGE_TIME); });
+  pinballCanvas?.addEventListener('pointerup', e=>{ if(!pinballGame.classList.contains('open')) return;
+    // Sole fire entry. All conditions must hold.
+    if(e.pointerId!==pinball.pointerId){ return; }
+    e.preventDefault();
+    const held=chargeHeldMs();
+    const validState=(pinball.launchState==='CHARGING'||pinball.launchState==='AIMING');
+    if(validState && chargeMet() && !pinball.hasFired && canFireNow()){
+      const power=Math.min(1.6,Math.max(.28,held/MAX_CHARGE_TIME));
+      pinball.launchState='RELEASED'; pinball.hasFired=true;
+      try{ pinballCanvas.releasePointerCapture(pinball.pointerId); }catch(_){}
+      pinball.pointerId=null; window.clearTimeout(pinball.minChargeTimer); pinball.minChargeTimer=0;
+      launchPinballBall(power);
+      pinball.launchState='COOLDOWN'; // COOLDOWN → IDLE when next ball is ready (handled in loop)
+    } else {
+      // Not enough hold time / power → cancel charge, keep the ball, gentle hint, no consumption.
+      if(validState && !chargeMet()) showPinballToast(t('pinball.holdToCharge'));
+      resetLaunchState();
+    } });
+  pinballCanvas?.addEventListener('pointercancel', e=>{ if(e.pointerId!==pinball.pointerId) return; resetLaunchState(); });
+  document.addEventListener('keydown', e=>{ if(!pinballGame?.classList.contains('open')) return; if(e.key==='ArrowLeft'){ e.preventDefault(); pinball.aim-=.08; } if(e.key==='ArrowRight'){ e.preventDefault(); pinball.aim+=.08; }
+    // Space begins charge; ignore auto-repeat and any active pointer input.
+    if(e.key===' ' && !e.repeat && pinball.launchState==='IDLE' && !pinball.pointerId && !pinball.balls.length && canFireNow()){ e.preventDefault(); pinball.keyLaunchActive=true; beginCharge(); window.clearTimeout(pinball.minChargeTimer); pinball.minChargeTimer=window.setTimeout(()=>{ if(pinball.launchState==='CHARGING') pinball.launchState='AIMING'; }, MIN_CHARGE_TIME); }
+    if(e.key.toLowerCase()==='p'){ e.preventDefault(); togglePinballPause(); } });
+  document.addEventListener('keyup', e=>{ if(!pinballGame?.classList.contains('open')) return; if(e.key===' ' && pinball.keyLaunchActive){ e.preventDefault(); const held=chargeHeldMs(); const validState=(pinball.launchState==='CHARGING'||pinball.launchState==='AIMING'); if(validState && chargeMet() && !pinball.hasFired && canFireNow()){ const power=Math.min(1.6,Math.max(.28,held/MAX_CHARGE_TIME)); pinball.launchState='RELEASED'; pinball.hasFired=true; pinball.keyLaunchActive=false; window.clearTimeout(pinball.minChargeTimer); pinball.minChargeTimer=0; launchPinballBall(power); pinball.launchState='COOLDOWN'; } else { if(validState && !chargeMet()) showPinballToast(t('pinball.holdToCharge')); resetLaunchState(); } } });
 
   ageForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -1480,8 +1873,8 @@
     ageError.textContent = ''; startSession(age);
   });
   verifyAge.addEventListener('click', () => openVerification('manual'));
-  verifyClose.addEventListener('click', () => { addLog(t('log.cancelled')); closeVerification(); showToast(t('toast.cancelled')); });
-  verifyKeep.addEventListener('click', () => { state.lastVerifiedAt = nowIso(); saveState(); renderAge(); addLog(t('log.kept', { age: state.age })); closeVerification(); });
+  verifyClose.addEventListener('click', () => { addLog('log.cancelled'); closeVerification(); showToast(t('toast.cancelled')); });
+  verifyKeep.addEventListener('click', () => { state.lastVerifiedAt = nowIso(); saveState(); renderAge(); addLog('log.kept', { age: state.age }); closeVerification(); });
   verifyIncrease.addEventListener('click', () => {
     if (state.age >= 100) { updateAge(0, verifyModal.dataset.source || 'manual'); return; }
     verifyChoiceRow.hidden = true;
@@ -1515,7 +1908,7 @@
   clearIdentity.addEventListener('click', () => {
     localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LEGACY_STORAGE_KEY); window.clearInterval(verifyTimer);
     closeModal(restartModal); closeModal(verifyModal); closeModal(consoleModal); closeModal(endingModal);
-    place.classList.remove('open'); place.setAttribute('aria-hidden', 'true'); closeAuroraRelay(); closePinball(); state = null;
+    place.classList.remove('open'); place.setAttribute('aria-hidden', 'true'); closeAuroraRelay(); closePinball(); window.eazoMarket?.close?.(); window.eazoFx?.clearAll?.(); state = null;
     shell.className = 'app-shell awaiting-age';
     nodes.forEach(node => { node.classList.remove('restricted', 'just-opened', 'new-console'); if (node.dataset.node?.startsWith('console-')) node.classList.add('hidden-admin'); });
     renderAge(); openModal(ageGate); window.setTimeout(() => initialAgeInput.focus({ preventScroll: true }), 80);
@@ -1551,9 +1944,12 @@
   });
 
   window.addEventListener('resize', () => { window.requestAnimationFrame(resize); if (pinballGame?.classList.contains('open')) { resizePinballCanvas(); seedPinballStars(); } });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { if(pinball.launchState!=='IDLE') resetLaunchState(); } else { pinball.last = performance.now(); pinball.acc = 0; auroraRuntime.last = performance.now(); } });
+  window.addEventListener('blur', () => { pinball._blurred = true; if(pinball.launchState!=='IDLE') resetLaunchState(); });
+  window.addEventListener('focus', () => { pinball.last = performance.now(); pinball.acc = 0; pinball._blurred = false; auroraRuntime.last = performance.now(); });
   window.addEventListener('blur', () => { if (pinballGame?.classList.contains('open')) pinball.paused = true; });
   window.addEventListener('focus', () => { if (pinballGame?.classList.contains('open') && !pinball.ended) pinball.paused = false; });
-  window.addEventListener('eazo:localechange', () => { renderAge(); if (state) applyAgeVisuals(); if (auroraGame.classList.contains('open')) renderAuroraHud(); if (pinballGame?.classList.contains('open')) renderPinballHud(); });
+  window.addEventListener('eazo:localechange', () => { renderAge(); renderLog(); if (state) applyAgeVisuals(); if (auroraGame.classList.contains('open')) renderAuroraHud(); if (pinballGame?.classList.contains('open')) renderPinballHud(); });
 
   buildConsoleDom(); resize(); if (!reduced) requestAnimationFrame(loop); window.eazoI18n?.ready?.then(restoreSession).catch(restoreSession);
 })();

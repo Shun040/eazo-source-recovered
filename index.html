@@ -7,6 +7,21 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <!-- ── GLOBAL EFFECT LAYERS (site-wide, pointer-events:none) ── -->
+  <svg class="fx-svg" aria-hidden="true" width="0" height="0">
+    <defs>
+      <filter id="fx-refract" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="noise">
+          <animate attributeName="baseFrequency" dur="24s" values="0.008 0.012;0.010 0.009;0.008 0.012" repeatCount="indefinite" />
+        </feTurbulence>
+        <feDisplacementMap id="fx-refract-map" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+  <div class="fx-overlay fx-overlay-color" aria-hidden="true"></div>
+  <div class="fx-overlay fx-overlay-ripple" aria-hidden="true"></div>
+  <div class="fx-toast" id="fx-summary-toast" role="status" aria-live="polite" aria-hidden="true"></div>
+
   <main class="app-shell awaiting-age" aria-labelledby="app-title">
     <canvas id="starfield" aria-hidden="true"></canvas>
 
@@ -26,25 +41,25 @@
 
     <section id="map" class="map" aria-label="互动节点星图">
       <button class="node primary" data-node="aurora" style="--x:18; --y:28;" aria-label="极光弹珠台 A–17，五颗光等待发射">
-        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>极光弹珠台</strong><em>A–17</em><small>五颗光等待发射</small></span>
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.aurora.title">极光弹珠台</strong><em>A–17</em><small data-i18n="nodes.aurora.status">五颗光等待发射</small></span>
       </button>
       <button class="node small" data-node="snow" style="--x:55; --y:18;" aria-label="没有规则的雪仗 S–03，重力尚未确定">
-        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>没有规则的雪仗</strong><em>S–03</em><small>重力尚未确定</small></span>
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="snow.title">没有规则的雪仗</strong><em>S–03</em><small data-i18n="snow.nodeStatus">重力尚未确定</small></span>
       </button>
-      <button class="node small" data-node="secret" style="--x:78; --y:34;" aria-label="秘密交换 K–11，1 条未打开的信息">
-        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>秘密交换</strong><em>K–11</em><small>1 条未打开的信息</small></span>
+      <button class="node small label-left" data-node="secret" style="--x:78; --y:34;" aria-label="秘密交换 K–11，1 条未打开的信息">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.secret.title">秘密交换</strong><em>K–11</em><small data-i18n="nodes.secret.status">1 条未打开的信息</small></span>
       </button>
       <button class="node primary age-gated" data-node="creature" style="--x:38; --y:54;" aria-label="共同创造生物 B–06，生命尚未分类">
-        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>共同创造生物</strong><em>B–06</em><small>生命尚未分类</small></span>
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.creature.title">共同创造生物</strong><em>B–06</em><small data-i18n="nodes.creature.status">生命尚未分类</small></span>
       </button>
-      <button class="node primary age-gated" data-node="market" style="--x:70; --y:62;" aria-label="夜间超市 M–04，持续营业">
-        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>夜间超市</strong><em>M–04</em><small>持续营业</small></span>
+      <button class="node primary age-gated label-left" data-node="market" style="--x:70; --y:62;" aria-label="夜间超市 M–04，持续营业">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.market.title">夜间超市</strong><em>M–04</em><small data-i18n="nodes.market.status">持续营业</small></span>
       </button>
       <button class="node small" data-node="echo" style="--x:23; --y:76;" aria-label="回声校准 V–09，等待同步信号">
-        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>回声校准</strong><em>V–09</em><small>等待同步信号</small></span>
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.echo.title">回声校准</strong><em>V–09</em><small data-i18n="nodes.echo.status">等待同步信号</small></span>
       </button>
-      <button class="node disabled" data-node="restore" style="--x:83; --y:82;" aria-label="恢复室 R–00，权限不可见，默认不可点击" aria-disabled="true">
-        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong>恢复室</strong><em>R–00</em><small>权限不可见</small></span>
+      <button class="node disabled label-left" data-node="restore" style="--x:83; --y:82;" aria-label="恢复室 R–00，权限不可见，默认不可点击" aria-disabled="true">
+        <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.restore.title">恢复室</strong><em>R–00</em><small data-i18n="nodes.restore.status">权限不可见</small></span>
       </button>
       <div id="console-layer" class="console-layer" aria-label="后台控制台星体层"></div>
       <svg class="route-lines" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -156,6 +171,97 @@
       <button id="pinball-pause" class="back-button pinball-pause" type="button" data-i18n="pinball.pause">暂停</button>
     </section>
 
+    <section id="snow-game" class="snow-game" aria-hidden="true" aria-labelledby="snow-title">
+      <canvas id="snow-field" class="snow-field" aria-hidden="true"></canvas>
+      <canvas id="snow-npc-model" class="snow-npc-model" aria-hidden="true"></canvas>
+      <canvas id="snow-fx" class="snow-fx" aria-hidden="true"></canvas>
+      <div class="snow-title-block">
+        <p class="place-code">S–03 / A GAME WITH NO RULES</p>
+        <h2 id="snow-title" data-i18n="snow.title">没有规则的雪仗</h2>
+      </div>
+      <p id="snow-npc-line" class="snow-npc-line" aria-live="polite"></p>
+      <div id="snow-readouts" class="snow-readouts" aria-hidden="true"></div>
+      <div id="snow-toast" class="snow-toast" role="status" aria-live="polite"></div>
+      <button id="snow-back" class="back-button snow-back" type="button" data-i18n="place.back">返回星图</button>
+      <button id="snow-admin-toggle" class="snow-admin-toggle" type="button" aria-controls="snow-admin" aria-expanded="false" hidden>后台</button>
+      <aside id="snow-admin" class="snow-admin collapsed" aria-label="S–03 后台控制" hidden>
+        <button id="snow-admin-close" class="snow-admin-close" type="button" aria-label="收起后台">×</button>
+        <p class="modal-kicker" data-i18n="snow.adminTitle">S–03 后台控制 / 合成数据</p>
+        <div id="snow-metrics" class="snow-metrics"></div>
+        <div id="snow-controls" class="snow-controls"></div>
+      </aside>
+    </section>
+
+    <section id="market-game" class="market-game" aria-hidden="true" aria-labelledby="market-title">
+      <div class="market-ceiling" aria-hidden="true"><span></span><span></span><span></span></div>
+      <header class="market-top">
+        <p class="place-code">M–04 / NIGHT SUPERMARKET</p>
+        <h2 id="market-title" data-i18n="market.title">夜间超市</h2>
+        <p class="market-meta">
+          <span data-i18n="market.ageLabel">制度年龄</span>
+          <strong id="market-age">--</strong>
+          <span class="market-sep">·</span>
+          <span id="market-open" data-i18n="market.openStatus">营业中</span>
+        </p>
+      </header>
+
+      <p id="market-npc-line" class="market-npc-line" aria-live="polite"></p>
+
+      <div id="market-shelf" class="market-shelf" aria-label="货架"></div>
+
+      <aside class="market-cart" aria-label="购物篮">
+        <p class="market-cart-title" data-i18n="market.cartTitle">购物篮</p>
+        <ul id="market-cart-list" class="market-cart-list"></ul>
+        <p id="market-cart-empty" class="market-cart-empty" data-i18n="market.cartEmpty">购物篮是空的。</p>
+        <div class="market-cart-foot">
+          <span><span data-i18n="market.total">合计</span> <strong id="market-cart-total">0</strong> <span data-i18n="market.currency">信用</span></span>
+          <button id="market-checkout" class="modal-action" type="button" data-i18n="market.checkout">申请临时状态</button>
+        </div>
+      </aside>
+
+      <section id="market-receipt" class="market-receipt" aria-live="polite" aria-hidden="true"></section>
+
+      <div class="market-cashier" aria-hidden="true"><span class="market-clerk"></span></div>
+
+      <button id="market-back" class="back-button market-back" type="button" data-i18n="place.back">返回星图</button>
+    </section>
+
+    <!-- 商品详情卡 -->
+    <div id="market-detail" class="market-detail-layer" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="market-detail-card">
+        <button id="market-detail-close" class="modal-close" type="button" aria-label="关闭">×</button>
+        <p class="market-detail-code" id="market-detail-code"></p>
+        <h3 id="market-detail-name"></h3>
+        <p id="market-detail-desc" class="market-detail-desc"></p>
+        <dl class="market-detail-facts">
+          <div><dt data-i18n="market.priceLabel">价格</dt><dd id="market-detail-price"></dd></div>
+          <div><dt data-i18n="market.durationLabel">持续时间</dt><dd id="market-detail-duration"></dd></div>
+        </dl>
+        <div class="market-detail-actions">
+          <button id="market-detail-cart" class="modal-action secondary" type="button" data-i18n="market.addToCart">加入购物篮</button>
+          <button id="market-detail-buy" class="modal-action" type="button" data-i18n="market.requestNow">申请临时状态</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 彩票刮奖 -->
+    <div id="market-lottery" class="market-lottery-layer" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="market-lottery-card">
+        <button id="market-lottery-close" class="modal-close" type="button" aria-label="关闭">×</button>
+        <p class="market-detail-code">TICKET / M–04</p>
+        <h3 data-i18n="market.lotteryTitle">廉价彩票</h3>
+        <p class="market-detail-desc" data-i18n="market.lotteryHint">拖动刮开涂层。</p>
+        <div class="market-scratch-wrap">
+          <div id="market-scratch-prize" class="market-scratch-prize"></div>
+          <canvas id="market-scratch" class="market-scratch"></canvas>
+        </div>
+        <p id="market-lottery-result" class="market-lottery-result" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <!-- 角落：仍在生效的临时状态 -->
+    <div id="fx-corner" class="fx-corner" aria-live="polite" aria-hidden="true"></div>
+
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="transition" class="transition" aria-hidden="true"></div>
 
@@ -239,7 +345,11 @@
     { "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/examples/jsm/" } }
   </script>
   <script src="./i18n.js" defer></script>
+  <script src="./fx.js" defer></script>
   <script src="./app.js?v=aurora-pinball-2" defer></script>
+  <script src="./snow.js?v=snow-1" defer></script>
+  <script src="./market.js?v=market-1" defer></script>
+  <script type="module" src="./snow-npc.js?v=snow-npc-4"></script>
   <script type="module" src="./aurora-npc-particles.js?v=aurora-pinball-2"></script>
 </body>
 </html>

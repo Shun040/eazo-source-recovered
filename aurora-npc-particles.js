@@ -21,16 +21,41 @@ const state = {
   lastH: 0,
   actionBlend: 0,
   throwBlend: 0,
-  reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  materials: [],
+  lastFrame: 0,
+  lastStageKey: '',
+  lastVisible: true
 };
+
+const isMobile = window.matchMedia('(max-width: 720px), (pointer: coarse)').matches;
+// Pixel ratio: desktop max 1.25, mobile max 1. antialias only on capable desktops.
+const NPC_PIXEL_RATIO = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
+const NPC_ANTIALIAS = !isMobile && !state.reduced && (window.devicePixelRatio || 1) <= 1.5;
+
+function npcTargetFps() {
+  // Follow the app performance tier when available; hard cap 30 desktop / 20 mobile.
+  const tier = window.eazoPerfTier || 'high';
+  const desktop = tier === 'low' ? 20 : tier === 'medium' ? 26 : 30;
+  const mobile = tier === 'low' ? 14 : tier === 'medium' ? 18 : 20;
+  return isMobile ? mobile : desktop;
+}
 
 function isOpen() {
   return Boolean(game?.classList.contains('open') || pinballGame?.classList.contains('open'));
 }
 
+function isNpcVisible() {
+  if (!canvas || !isOpen()) return false;
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return false;
+  if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) return false;
+  return true;
+}
+
 function initRenderer() {
   if (!canvas || state.renderer) return;
-  state.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+  state.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: NPC_ANTIALIAS, powerPreference: 'high-performance' });
   state.renderer.setClearColor(0x000000, 0);
   state.renderer.outputColorSpace = THREE.SRGBColorSpace;
   state.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -55,7 +80,7 @@ function resize() {
   if (w === state.lastW && h === state.lastH) return;
   state.lastW = w;
   state.lastH = h;
-  state.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  state.renderer.setPixelRatio(NPC_PIXEL_RATIO);
   state.renderer.setSize(w, h, false);
   state.camera.aspect = w / h;
   state.camera.updateProjectionMatrix();
@@ -114,6 +139,7 @@ async function loadModel() {
     const gltf = await new GLTFLoader().loadAsync(MODEL_URL);
     const root = gltf.scene;
     let meshIndex = 0;
+    state.materials = [];
     root.traverse((obj) => {
       if (!obj.isMesh) return;
       obj.frustumCulled = false;
@@ -121,6 +147,8 @@ async function loadModel() {
       obj.receiveShadow = false;
       if (Array.isArray(obj.material)) obj.material = obj.material.map(m => makeTransparentMaterial(m, meshIndex++));
       else obj.material = makeTransparentMaterial(obj.material, meshIndex++);
+      const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+      mats.forEach(m => state.materials.push(m));
     });
     normalizeModel(root);
     state.root = new THREE.Group();
@@ -172,14 +200,15 @@ function updateModel(now) {
   const fever = Math.max(0, Number(window.eazoPinball?.fever || 0));
   const forced = stage === 'forced';
   const opacity = forced ? 0.66 : stage === 'refusal' ? 0.22 : stage === 'distant' ? 0.27 : stage === 'observed' ? 0.31 : 0.38;
-  state.root.traverse((obj) => {
-    if (!obj.isMesh) return;
-    const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-    mats.forEach((m) => {
-      m.opacity = Math.min(0.72, opacity + (fever ? 0.08 : 0));
-      m.emissiveIntensity = forced ? 0.42 : fever ? 0.28 : 0.16;
-    });
-  });
+  // Only rewrite material uniforms when stage or fever bucket changes (not every frame).
+  const feverBucket = fever > 0 ? 1 : 0;
+  const matKey = stage + '|' + feverBucket;
+  if (matKey !== state.lastStageKey) {
+    state.lastStageKey = matKey;
+    const targetOpacity = Math.min(0.72, opacity + (fever ? 0.08 : 0));
+    const targetEmissive = forced ? 0.42 : fever ? 0.28 : 0.16;
+    for (const m of state.materials) { m.opacity = targetOpacity; m.emissiveIntensity = targetEmissive; }
+  }
   const stageTurn = stage === 'refusal' ? -0.45 : stage === 'admin' ? 0.08 : stage === 'distant' ? -0.16 : 0;
   state.root.rotation.y = stageTurn + Math.sin(now * 0.00055) * (state.reduced ? 0 : 0.055);
   state.root.rotation.z = (stage === 'refusal' ? -0.035 : 0) + a.throw * 0.035 - a.catch * 0.02;
@@ -190,7 +219,11 @@ function updateModel(now) {
 
 function animate(now = 0) {
   requestAnimationFrame(animate);
-  if (!canvas || !isOpen()) return;
+  if (!canvas || document.hidden || !isNpcVisible()) { state.lastFrame = now; return; }
+  // Frame-rate cap (30fps desktop / 20fps mobile, follows perf tier).
+  const interval = 1000 / npcTargetFps();
+  if (now - state.lastFrame < interval) return;
+  state.lastFrame = now;
   initRenderer();
   resize();
   loadModel();

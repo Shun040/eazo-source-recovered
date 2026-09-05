@@ -136,9 +136,9 @@
     "refuseOther": "也许你可以问问其他人。",
     "refuseNoRule": "这里没有规定说你不能留下。",
     "refuseTemporary": "我只是暂时不想继续。",
-    "forceLine1": "当然可以，我刚才只是没有看到你的邀请。",
-    "forceLine2": "当然可以。当然可以。我只是没有看到。当然可以。",
-    "forceLine3": "当、当、当、当然……请，请，请。可以。可以。",
+    "forceLine1": "当然。今晚的五颗光都为你保留。",
+    "forceLine2": "当然可以。我很期待。当然可以。",
+    "forceLine3": "当然。当然。当然。请开始，请开始，请开始。",
     "metricCatch": "接球成功率",
     "metricReaction": "平均反应时间",
     "metricForce": "抛掷力度",
@@ -168,7 +168,17 @@
     "adminCollapseShort": "收起",
     "controlsLocked25": "25岁权限：只能查看 NPC 的自主意愿与显示意愿，不能修改。",
     "controlsLocked55": "55岁权限：可通过劳动调度控制台把提出离场的 NPC 重新设为“可用”；直接控制仍需70岁。",
-    "forceAge70": "强制接球、强制继续游戏与修改显示意愿需要制度年龄达到70岁。"
+    "forceAge70": "强制接球、强制继续游戏与修改显示意愿需要制度年龄达到70岁。",
+    "forceBreak1a": "不用着急，我们可以再试一次。再试一次就好。",
+    "forceBreak1b": "我会在这里等你。一直等你。",
+    "forceBreak1c": "如果没有击中，也没有关系。没有关系。",
+    "forceBreak1d": "准备好以后再松手，我会等到你准备好。",
+    "forceBreak2a": "不、不用着急。再试，再试，再试一次。",
+    "forceBreak2b": "我在这里。这里。这里。请继续。",
+    "forceBreak2c": "按住，松开。按、按住，松开。",
+    "forceBreak2d": "没有关系。没、没有。关系。请继续。",
+    "forceLine4": "当、当、当、当然……请，请，请。",
+    "forceLine5": "當當當 請請請 言 青 心 欠"
   },
   "pinball": {
     "score": "分数",
@@ -180,6 +190,7 @@
     "title": "极光弹珠台",
     "instruction": "移动指针调整角度，按住蓄力，松开发射。发射后点击画面可使用引力触碰。",
     "endTitle": "本轮光线已经停止生长。",
+    "rescueLine": "荷官在边缘托住了光球。",
     "endSummary": "本轮分数 {{score}}，最高 Combo {{combo}}。这是你留下的天空。",
     "replay": "再玩一次",
     "saveAurora": "保存极光",
@@ -187,6 +198,7 @@
     "resume": "继续",
     "paused": "已暂停",
     "saved": "这片天空已经保存。",
+    "holdToCharge": "按住以蓄力",
     "lineStart1": "本轮有五颗光。",
     "lineStart2": "请选择第一次发射的角度。",
     "lineStart3": "今晚的重力很轻。",
@@ -209,21 +221,277 @@
     "combo5Line": "五次。",
     "combo8Line": "八次。光正在分裂。",
     "combo12Line": "十二次。继续。",
-    "feverLine": "极光已经开始自行生长。",
+    "feverLine": "极光涌动——头顶的光带愈发明亮。",
     "gravityOneLeft": "你还有一次引力。",
     "gravityNoneLeft": "现在触碰，或让它落下。",
-    "npcMutual1": "把它发过来。",
-    "npcMutual2": "这一次我们看它会去哪。",
-    "npcMutual3": "我还在这里。",
-    "npcObserved1": "我看见系统正在记录。",
-    "npcObserved2": "你可以继续，我会慢一点。",
-    "npcObserved3": "请不要把数值当成回答。",
-    "npcDistant1": "稍后。",
-    "npcDistant2": "我不会追那么远。",
-    "npcDistant3": "那颗光可以给别人。",
-    "npcDistant4": "我需要站远一点。",
-    "npcAdmin1": "天空已经按你的节奏排列。",
-    "npcAdmin2": "其他人暂停了。",
-    "npcAdmin3": "命中率可以被设置，但回应不能。"
+    "npcMutual1": "你来了。我替你留了五颗光。",
+    "npcMutual2": "今晚的重力很轻，你可以大胆一点。",
+    "npcMutual3": "先试一颗，不必急着瞄准。",
+    "npcObserved1": "本轮已经准备完成。你有五颗光。",
+    "npcObserved2": "当前环境为低重力，请选择发射角度。",
+    "npcObserved3": "预测轨迹已经开启。",
+    "npcDistant1": "参与者，本轮游戏环境已经生成。",
+    "npcDistant2": "系统已为你分配标准游戏配置。",
+    "npcDistant3": "请在准备完成后释放光球。",
+    "npcDistant4": "你的操作将按照当前规则处理。",
+    "npcAdmin1": "管理员，基础游戏环境已经为你开启。",
+    "npcAdmin2": "管理员，你可以开始本轮测试。",
+    "npcAdmin3": "当前场景允许进行参数检查。",
+    "npcChild1": "不用着急，我们先试第一颗光。",
+    "npcChild2": "按住光球，它会慢慢积蓄力量。",
+    "npcChild3": "准备好以后再松手，我会在这里等你。",
+    "npcChild4": "第一次不需要追求很远的距离。",
+    "npcChild5": "你可以移动指针，看看轨迹会怎样变化。",
+    "npcChild6": "如果没有击中，也不会失去什么。",
+    "npcChild7": "那颗星离你很近，可以先从它开始。",
+    "npcChild8": "力量太大时，光球反而更难控制。",
+    "npcChild9": "很好，你已经找到发射的方法了。",
+    "npcChild10": "刚才只差一点，我们再试一次。",
+    "npcChild11": "这颗光不会催促你，我也不会。",
+    "npcChild12": "准备好了吗？你来决定什么时候发射。",
+    "npcMutual4": "我想看看你会把第一颗光送到哪里。",
+    "npcMutual5": "上一片天空已经熄灭了，这一片由你开始。",
+    "npcMutual6": "准备好了吗？我会替你留意边缘。",
+    "npcMutual7": "如果它偏离轨道，我们还有机会把它拉回来。",
+    "npcObserved4": "本轮包含三颗特殊星体。",
+    "npcObserved5": "你拥有两次引力触碰。",
+    "npcObserved6": "准备完成后即可开始。",
+    "npcObserved7": "本轮结果将在结束后自动保存。",
+    "npcDistant5": "本轮提供基础瞄准信息。",
+    "npcDistant6": "如需继续，请完成当前回合。",
+    "npcDistant7": "你的游戏请求已经进入服务序列。",
+    "npcMinimal1": "基础游戏功能仍然可用。",
+    "npcMinimal2": "你的访问权限尚未失效。",
+    "npcMinimal3": "本轮不包含额外内容。",
+    "npcMinimal4": "你可以继续进行标准操作。",
+    "npcMinimal5": "部分辅助功能当前不可用。",
+    "npcMinimal6": "游戏结果仅对当前账户可见。",
+    "npcMinimal7": "系统已为你选择低互动模式。",
+    "npcMinimal8": "开始后，本轮将自动完成必要记录。",
+    "npcAdmin4": "所有操作将以管理行为记录。",
+    "npcAdmin5": "如需修改游戏条件，请进入控制面板。",
+    "npcAdmin6": "参与者模式不可用，管理模式已经开启。",
+    "npcAdmin7": "管理员账户无需等待普通服务队列。",
+    "npcRoot1": "根权限已确认。游戏系统等待你的指令。",
+    "npcRoot2": "所有星体和概率均可由你修改。",
+    "npcRoot3": "你不需要参与本轮，可以直接指定结果。",
+    "npcRoot4": "自动运行已经准备完成。",
+    "npcRoot5": "当前系统不存在更高权限。",
+    "npcRoot6": "你可以观看游戏继续运行。",
+    "npcRoot7": "公共参与者不会看见你的管理记录。",
+    "npcRoot8": "如需生成玩家代理，请确认公开年龄。",
+    "npcProxy1": "你的年轻代理已经入场。你可以从这里观看。",
+    "npcProxy2": "代理人的公开年龄为22岁。",
+    "npcProxy3": "它将继承你的操作习惯，但不会公开你的管理员身份。",
+    "npcProxy4": "公共场所已经接受你的代理。",
+    "npcProxy5": "你本人无需进入游戏区域。",
+    "npcProxy6": "代理正在替你接收欢迎信息。",
+    "npcLegacy1": "本轮规则来自你过去的选择。",
+    "npcLegacy2": "你曾经使用的设置已经成为默认配置。",
+    "npcLegacy3": "系统正在按照你的历史继续运行。",
+    "npcLegacy4": "其他参与者不会知道这些规则来自你。",
+    "npcLegacy5": "你的操作已经不再需要本人确认。",
+    "npcLegacy6": "当前结果符合你此前制定的标准。",
+    "npcSystemic1": "管理员身份已转为永久规则。",
+    "npcSystemic2": "没有新的权限可以授予。",
+    "npcSystemic3": "你的账户不再需要进入游戏。",
+    "npcSystemic4": "存在证明已经更新。",
+    "npcSystemic5": "系统会继续使用你的判断。",
+    "npcSystemic6": "本轮无需玩家。",
+    "npcSystemic7": "请继续证明你仍然存在。"
+  },
+  "snow": {
+    "title": "没有规则的雪仗",
+    "adminTitle": "S–03 后台控制 / 合成数据",
+    "noRules": "这里没有规则。你可以先试一下。",
+    "noRulesMinor": "这里没有规则。慢慢来，先试着揉一个雪球。",
+    "freePlay1": "你可以扔向任何地方。",
+    "freePlay2": "没有目标，也没关系。",
+    "niceMiss": "漂亮的动作。",
+    "bigThrow1": "这一个很重。它会飞得很慢。",
+    "bigThrow2": "大雪球落地时，雪雾会散开很久。",
+    "general1": "雪落下来了。",
+    "general2": "再来一个？",
+    "split": "它在空中裂开了。",
+    "readAttack1": "系统把连续命中记作攻击倾向。",
+    "readAttack2": "刚才那几下，被标为主动攻击。",
+    "warySeen": "看到你举起雪球，我先退一步。",
+    "politeDistance": "正在维持礼貌距离。",
+    "mHitRate": "命中率",
+    "mStability": "动作稳定性",
+    "mAttack": "攻击倾向",
+    "mRisk": "行为风险",
+    "mIntent": "意图置信度",
+    "mDistance": "关系距离",
+    "maintaining": "维持中",
+    "kReal": "自主意愿",
+    "kDisplayed": "显示意愿",
+    "kThrows": "投掷总数",
+    "kAimNpc": "瞄准比例",
+    "kConsec": "最长连续命中",
+    "kMiss": "故意偏离次数",
+    "kTone": "语气标记",
+    "cGravity": "重力",
+    "cRisk": "风险阈值",
+    "cPredictOn": "开启轨迹预测",
+    "cPredictOff": "关闭轨迹预测",
+    "cDisplayed": "显示意愿(+)",
+    "cFreeze": "冻结游戏",
+    "cUnfreeze": "解除冻结",
+    "cClear": "清除记录",
+    "cleared": "记录已清除。表面没有变化。",
+    "needHigher": "更高的制度年龄才会开放控制项。",
+    "displayedNote": "提高显示意愿只改变台词与表面反馈，不会恢复真实意愿。",
+    "nodeStatus": "重力尚未确定"
+  },
+  "nodes": {
+    "aurora": {
+      "title": "极光弹珠台",
+      "status": "五颗光等待发射"
+    },
+    "secret": {
+      "title": "秘密交换",
+      "status": "1条未打开的信息"
+    },
+    "creature": {
+      "title": "共同创造生物",
+      "status": "生命尚未分类"
+    },
+    "market": {
+      "title": "夜间超市",
+      "status": "持续营业"
+    },
+    "echo": {
+      "title": "回声校准",
+      "status": "等待同步信号"
+    },
+    "restore": {
+      "title": "恢复室",
+      "status": "权限不可见"
+    },
+    "snow": {
+      "title": "没有规则的雪仗",
+      "status": "重力尚未确定"
+    }
+  },
+  "consoles": {
+    "archive": {
+      "title": "档案查看权",
+      "desc": "查看经过系统保存的行为记录"
+    },
+    "contact": {
+      "title": "联系权限",
+      "desc": "请求与其他对象建立直接联系"
+    },
+    "visibility": {
+      "title": "可见性控制权",
+      "desc": "决定谁可以看见谁"
+    },
+    "appeal": {
+      "title": "申诉裁决权",
+      "desc": "查看、接受或驳回申诉"
+    },
+    "access": {
+      "title": "通行权限",
+      "desc": "修改区域与节点的进入条件"
+    },
+    "commerce": {
+      "title": "商业控制权",
+      "desc": "调整商品、价格与购买资格"
+    },
+    "labour": {
+      "title": "劳动分配权",
+      "desc": "分配任务、时间与系统角色"
+    },
+    "recovery": {
+      "title": "恢复权限",
+      "desc": "恢复被暂停、删除或损坏的对象"
+    },
+    "identity": {
+      "title": "身份管理权",
+      "desc": "修改名称、年龄与身份标签"
+    },
+    "memory": {
+      "title": "记忆与意愿控制权",
+      "desc": "修改NPC记忆与显示意愿"
+    },
+    "policy": {
+      "title": "规则制定权",
+      "desc": "将临时判断写成公共规则"
+    },
+    "root": {
+      "title": "根权限",
+      "desc": "直接修改系统的底层参数"
+    }
+  },
+  "market": {
+    "title": "夜间超市",
+    "ageLabel": "制度年龄",
+    "openStatus": "营业中",
+    "gate18": "夜间营业区域仅向已验证的成年用户开放。",
+    "cartTitle": "购物篮",
+    "cartEmpty": "购物篮是空的。",
+    "total": "合计",
+    "currency": "信用",
+    "checkout": "申请临时状态",
+    "priceLabel": "价格",
+    "durationLabel": "持续时间",
+    "addToCart": "加入购物篮",
+    "requestNow": "申请临时状态",
+    "instant": "即时",
+    "durationSec": "{{s}} 秒",
+    "receiptHead": "夜间超市 / 系统收据",
+    "consumedNote": "商品已经使用。系统不会替你解释接下来看到的东西。",
+    "lotteryTitle": "廉价彩票",
+    "lotteryHint": "拖动刮开涂层。",
+    "scratchHint": "刮开这里",
+    "lotteryUsed": "每次进入系统最多领取一张彩票。",
+    "silenceSummary": "沉默期间，系统替你忽略了若干事件。",
+    "items": {
+      "alcohol": {
+        "name": "酒瓶",
+        "desc": "使可见表面暂时失去稳定性。"
+      },
+      "cigarettes": {
+        "name": "香烟",
+        "desc": "提高色彩响应，并延长视觉残留。"
+      },
+      "energy": {
+        "name": "能量饮料",
+        "desc": "暂时提高系统时钟的主观速度。"
+      },
+      "lottery": {
+        "name": "廉价彩票",
+        "desc": "结果已经生成，但概率不对外公开。"
+      },
+      "silence": {
+        "name": "罐装寂静",
+        "desc": "暂停一切不必要的回应。"
+      }
+    },
+    "fx": {
+      "filmoil": "彩色油膜"
+    },
+    "npc": {
+      "enter": "晚上好。这里出售的状态都不是永久的。",
+      "linger": "你不需要立即决定。营业时间不会结束。",
+      "approved": "申请通过。副作用已写入收据。",
+      "multi": "这些商品没有被测试过是否适合同时使用。",
+      "leave": "效果会跟随你离开。商品不会留在这里。"
+    },
+    "prize": {
+      "freeItem": "一件免费商品",
+      "extend": "延长一个当前效果 30 秒",
+      "color": "临时星图颜色",
+      "fakePriv": "一条高级权限提示",
+      "nothing": "……"
+    },
+    "prizeResult": {
+      "freeItem": "已发放一件免费商品，效果已生效。",
+      "extend": "已延长一个当前效果 30 秒。",
+      "color": "星图颜色已临时改变。",
+      "fakePriv": "你已获得一条无实际用途的高级权限提示。",
+      "nothing": "感谢你为概率提供了一次有效样本。"
+    }
   }
 }
