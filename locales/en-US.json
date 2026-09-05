@@ -304,6 +304,8 @@
     "title": "Unruled Snow",
     "adminTitle": "S–03 BACKSTAGE / SYNTHETIC DATA",
     "noRules": "There are no rules here. You can try first.",
+    "soundOn": "Sound: On",
+    "soundOff": "Sound: Off",
     "noRulesMinor": "There are no rules here. Take your time — try kneading a snowball.",
     "freePlay1": "You can throw anywhere.",
     "freePlay2": "No target is fine too.",
@@ -437,6 +439,7 @@
     "priceLabel": "Price",
     "durationLabel": "Duration",
     "addToCart": "Add to basket",
+    "modelHint": "Drag to rotate · Scroll to approach",
     "requestNow": "Request temporary state",
     "instant": "Instant",
     "durationSec": "{{s}} s",
@@ -453,12 +456,12 @@
         "desc": "Temporarily destabilizes visible surfaces."
       },
       "cigarettes": {
-        "name": "Cigarettes",
-        "desc": "Increases chromatic response and visual persistence."
+        "name": "VAPOUR RECOVERY UNIT",
+        "desc": "Reduces the sharpness of external information to temporarily restore local perception."
       },
       "energy": {
         "name": "Energy Drink",
-        "desc": "Temporarily accelerates the perceived system clock."
+        "desc": "Accelerates the subjective system clock. Bodily synchronization is not guaranteed."
       },
       "lottery": {
         "name": "Cheap Lottery Ticket",
@@ -466,7 +469,7 @@
       },
       "silence": {
         "name": "Canned Silence",
-        "desc": "Suspends all non-essential responses."
+        "desc": "Removes every sound that cannot verify happiness."
       }
     },
     "fx": {
@@ -492,6 +495,40 @@
       "color": "The starmap color has temporarily changed.",
       "fakePriv": "You have received an advanced privilege notice with no actual use.",
       "nothing": "Thank you for providing a valid sample to probability."
-    }
+    },
+    "stationLabel": "Local Result Readout",
+    "focusHint": "Scrape away enough to make out the result",
+    "readingNo": "The result is not yet legible",
+    "readingYes": "The result is now legible",
+    "registered": "The result has been registered",
+    "claim": "Claim Result",
+    "result": {
+      "freeItem": {
+        "main": "One temporary state has been approved.",
+        "note": "The system has written it into your current state."
+      },
+      "extend": {
+        "main": "The current effect has been extended by 30 seconds.",
+        "note": "The extension was attached to your most recent effect."
+      },
+      "color": {
+        "main": "An unnamed visual privilege has been released.",
+        "note": "This privilege is revoked automatically after a while."
+      },
+      "fakePriv": {
+        "main": "An advanced privilege notice.",
+        "note": "This notice has no actual use."
+      },
+      "nothing": {
+        "main": "No state was approved this time.",
+        "note": "Thank you for providing a valid sample to probability."
+      }
+    },
+    "mistComplete": "Misting complete. You can still see; you simply no longer need to see all of it at once.",
+    "energyComplete": "Subjective time scale raised. Your access has not increased.",
+    "silenceComplete": "Non-essential sound is being removed.",
+    "silenceStop": "Terminate now",
+    "silenceStopped": "Effect terminated.",
+    "silenceConfirmed": "Happiness state confirmed. Source unavailable."
   }
 }

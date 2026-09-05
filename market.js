@@ -11,14 +11,14 @@
   // Product catalogue (price = fictional credits, duration ms)
   const PRODUCTS = [
     { id: "alcohol",    code: "ITM-01", price: 12, duration: 120000 },
-    { id: "cigarettes", code: "ITM-02", price: 10, duration: 120000 },
+    { id: "cigarettes", code: "VRU–18", price: 10, duration: 120000 },
     { id: "energy",     code: "ITM-03", price: 8,  duration: 90000 },
     { id: "lottery",    code: "ITM-04", price: 5,  duration: 0 },
     { id: "silence",    code: "ITM-05", price: 15, duration: 60000 },
   ];
 
   let root, shelf, cartList, cartEmpty, cartTotal, npcLine, receipt, ageEl;
-  let detailLayer, lotteryLayer, cornerEl, summaryToast;
+  let detailLayer, cornerEl, summaryToast;
   let bound = false, opened = false;
   let cart = [];
   let detailProduct = null;
@@ -46,25 +46,63 @@
   }
 
   // ── Shelf ──
+  const MODEL_ITEMS = new Set(["alcohol", "cigarettes", "energy", "lottery", "silence"]);   // rendered as real 3D objects
+  function isModelItem(id) { return window.eazoMarketModel?.isModel?.(id) ?? MODEL_ITEMS.has(id); }
   function renderShelf() {
     if (!shelf) return;
+    window.eazoMarketModel?.unmountShelf?.();
     shelf.innerHTML = "";
     PRODUCTS.forEach((p) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "market-item";
       btn.dataset.id = p.id;
-      btn.innerHTML =
-        '<span class="market-item-bag" aria-hidden="true"></span>' +
-        `<span class="market-item-name">${pname(p.id)}</span>` +
-        `<span class="market-item-en">${p.code}</span>` +
-        `<span class="market-item-price">${p.price} ${t("market.currency")}</span>`;
+      if (isModelItem(p.id)) {
+        btn.classList.add("market-item-vru");
+        btn.innerHTML =
+          `<div class="market-model-slot" data-model="${p.id}">` +
+          '<canvas class="market-model-canvas" aria-hidden="true"></canvas>' +
+          '<div class="market-model-fallback" hidden aria-hidden="true"></div>' +
+          '</div>' +
+          `<span class="market-item-name">${pname(p.id)}</span>` +
+          `<span class="market-item-en">${p.code}</span>` +
+          `<span class="market-item-price">${p.price} ${t("market.currency")}</span>`;
+      } else {
+        btn.innerHTML =
+          '<span class="market-item-bag" aria-hidden="true"></span>' +
+          `<span class="market-item-name">${pname(p.id)}</span>` +
+          `<span class="market-item-en">${p.code}</span>` +
+          `<span class="market-item-price">${p.price} ${t("market.currency")}</span>`;
+      }
       btn.addEventListener("click", () => {
         if (p.id === "lottery") openLottery();
+        else if (isModelItem(p.id)) openModelFocus(p);
         else openDetail(p);
       });
       shelf.appendChild(btn);
     });
+    // Mount each inline shelf model (real objects on the shelf)
+    shelf.querySelectorAll(".market-item-vru").forEach((btn) => {
+      const id = btn.dataset.id;
+      const cvs = btn.querySelector(".market-model-canvas");
+      if (cvs) window.eazoMarketModel?.mountShelf?.(id, cvs);
+    });
+  }
+
+  // Model items: click expands the same object into a fullscreen focus state (no dialog).
+  function openModelFocus(p) {
+    detailProduct = p;
+    updateFocusMeta(p);
+    const src = shelf?.querySelector(`.market-item[data-id="${p.id}"] .market-model-slot`);
+    const ok = window.eazoMarketModel?.openFocus?.(p.id, src);
+    if (!ok) { openDetail(p); }   // fallback if model layer unavailable
+  }
+  function updateFocusMeta(p) {
+    const layer = document.getElementById("vru-focus");
+    if (!layer) return;
+    layer.querySelector(".model-focus-meta > span").textContent = p.code;
+    layer.querySelector(".model-focus-meta h3").textContent = pname(p.id);
+    layer.querySelector(".model-focus-meta p").textContent = pdesc(p.id);
   }
 
   // ── Detail card ──
@@ -129,26 +167,33 @@
     receipt.classList.add("show");
   }
 
-  // ── Effect application (delegates to eazoFx, resolves oil-film combo) ──
+  // ── Effect application (delegates to eazoFx; alcohol & cigarettes are
+  //    independent channels, so buying one never cancels the other) ──
   function applyProduct(id) {
     const f = fx(); if (!f) return;
-    if (id === "alcohol" || id === "cigarettes") {
-      // both visual → check if the OTHER visual is currently active → combine
-      const other = id === "alcohol" ? "cigarettes" : "alcohol";
-      if (f.has(other)) { f.apply("filmoil", { duration: 120000 }); return; }
+    if (id === "alcohol" || id === "cigarettes" || id === "energy" || id === "silence") {
       f.apply(id);
-    } else if (id === "energy") {
-      f.apply("energy");
-    } else if (id === "silence") {
-      f.apply("silence");
+      if (id === "alcohol") acknowledgeAlcoholPurchase();
+      if (id === "cigarettes") showSummary(t("market.mistComplete"));
+      if (id === "energy") showSummary(t("market.energyComplete"));
+      if (id === "silence") { window.eazoSilenceLaugh?.unlock?.(); showSummary(t("market.silenceComplete")); }
     }
+  }
+
+  // A single subtle page pulse so the alcohol purchase reads instantly,
+  // before the refraction has fully ramped. Never a substitute for the effect.
+  function acknowledgeAlcoholPurchase() {
+    const root = document.documentElement;
+    root.classList.remove("fx-alcohol-enter");
+    void root.offsetHeight;
+    root.classList.add("fx-alcohol-enter");
+    window.setTimeout(() => root.classList.remove("fx-alcohol-enter"), 700);
   }
 
   function refreshShelfUsed() {
     const active = fx()?.activeIds?.() || new Set();
     shelf?.querySelectorAll(".market-item").forEach((el) => {
-      const id = el.dataset.id;
-      el.classList.toggle("used", active.has(id) || (id === "alcohol" || id === "cigarettes" ? active.has("filmoil") : false));
+      el.classList.toggle("used", active.has(el.dataset.id));
     });
   }
 
@@ -164,20 +209,33 @@
     if (!list.length) { cornerEl.setAttribute("aria-hidden", "true"); cornerEl.innerHTML = ""; return; }
     cornerEl.setAttribute("aria-hidden", "false");
     cornerEl.innerHTML = list
-      .map((e) => `<div class="fx-chip"><b>${effectLabel(e.id)}</b><span class="fx-time">${fmtTime(e.remaining)}</span></div>`)
+      .map((e) => {
+        const stop = e.id === "silence"
+          ? `<button class="fx-stop" data-fx-stop="silence" type="button" aria-label="${t("market.silenceStop")}">${t("market.silenceStop")}</button>`
+          : "";
+        return `<div class="fx-chip"><b>${effectLabel(e.id)}</b><span class="fx-time">${fmtTime(e.remaining)}</span>${stop}</div>`;
+      })
       .join("");
     if (opened) refreshShelfUsed();
   }
   function effectLabel(id) {
-    if (id === "filmoil") return t("market.fx.filmoil");
     return t(`market.items.${id}.name`);
   }
 
   // =====================================================================
-  // LOTTERY — scratch-to-reveal, one ticket per session
+  // LOTTERY — fullscreen focus state, center-region scratch reveal.
+  // Result is generated once, persisted; claim is idempotent. One ticket/session.
   // =====================================================================
   const SESSION_TICKET_KEY = "silentStarMap.market.ticketUsed";
-  let scratchCanvas, scratchCtx, scratched = false, drawing = false, ticketResolved = false;
+  const TICKET_STATE_KEY = "silentStarMap.market.ticketState";
+
+  let focusLayer, scratchCanvas, scratchCtx;
+  let resultMainEl, resultNoteEl, readingStatusEl, claimButton;
+  let scratching = false, lastPoint = null, scratchCheckPending = false;
+  let lastFocusTrigger = null;
+  const READABLE_THRESHOLD = 0.25;
+
+  const ticketState = { result: null, readable: false, claimed: false, generatedAt: null };
 
   function ticketUsed() {
     try { return sessionStorage.getItem(SESSION_TICKET_KEY) === "1"; } catch (_e) { return false; }
@@ -185,8 +243,33 @@
   function markTicketUsed() {
     try { sessionStorage.setItem(SESSION_TICKET_KEY, "1"); } catch (_e) {}
   }
+  function saveTicketState() {
+    try { sessionStorage.setItem(TICKET_STATE_KEY, JSON.stringify(ticketState)); } catch (_e) {}
+  }
+  function loadTicketState() {
+    try {
+      const raw = sessionStorage.getItem(TICKET_STATE_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      ticketState.result = s.result || null;
+      ticketState.readable = !!s.readable;
+      ticketState.claimed = !!s.claimed;
+      ticketState.generatedAt = s.generatedAt || null;
+    } catch (_e) {}
+  }
+  // A fresh ticket is available on every entry to the market.
+  function resetTicket() {
+    ticketState.result = null;
+    ticketState.readable = false;
+    ticketState.claimed = false;
+    ticketState.generatedAt = null;
+    try {
+      sessionStorage.removeItem(TICKET_STATE_KEY);
+      sessionStorage.removeItem(SESSION_TICKET_KEY);
+    } catch (_e) {}
+  }
 
-  function pickPrize() {
+  function pickLotteryResult() {
     const r = Math.random();
     if (r < 0.14) return "freeItem";
     if (r < 0.30) return "extend";
@@ -194,105 +277,197 @@
     if (r < 0.60) return "fakePriv";
     return "nothing";
   }
+  function generateTicketOnce() {
+    if (ticketState.result) return ticketState.result;
+    ticketState.result = pickLotteryResult();
+    ticketState.generatedAt = Date.now();
+    saveTicketState();
+    return ticketState.result;
+  }
+  function isWinning(result) { return result && result !== "nothing"; }
+
+  // Underlying (below-coating) text for the current result
+  function resultMainText(result) {
+    return t(`market.result.${result}.main`);
+  }
+  function resultNoteText(result) {
+    return t(`market.result.${result}.note`);
+  }
 
   function openLottery() {
-    const resultEl = document.getElementById("market-lottery-result");
-    const prizeEl = document.getElementById("market-scratch-prize");
-    if (ticketUsed()) {
-      lotteryLayer.classList.add("open");
-      lotteryLayer.setAttribute("aria-hidden", "false");
-      prizeEl.textContent = "";
-      resultEl.textContent = t("market.lotteryUsed");
-      scratchCanvas.style.display = "none";
-      return;
+    if (!focusLayer) return;
+    lastFocusTrigger = shelf?.querySelector('.market-item[data-id="lottery"]') || null;
+    // used up in a previous session-ticket that was already claimed & no state → still show record
+    generateTicketOnce();
+    // render the underlying result text (revealed by scratching)
+    resultMainEl.textContent = resultMainText(ticketState.result);
+    resultNoteEl.textContent = resultNoteText(ticketState.result);
+
+    focusLayer.classList.add("open");
+    focusLayer.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lottery-focus-open");
+
+    // Mount the draggable 3D ticket model into the object slot.
+    const modelCanvas = document.getElementById("lottery-model-canvas");
+    const objectEl = focusLayer.querySelector(".lottery-object");
+    if (modelCanvas && window.eazoMarketModel?.mountViewer) {
+      Promise.resolve(window.eazoMarketModel.mountViewer("lottery", modelCanvas))
+        .then(() => { objectEl?.classList.add("model-ready"); })
+        .catch(() => { objectEl?.classList.remove("model-ready"); });
     }
-    scratchCanvas.style.display = "block";
-    resultEl.textContent = "";
-    scratched = false; ticketResolved = false;
-    const prize = pickPrize();
-    lotteryLayer.dataset.prize = prize;
-    prizeEl.textContent = t(`market.prize.${prize}`);
-    lotteryLayer.classList.add("open");
-    lotteryLayer.setAttribute("aria-hidden", "false");
+
     setupScratch();
+    if (ticketState.claimed) {
+      // Already registered: show cleared result, disable claim.
+      clearCoatingFully();
+      claimButton.disabled = true;
+      readingStatusEl.textContent = t("market.registered");
+    } else if (ticketState.readable) {
+      // Reopened after reaching readable but not claimed: restore a partial reveal.
+      restorePartialReveal();
+      claimButton.disabled = false;
+      readingStatusEl.textContent = t("market.readingYes");
+      scratchCanvas.classList.add("readable");
+    } else {
+      claimButton.disabled = true;
+      readingStatusEl.textContent = t("market.readingNo");
+      scratchCanvas.classList.remove("readable");
+    }
   }
   function closeLottery() {
-    lotteryLayer.classList.remove("open");
-    lotteryLayer.setAttribute("aria-hidden", "true");
+    if (!focusLayer) return;
+    window.eazoMarketModel?.unmountViewer?.();
+    focusLayer.querySelector(".lottery-object")?.classList.remove("model-ready");
+    focusLayer.classList.remove("open");
+    focusLayer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lottery-focus-open");
+    scratching = false; lastPoint = null;
+    if (lastFocusTrigger) { try { lastFocusTrigger.focus({ preventScroll: true }); } catch (_e) {} }
+  }
+  function isLotteryOpen() { return !!focusLayer && focusLayer.classList.contains("open"); }
+
+  function drawScratchCoating() {
+    const rect = scratchCanvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    scratchCanvas.width = Math.round(rect.width * dpr);
+    scratchCanvas.height = Math.round(rect.height * dpr);
+    scratchCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    scratchCtx.globalCompositeOperation = "source-over";
+    const gradient = scratchCtx.createLinearGradient(0, 0, rect.width, rect.height);
+    gradient.addColorStop(0, "rgba(91,120,108,.98)");
+    gradient.addColorStop(0.5, "rgba(53,78,68,.99)");
+    gradient.addColorStop(1, "rgba(104,130,118,.98)");
+    scratchCtx.fillStyle = gradient;
+    scratchCtx.fillRect(0, 0, rect.width, rect.height);
+    for (let i = 0; i < 500; i++) {
+      scratchCtx.fillStyle = `rgba(205,230,217,${Math.random() * 0.045})`;
+      scratchCtx.fillRect(Math.random() * rect.width, Math.random() * rect.height, 1, 1);
+    }
+  }
+  function setupScratch() {
+    if (!scratchCanvas || !scratchCtx) return;
+    drawScratchCoating();
+  }
+  function getCanvasPoint(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  }
+  function scratchStroke(x, y, previous) {
+    scratchCtx.save();
+    scratchCtx.globalCompositeOperation = "destination-out";
+    scratchCtx.lineCap = "round";
+    scratchCtx.lineJoin = "round";
+    scratchCtx.lineWidth = 30;
+    scratchCtx.beginPath();
+    if (previous) scratchCtx.moveTo(previous.x, previous.y);
+    else scratchCtx.moveTo(x, y);
+    scratchCtx.lineTo(x, y);
+    scratchCtx.stroke();
+    scratchCtx.restore();
+  }
+  function getPrizeReadingRegion(canvas) {
+    return {
+      x: Math.floor(canvas.width * 0.18),
+      y: Math.floor(canvas.height * 0.28),
+      width: Math.floor(canvas.width * 0.64),
+      height: Math.floor(canvas.height * 0.44),
+    };
+  }
+  function getRevealedRatio(context, region) {
+    const imageData = context.getImageData(region.x, region.y, region.width, region.height);
+    const pixels = imageData.data;
+    let transparent = 0, sampled = 0;
+    for (let i = 3; i < pixels.length; i += 16) {
+      sampled += 1;
+      if (pixels[i] < 40) transparent += 1;
+    }
+    return sampled ? transparent / sampled : 0;
+  }
+  function checkScratchReadability() {
+    if (ticketState.readable || ticketState.claimed) return;
+    const region = getPrizeReadingRegion(scratchCanvas);
+    const ratio = getRevealedRatio(scratchCtx, region);
+    if (ratio >= READABLE_THRESHOLD) {
+      ticketState.readable = true;
+      saveTicketState();
+      claimButton.disabled = false;
+      readingStatusEl.textContent = t("market.readingYes");
+      scratchCanvas.classList.add("readable");
+    }
+  }
+  function scheduleScratchCheck() {
+    if (scratchCheckPending) return;
+    scratchCheckPending = true;
+    requestAnimationFrame(() => { scratchCheckPending = false; checkScratchReadability(); });
+  }
+  // Restore a partial reveal over the text region (cheaper than persisting exact strokes)
+  function restorePartialReveal() {
+    drawScratchCoating();
+    const rect = scratchCanvas.getBoundingClientRect();
+    scratchCtx.save();
+    scratchCtx.globalCompositeOperation = "destination-out";
+    const cx = rect.width * 0.5, cy = rect.height * 0.5;
+    const rx = rect.width * 0.26, ry = rect.height * 0.22;
+    scratchCtx.beginPath();
+    scratchCtx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+    scratchCtx.fill();
+    scratchCtx.restore();
+  }
+  function clearCoatingFully() {
+    if (!scratchCtx) return;
+    scratchCtx.save();
+    scratchCtx.setTransform(1, 0, 0, 1, 0, 0);
+    scratchCtx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+    scratchCtx.restore();
   }
 
-  function setupScratch() {
-    const wrap = scratchCanvas.parentElement;
-    const rect = wrap.getBoundingClientRect();
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    scratchCanvas.width = rect.width * dpr;
-    scratchCanvas.height = rect.height * dpr;
-    scratchCtx = scratchCanvas.getContext("2d");
-    scratchCtx.scale(dpr, dpr);
-    scratchCtx.fillStyle = "#243a30";
-    scratchCtx.fillRect(0, 0, rect.width, rect.height);
-    scratchCtx.fillStyle = "rgba(180,210,196,.6)";
-    scratchCtx.font = "12px ui-monospace,monospace";
-    scratchCtx.textAlign = "center";
-    scratchCtx.fillText(t("market.scratchHint"), rect.width / 2, rect.height / 2);
-    scratchCtx.globalCompositeOperation = "destination-out";
-  }
-  function scratchAt(e) {
-    if (!drawing || scratched) return;
-    const rect = scratchCanvas.getBoundingClientRect();
-    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-    scratchCtx.beginPath();
-    scratchCtx.arc(cx, cy, 16, 0, Math.PI * 2);
-    scratchCtx.fill();
-    maybeReveal();
-  }
-  function maybeReveal() {
-    // sample coverage
-    const w = scratchCanvas.width, h = scratchCanvas.height;
-    const data = scratchCtx.getImageData(0, 0, w, h).data;
-    let clear = 0;
-    for (let i = 3; i < data.length; i += 40) if (data[i] === 0) clear++;
-    const ratio = clear / (data.length / 40);
-    if (ratio > 0.5 && !ticketResolved) resolveTicket();
-  }
-  function resolveTicket() {
-    ticketResolved = true; scratched = true;
+  function claimTicket() {
+    if (!ticketState.readable || ticketState.claimed) return;
+    ticketState.claimed = true;
+    claimButton.disabled = true;
     markTicketUsed();
-    const prize = lotteryLayer.dataset.prize;
-    const resultEl = document.getElementById("market-lottery-result");
-    applyPrize(prize, resultEl);
-    scratchCanvas.style.display = "none";
+    grantLotteryResult(ticketState.result);
+    saveTicketState();
+    readingStatusEl.textContent = t("market.registered");
   }
-  function applyPrize(prize, resultEl) {
+  function grantLotteryResult(result) {
     const f = fx();
-    switch (prize) {
+    switch (result) {
       case "freeItem":
         f?.apply("energy");
-        resultEl.textContent = t("market.prizeResult.freeItem");
         refreshShelfUsed();
         break;
       case "extend":
         f?.extendAny(30000);
-        resultEl.textContent = t("market.prizeResult.extend");
         break;
       case "color":
         document.documentElement.classList.add("fx-lottery-color");
         window.setTimeout(() => document.documentElement.classList.remove("fx-lottery-color"), 120000);
-        resultEl.textContent = t("market.prizeResult.color");
         break;
       case "fakePriv":
-        resultEl.textContent = t("market.prizeResult.fakePriv");
-        break;
       default:
-        resultEl.textContent = t("market.prizeResult.nothing");
+        break;
     }
-  }
-
-  // ── mouse tracking for refraction focus ──
-  function onPointerMove(e) {
-    document.documentElement.style.setProperty("--fx-mx", `${e.clientX}px`);
-    document.documentElement.style.setProperty("--fx-my", `${e.clientY}px`);
   }
 
   // ── silence: watch for expiry to show single summary ──
@@ -325,30 +500,76 @@
     receipt = document.getElementById("market-receipt");
     ageEl = document.getElementById("market-age");
     detailLayer = document.getElementById("market-detail");
-    lotteryLayer = document.getElementById("market-lottery");
     cornerEl = document.getElementById("fx-corner");
     summaryToast = document.getElementById("fx-summary-toast");
-    scratchCanvas = document.getElementById("market-scratch");
+
+    // Lottery focus layer
+    focusLayer = document.getElementById("lottery-focus");
+    scratchCanvas = document.getElementById("lottery-scratch-canvas");
+    scratchCtx = scratchCanvas ? scratchCanvas.getContext("2d") : null;
+    resultMainEl = document.getElementById("lottery-result-main");
+    resultNoteEl = document.getElementById("lottery-result-note");
+    readingStatusEl = document.getElementById("lottery-reading-status");
+    claimButton = document.getElementById("lottery-claim");
+    loadTicketState();
 
     document.getElementById("market-back")?.addEventListener("click", close);
+
+    // 立即终止罐装寂静（避免听觉不适）；同时停止笑声引擎。
+    cornerEl?.addEventListener("click", (e) => {
+      const btn = e.target.closest?.("[data-fx-stop]");
+      if (!btn) return;
+      const ch = btn.getAttribute("data-fx-stop");
+      if (ch === "silence") {
+        window.eazoSilenceLaugh?.stopNow?.();
+        fx()?.clearChannel?.("audio");
+        showSummary(t("market.silenceStopped"));
+      }
+    });
+    // 失去主体阶段结束：快乐状态已被确认，来源不可用。
+    window.addEventListener("eazo:silence-dissolved", () => showSummary(t("market.silenceConfirmed")));
     document.getElementById("market-detail-close")?.addEventListener("click", closeDetail);
     document.getElementById("market-detail-cart")?.addEventListener("click", () => { if (detailProduct) { addToCart(detailProduct); closeDetail(); } });
     document.getElementById("market-detail-buy")?.addEventListener("click", () => { if (detailProduct) { const p = detailProduct; closeDetail(); cart = [p]; renderCart(); checkout(); } });
+    // Model-item focus-state actions (fullscreen, no dialog) — use current focus product
+    document.getElementById("vru-focus-cart")?.addEventListener("click", (e) => { e.stopPropagation(); if (detailProduct) { addToCart(detailProduct); window.eazoMarketModel?.closeFocus?.(); } });
+    document.getElementById("vru-focus-buy")?.addEventListener("click", (e) => { e.stopPropagation(); if (detailProduct) { const p = detailProduct; window.eazoMarketModel?.closeFocus?.(); cart = [p]; renderCart(); checkout(); } });
     document.getElementById("market-checkout")?.addEventListener("click", checkout);
-    document.getElementById("market-lottery-close")?.addEventListener("click", closeLottery);
 
-    // scratch events
-    const start = (e) => { drawing = true; scratchAt(e); e.preventDefault(); };
-    const move = (e) => scratchAt(e);
-    const end = () => { drawing = false; };
-    scratchCanvas.addEventListener("mousedown", start);
-    scratchCanvas.addEventListener("mousemove", move);
-    window.addEventListener("mouseup", end);
-    scratchCanvas.addEventListener("touchstart", start, { passive: false });
-    scratchCanvas.addEventListener("touchmove", (e) => { scratchAt(e); e.preventDefault(); }, { passive: false });
-    scratchCanvas.addEventListener("touchend", end);
+    // ── Lottery focus: close controls ──
+    document.getElementById("lottery-focus-close")?.addEventListener("click", (e) => { e.stopPropagation(); closeLottery(); });
+    // Click on empty backdrop closes; clicks on paper/station/buttons do not.
+    focusLayer?.addEventListener("click", (e) => { if (e.target === focusLayer) closeLottery(); });
+    focusLayer?.querySelector(".lottery-object")?.addEventListener("click", (e) => e.stopPropagation());
+    focusLayer?.querySelector(".lottery-scratch-station")?.addEventListener("click", (e) => e.stopPropagation());
+    claimButton?.addEventListener("click", (e) => { e.stopPropagation(); claimTicket(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && isLotteryOpen()) closeLottery(); });
 
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    // ── Scratch pointer events (mouse + touch via Pointer Events) ──
+    if (scratchCanvas) {
+      scratchCanvas.addEventListener("pointerdown", (event) => {
+        if (ticketState.claimed) return;
+        scratching = true;
+        try { scratchCanvas.setPointerCapture(event.pointerId); } catch (_e) {}
+        lastPoint = getCanvasPoint(scratchCanvas, event);
+        scratchStroke(lastPoint.x, lastPoint.y, null);
+        scheduleScratchCheck();
+      });
+      scratchCanvas.addEventListener("pointermove", (event) => {
+        if (!scratching) return;
+        const point = getCanvasPoint(scratchCanvas, event);
+        scratchStroke(point.x, point.y, lastPoint);
+        lastPoint = point;
+        scheduleScratchCheck();
+      });
+      const stopScratch = (event) => {
+        scratching = false; lastPoint = null;
+        try { scratchCanvas.releasePointerCapture(event.pointerId); } catch (_e) {}
+      };
+      scratchCanvas.addEventListener("pointerup", stopScratch);
+      scratchCanvas.addEventListener("pointercancel", stopScratch);
+    }
+
     window.addEventListener("eazo:localechange", () => { if (opened) { renderShelf(); renderCart(); refreshShelfUsed(); } });
 
     // global fx subscription (corner + silence summary) — always on, even outside scene
@@ -374,6 +595,7 @@
     root.classList.add("open");
     root.setAttribute("aria-hidden", "false");
     opened = true;
+    resetTicket();   // a fresh lottery ticket each time you enter the market
     if (ageEl) ageEl.textContent = String(currentAge());
     renderShelf(); renderCart(); refreshShelfUsed();
     receipt.classList.remove("show");
@@ -384,6 +606,9 @@
   function close() {
     opened = false;
     window.clearTimeout(npcTimer);
+    if (isLotteryOpen()) closeLottery();
+    window.eazoMarketModel?.closeFocus?.();
+    window.eazoMarketModel?.unmountShelf?.();
     if (root) { root.classList.remove("open"); root.setAttribute("aria-hidden", "true"); }
     document.querySelector(".app-shell")?.classList.remove("market-mode");
     say("market.npc.leave");

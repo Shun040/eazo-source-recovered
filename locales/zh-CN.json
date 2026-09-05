@@ -304,6 +304,8 @@
     "title": "没有规则的雪仗",
     "adminTitle": "S–03 后台控制 / 合成数据",
     "noRules": "这里没有规则。你可以先试一下。",
+    "soundOn": "声音：开启",
+    "soundOff": "声音：关闭",
     "noRulesMinor": "这里没有规则。慢慢来，先试着揉一个雪球。",
     "freePlay1": "你可以扔向任何地方。",
     "freePlay2": "没有目标，也没关系。",
@@ -437,6 +439,7 @@
     "priceLabel": "价格",
     "durationLabel": "持续时间",
     "addToCart": "加入购物篮",
+    "modelHint": "拖动以旋转 · 滚动以靠近",
     "requestNow": "申请临时状态",
     "instant": "即时",
     "durationSec": "{{s}} 秒",
@@ -453,12 +456,12 @@
         "desc": "使可见表面暂时失去稳定性。"
       },
       "cigarettes": {
-        "name": "香烟",
-        "desc": "提高色彩响应，并延长视觉残留。"
+        "name": "雾化恢复器",
+        "desc": "降低外界信息的锐度，使局部感知暂时恢复。"
       },
       "energy": {
         "name": "能量饮料",
-        "desc": "暂时提高系统时钟的主观速度。"
+        "desc": "提高主观系统时钟，不保证身体能够同步。"
       },
       "lottery": {
         "name": "廉价彩票",
@@ -466,7 +469,7 @@
       },
       "silence": {
         "name": "罐装寂静",
-        "desc": "暂停一切不必要的回应。"
+        "desc": "移除一切不能证明快乐的声音。"
       }
     },
     "fx": {
@@ -492,6 +495,40 @@
       "color": "星图颜色已临时改变。",
       "fakePriv": "你已获得一条无实际用途的高级权限提示。",
       "nothing": "感谢你为概率提供了一次有效样本。"
-    }
+    },
+    "stationLabel": "局部结果读取",
+    "focusHint": "擦去足以辨认结果的部分",
+    "readingNo": "结果尚不可读",
+    "readingYes": "结果已可读取",
+    "registered": "结果已经登记",
+    "claim": "领取结果",
+    "result": {
+      "freeItem": {
+        "main": "一件临时状态已获批准。",
+        "note": "系统已将其写入你的当前状态。"
+      },
+      "extend": {
+        "main": "当前效果获得 30 秒延期。",
+        "note": "延期已附加到最近的一个效果上。"
+      },
+      "color": {
+        "main": "一项无名视觉权限已经开放。",
+        "note": "该权限会在一段时间后自动收回。"
+      },
+      "fakePriv": {
+        "main": "一条高级权限提示。",
+        "note": "此提示没有实际用途。"
+      },
+      "nothing": {
+        "main": "本次没有可批准的状态。",
+        "note": "感谢你为概率提供了一次有效样本。"
+      }
+    },
+    "mistComplete": "雾化完成。你仍然可以看见，只是不再需要同时看见全部。",
+    "energyComplete": "时间倍率已提高。你的权限没有因此增加。",
+    "silenceComplete": "非必要声音正在移除。",
+    "silenceStop": "立即终止",
+    "silenceStopped": "效果已终止。",
+    "silenceConfirmed": "快乐状态已被确认。来源不可用。"
   }
 }

@@ -584,15 +584,26 @@
         const dx = root.x - p.baseX, dy = root.y - p.baseY, dist = Math.hypot(dx, dy);
         if (dist < 360) { const force = (1 - dist / 360) * 2.5; fx += (dx / (dist || 1)) * force; fy += (dy / (dist || 1)) * force; }
       }
-      p.ox += (fx - p.ox) * 0.045; p.oy += (fy - p.oy) * 0.045; p.pull *= 0.94; p.x = p.baseX + p.ox; p.y = p.baseY + p.oy;
+      p.ox += (fx - p.ox) * 0.045; p.oy += (fy - p.oy) * 0.045; p.pull *= 0.94; p.px = p.x; p.py = p.y; p.x = p.baseX + p.ox; p.y = p.baseY + p.oy;
     }
   }
 
   function draw() {
     ctx.clearRect(0, 0, w, h); drawConnections();
+    const energyOn = !!(window.eazoFx?.has && window.eazoFx.has("energy"));
     for (const p of particles) {
       const admin = p.hue === 'admin';
       const glow = p.hue === 'signal' || p.pull > 0.05 || admin;
+      // Energy: thin, short directional afterimage from last frame's position.
+      if (energyOn && p.px != null) {
+        const dx = p.x - p.px, dy = p.y - p.py, mv = Math.hypot(dx, dy);
+        if (mv > 0.6) {
+          ctx.beginPath();
+          ctx.strokeStyle = admin ? 'rgba(123,33,28,0.16)' : (glow ? 'rgba(138,255,184,0.18)' : 'rgba(210,226,219,0.12)');
+          ctx.lineWidth = p.r * 0.9;
+          ctx.moveTo(p.px - dx * 1.6, p.py - dy * 1.6); ctx.lineTo(p.x, p.y); ctx.stroke();
+        }
+      }
       ctx.beginPath();
       ctx.fillStyle = admin ? `rgba(123,33,28,${Math.min(0.58, p.a + 0.12)})` : (glow ? `rgba(138,255,184,${Math.min(0.72, p.a + p.pull * 0.34)})` : `rgba(210,226,219,${p.a})`);
       ctx.shadowBlur = glow ? 9 + p.pull * 14 : 4;
@@ -1222,7 +1233,7 @@
     const c = b.cx;
     c.setTransform(1,0,0,1,0,0);
     c.clearRect(0,0,cw,ch);
-    const blurPx = (isMobile ? meteorRand(12,20) : meteorRand(18,28)) * scale;
+    const blurPx = (isMobile ? meteorRand(2,4) : meteorRand(3,6)) * scale;
     // Fever only strengthens internal brightness; peak capped at 0.45.
     const fever = clamp01(pinball.fever / 8);
     const combo = pinball.combo || 0;

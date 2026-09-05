@@ -10,19 +10,25 @@
   <!-- ── GLOBAL EFFECT LAYERS (site-wide, pointer-events:none) ── -->
   <svg class="fx-svg" aria-hidden="true" width="0" height="0">
     <defs>
-      <filter id="fx-refract" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="noise">
-          <animate attributeName="baseFrequency" dur="24s" values="0.008 0.012;0.010 0.009;0.008 0.012" repeatCount="indefinite" />
-        </feTurbulence>
-        <feDisplacementMap id="fx-refract-map" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" />
+      <!-- Ring-wave refraction via fractal-noise displacement. fx.js drifts
+           the turbulence seed/frequency and pumps the map scale on clicks &
+           ambient waves, so the live DOM (text, buttons, borders, starmap)
+           genuinely bends. Works in Chrome/Blink. No rings/discs are drawn. -->
+      <filter id="fx-refract" x="-5%" y="-5%" width="110%" height="110%"
+              color-interpolation-filters="sRGB">
+        <feTurbulence id="fx-refract-src" type="fractalNoise"
+          baseFrequency="0.012 0.018" numOctaves="2" seed="7"
+          stitchTiles="stitch" result="disp" />
+        <feDisplacementMap id="fx-refract-map" in="SourceGraphic" in2="disp"
+          scale="0" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </defs>
   </svg>
   <div class="fx-overlay fx-overlay-color" aria-hidden="true"></div>
-  <div class="fx-overlay fx-overlay-ripple" aria-hidden="true"></div>
   <div class="fx-toast" id="fx-summary-toast" role="status" aria-live="polite" aria-hidden="true"></div>
 
   <main class="app-shell awaiting-age" aria-labelledby="app-title">
+   <div class="app-shell-inner">
     <canvas id="starfield" aria-hidden="true"></canvas>
 
     <section class="hud" aria-label="星图系统界面">
@@ -183,6 +189,7 @@
       <div id="snow-readouts" class="snow-readouts" aria-hidden="true"></div>
       <div id="snow-toast" class="snow-toast" role="status" aria-live="polite"></div>
       <button id="snow-back" class="back-button snow-back" type="button" data-i18n="place.back">返回星图</button>
+      <button id="snow-sound" class="snow-sound-toggle" type="button" aria-pressed="true" data-i18n="snow.soundOn">声音：开启</button>
       <button id="snow-admin-toggle" class="snow-admin-toggle" type="button" aria-controls="snow-admin" aria-expanded="false" hidden>后台</button>
       <aside id="snow-admin" class="snow-admin collapsed" aria-label="S–03 后台控制" hidden>
         <button id="snow-admin-close" class="snow-admin-close" type="button" aria-label="收起后台">×</button>
@@ -244,20 +251,48 @@
       </div>
     </div>
 
-    <!-- 彩票刮奖 -->
-    <div id="market-lottery" class="market-lottery-layer" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="market-lottery-card">
-        <button id="market-lottery-close" class="modal-close" type="button" aria-label="关闭">×</button>
-        <p class="market-detail-code">TICKET / M–04</p>
-        <h3 data-i18n="market.lotteryTitle">廉价彩票</h3>
-        <p class="market-detail-desc" data-i18n="market.lotteryHint">拖动刮开涂层。</p>
-        <div class="market-scratch-wrap">
-          <div id="market-scratch-prize" class="market-scratch-prize"></div>
-          <canvas id="market-scratch" class="market-scratch"></canvas>
-        </div>
-        <p id="market-lottery-result" class="market-lottery-result" aria-live="polite"></p>
+    <!-- VRU–18 商品聚焦状态：全屏，非弹窗 -->
+    <section id="vru-focus" class="model-focus-layer" aria-hidden="true" aria-label="雾化恢复器三维展示">
+      <button class="model-focus-close" type="button" aria-label="关闭模型展示">×</button>
+      <canvas id="vru-focus-canvas" class="model-focus-canvas"></canvas>
+      <div class="model-focus-meta">
+        <span>VRU–18</span>
+        <h3 data-i18n="market.items.cigarettes.name">雾化恢复器</h3>
+        <p data-i18n="market.items.cigarettes.desc">提高色彩响应，并延长视觉残留。</p>
       </div>
-    </div>
+      <div class="model-focus-actions">
+        <button id="vru-focus-cart" type="button" data-i18n="market.addToCart">加入购物篮</button>
+        <button id="vru-focus-buy" type="button" data-i18n="market.requestNow">申请临时状态</button>
+      </div>
+      <p class="model-focus-hint" data-i18n="market.modelHint">拖动以旋转 · 滚动以靠近</p>
+    </section>
+
+    <!-- 彩票刮奖 -->
+    <section id="lottery-focus" class="lottery-focus-layer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="廉价彩票">
+      <button id="lottery-focus-close" class="lottery-focus-close" type="button" aria-label="关闭彩票">×</button>
+      <div class="lottery-object">
+        <canvas id="lottery-model-canvas" class="lottery-model-canvas" aria-label="可拖拽的彩票模型"></canvas>
+        <div class="lottery-paper" aria-hidden="true">
+          <span class="lottery-code">ITM–04</span>
+          <span class="lottery-serial">PROBABILITY SAMPLE</span>
+          <span class="lottery-mark" data-i18n="market.lotteryTitle">廉价彩票</span>
+          <span class="lottery-grid" aria-hidden="true"></span>
+        </div>
+      </div>
+      <aside class="lottery-scratch-station" aria-label="刮奖区域">
+        <p class="lottery-station-label" data-i18n="market.stationLabel">局部结果读取</p>
+        <div id="lottery-scratch-wrap" class="lottery-scratch-wrap">
+          <div id="lottery-result" class="lottery-result">
+            <span id="lottery-result-main" class="lottery-result-main"></span>
+            <span id="lottery-result-note" class="lottery-result-note"></span>
+          </div>
+          <canvas id="lottery-scratch-canvas" class="lottery-scratch-canvas"></canvas>
+        </div>
+        <p id="lottery-reading-status" class="lottery-reading-status" aria-live="polite" data-i18n="market.readingNo">结果尚不可读</p>
+        <button id="lottery-claim" class="lottery-claim" type="button" disabled data-i18n="market.claim">领取结果</button>
+      </aside>
+      <p class="lottery-focus-hint" data-i18n="market.focusHint">擦去足以辨认结果的部分</p>
+    </section>
 
     <!-- 角落：仍在生效的临时状态 -->
     <div id="fx-corner" class="fx-corner" aria-live="polite" aria-hidden="true"></div>
@@ -340,16 +375,22 @@
         </div>
       </div>
     </section>
+   </div>
   </main>
   <script type="importmap">
     { "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/examples/jsm/" } }
   </script>
   <script src="./i18n.js" defer></script>
-  <script src="./fx.js" defer></script>
-  <script src="./app.js?v=aurora-pinball-2" defer></script>
-  <script src="./snow.js?v=snow-1" defer></script>
-  <script src="./market.js?v=market-1" defer></script>
+  <script src="./fx.js?v=fx-refract-8" defer></script>
+  <script src="./fog.js?v=fog-4" defer></script>
+  <script src="./ripple.js?v=ripple-2" defer></script>
+  <script src="./app.js?v=aurora-pinball-5" defer></script>
+  <script src="./snow-audio.js?v=snow-audio-2" defer></script>
+  <script src="./silence-laugh.js?v=silence-laugh-1" defer></script>
+  <script src="./snow.js?v=snow-3" defer></script>
+  <script src="./market.js?v=market-14" defer></script>
   <script type="module" src="./snow-npc.js?v=snow-npc-4"></script>
   <script type="module" src="./aurora-npc-particles.js?v=aurora-pinball-2"></script>
+  <script type="module" src="./market-model.js?v=market-model-10"></script>
 </body>
 </html>

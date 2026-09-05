@@ -16,6 +16,7 @@
 
   const t = (k, p) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false;
+  const A = () => window.eazoSnowAudio;
 
   // ---- DOM ----
   let root, field, fx, fieldCtx, fxCtx, npcLine, readouts, toastEl, adminToggle, admin, metricsEl, controlsEl;
@@ -140,6 +141,7 @@
     let da = Math.abs(((ang - toNpc + Math.PI) % (Math.PI * 2)) - Math.PI);
     b.aimedNpc = da < 0.32;
     if (S.balls.length < MAX_BALLS) S.balls.push(b);
+    A()?.throwBall?.({ power: Math.min(1, speed / 20), x: inp.startX / Math.max(1, S.w), size });
     recordThrow(b, dist, da);
     return true;
   }
@@ -166,6 +168,7 @@
       m.consecutiveHits = 0;
     }
     window.eazoSaveState?.();
+    A()?.setWillingness?.(realWill());
     reactAfterThrow(b);
     renderReadouts();
     renderMetrics();
@@ -198,9 +201,10 @@
   function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
   // ---- collision & landing ----
-  function landBall(b, i) {
+  function landBall(b, i, surface) {
     const r = realWill();
     const dentR = b.r * (0.9 + b.size * 1.4);
+    A()?.land?.({ power: Math.min(1, Math.hypot(b.vx, b.vy) / 18), x: b.x / Math.max(1, S.w), size: b.size, surface: surface || "soft" });
     // fog burst — density scales with displayed will; big balls = bigger fog
     burst(b.x, b.y, Math.round((6 + b.size * 22) * (0.4 + displayedWill() * 0.9)), 1 + b.size * 3, 150, r > 0.5 ? 0.4 : 0);
     // dent + mark. low will → marks fade fast (erased quickly)
@@ -235,6 +239,7 @@
           a.vx -= p * c.mass * nx; a.vy -= p * c.mass * ny;
           c.vx += p * a.mass * nx; c.vy += p * a.mass * ny;
           burst((a.x + c.x) / 2, (a.y + c.y) / 2, 10, 3, 160, r > 0.5 ? 0.5 : 0);
+          A()?.land?.({ power: Math.min(1, Math.hypot(a.vx - c.vx, a.vy - c.vy) / 16), x: ((a.x + c.x) / 2) / Math.max(1, S.w), size: Math.max(a.size, c.size), surface: "ball" });
           // unpredictable-but-controlled: mid-air split (only with real will)
           if (!a.split && r > 0.35 && Math.random() < 0.18 * r && S.balls.length < MAX_BALLS - 2) {
             a.split = true;
@@ -251,10 +256,10 @@
       if (Math.hypot(a.x - npc.x, a.y - npc.y) < a.r + 26) {
         S.npc.flash = 1;
         burst(npc.x, npc.y, 18, 4, 150, 0.6);
-        landBall(a, i); i--; continue;
+        landBall(a, i, "npc"); i--; continue;
       }
       // ground / walls
-      if (a.y + a.r >= S.h * 0.9 || a.x < 0 || a.x > S.w || a.life > 6) { landBall(a, i); i--; continue; }
+      if (a.y + a.r >= S.h * 0.9 || a.x < 0 || a.x > S.w || a.life > 6) { landBall(a, i, "soft"); i--; continue; }
     }
     // particles
     for (let i = S.particles.length - 1; i >= 0; i--) {
@@ -419,10 +424,16 @@
   function onDown(e) {
     if (S.input.state !== "IDLE") return;
     const snow = ensureSnow();
+    const au = A();
+    const wasUnlocked = au?.unlocked;
+    au?.unlock?.();                    // 首次真实用户操作时解锁音频
+    // 若刚刚解锁且游戏已打开，补一次进场脚步（由远及近）
+    if (au && !wasUnlocked) { au.setWillingness(realWill()); setTimeout(() => au.unlocked && au.openingSteps(), 60); }
     fx.setPointerCapture?.(e.pointerId);
     const rect = fx.getBoundingClientRect();
     const x = e.clientX - rect.left, y = e.clientY - rect.top;
     Object.assign(S.input, { state: "PRESSING", pointerId: e.pointerId, startX: x, startY: y, curX: x, curY: y, pressAt: performance.now(), size: 0, dragDist: 0, hasDragged: 0 });
+    S.input.lastMoveX = x; S.input.lastMoveY = y; S.input.lastMoveT = performance.now();
     S.hesitationStart = performance.now();
     // NPC eyes the raised snowball at phase 5
     if (phase() >= 5) { S.npc.wary = 1; sayKeyMaybe("politeDistance"); }
@@ -440,6 +451,12 @@
     const dd = Math.hypot(inp.curX - inp.startX, inp.curY - inp.startY);
     if (inp.state === "PRESSING" && dd > DRAG_DEAD && held > MIN_PRESS) inp.state = "DRAGGING";
     inp.dragDist = dd;
+    // 揉雪声：强度由拖动速度决定（模块内部限流 8 次/秒）
+    const nowT = performance.now();
+    const dt = Math.max(8, nowT - (inp.lastMoveT || nowT));
+    const spd = Math.hypot(inp.curX - (inp.lastMoveX ?? inp.curX), inp.curY - (inp.lastMoveY ?? inp.curY)) / dt;
+    inp.lastMoveX = inp.curX; inp.lastMoveY = inp.curY; inp.lastMoveT = nowT;
+    A()?.knead?.({ speed: Math.min(1, spd / 2.2) });
     e.preventDefault();
   }
   function onUp(e) {
@@ -447,6 +464,7 @@
     if (inp.pointerId !== e.pointerId) return;
     fx.releasePointerCapture?.(e.pointerId);
     const held = performance.now() - inp.pressAt;
+    A()?.kneadStop?.();
     // only a completed press→drag→release fires
     if (inp.state === "DRAGGING" && held >= MIN_PRESS) {
       throwBall();
@@ -456,6 +474,7 @@
   }
   function onCancel(e) {
     const inp = S.input; if (inp.pointerId !== e.pointerId) return;
+    A()?.kneadStop?.();
     Object.assign(inp, { state: "IDLE", pointerId: null, size: 0, dragDist: 0 });
   }
 
@@ -600,6 +619,15 @@
     fx.addEventListener("pointerup", onUp);
     fx.addEventListener("pointercancel", onCancel);
     document.getElementById("snow-back")?.addEventListener("click", close);
+    const soundBtn = document.getElementById("snow-sound");
+    const syncSoundBtn = () => {
+      if (!soundBtn) return;
+      const on = A()?.isEnabled?.() ?? true;
+      soundBtn.setAttribute("aria-pressed", String(on));
+      soundBtn.textContent = t(on ? "snow.soundOn" : "snow.soundOff");
+    };
+    soundBtn?.addEventListener("click", () => { A()?.unlock?.(); A()?.toggle?.(); syncSoundBtn(); });
+    syncSoundBtn();
     adminToggle?.addEventListener("click", () => {
       const show = admin.hidden || admin.classList.contains("collapsed");
       admin.hidden = false; admin.classList.toggle("collapsed", !show);
@@ -608,7 +636,7 @@
     });
     document.getElementById("snow-admin-close")?.addEventListener("click", () => { admin.classList.add("collapsed"); adminToggle.setAttribute("aria-expanded", "false"); });
     window.addEventListener("resize", () => { if (opened) resize(); });
-    window.addEventListener("eazo:localechange", () => { if (opened) { firstLine(); renderReadouts(); renderMetrics(); renderControls(); } });
+    window.addEventListener("eazo:localechange", () => { if (opened) { firstLine(); renderReadouts(); renderMetrics(); renderControls(); syncSoundBtn(); } });
     document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else if (opened) start(); });
     bound = true;
   }
@@ -629,12 +657,21 @@
     firstLine();
     refreshAdminVisibility();
     renderReadouts(); renderMetrics(); renderControls();
+    // 音频：标记打开，推送真实意愿。open() 通常由节点点击触发，仍在用户手势内，
+    // 直接尝试解锁；成功则播放进场脚步（由远及近）。
+    const au = A();
+    if (au) {
+      au.markOpen(true);
+      au.setWillingness(realWill());
+      Promise.resolve(au.unlock?.()).then(() => { if (au.unlocked) au.openingSteps(); });
+    }
     start();
   }
 
   function close() {
     stop();
     opened = false;
+    A()?.markOpen?.(false);
     if (root) { root.classList.remove("open"); root.setAttribute("aria-hidden", "true"); }
     document.querySelector(".app-shell")?.classList.remove("pinball-mode", "snow-mode");
   }

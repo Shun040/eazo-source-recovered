@@ -60,6 +60,15 @@ button { -webkit-tap-highlight-color: transparent; }
 .app-shell.awaiting-age .system-log { opacity: 0.22; pointer-events: none; }
 
 #starfield { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* Full-bleed inner layer: carries the same padding as .app-shell so relative
+   flow children (.hud) keep their layout, while giving cigarettes a filter
+   surface that never competes with alcohol's url() filter on .app-shell. */
+.app-shell-inner {
+  position: absolute;
+  inset: 0;
+  padding: var(--eazo-safe-area-top) clamp(18px, 4vw, 58px) var(--eazo-safe-area-bottom);
+  overflow: hidden;
+}
 .app-shell::after {
   content: "";
   position: absolute;
@@ -1200,7 +1209,7 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
 .snow-readouts {
   position: absolute; z-index: 5;
   right: clamp(14px, 3vw, 34px);
-  top: calc(var(--eazo-safe-area-top) + 30px);
+  top: calc(var(--eazo-safe-area-top) + 76px);
   display: grid; gap: 6px; justify-items: end;
   pointer-events: none;
   font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -1220,6 +1229,16 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
 }
 .snow-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .snow-back { position: absolute; z-index: 7; left: clamp(14px, 3vw, 34px); bottom: calc(var(--eazo-safe-area-bottom) + 20px); }
+.snow-sound-toggle {
+  position: absolute; z-index: 7;
+  right: clamp(14px, 3vw, 34px); top: calc(var(--eazo-safe-area-top) + 20px);
+  padding: 8px 14px; font-size: 11px; letter-spacing: .12em;
+  color: rgba(200,224,216,.7); background: rgba(16,32,26,.55);
+  border: 1px solid rgba(150,200,175,.18); border-radius: 999px;
+  cursor: pointer; backdrop-filter: blur(4px); transition: color .3s, border-color .3s, opacity .3s;
+}
+.snow-sound-toggle:hover { color: rgba(220,244,236,.95); border-color: rgba(150,200,175,.35); }
+.snow-sound-toggle[aria-pressed="false"] { opacity: .55; color: rgba(180,204,196,.45); }
 .snow-admin-toggle {
   position: absolute; z-index: 7;
   right: clamp(14px, 3vw, 34px); bottom: calc(var(--eazo-safe-area-bottom) + 20px);
@@ -1274,56 +1293,66 @@ body .app-shell.pinball-mode:not(.snow-mode) .aurora-admin-toggle:not([hidden]) 
 }
 /* --fx-visual (0..1) is the envelope written by fx.js */
 
-/* -- ALCOHOL: slow refraction of the whole page -- */
+/* -- ALCOHOL: real screen-space ring-wave refraction of the whole page.
+   No glowing rings, discs, outlines or ripple overlay are drawn — the
+   distortion is produced entirely by the SVG displacement field. -- */
 html.fx-alcohol .app-shell {
   filter:url(#fx-refract);
   transition:filter .6s ease;
 }
-html.fx-alcohol .fx-overlay-ripple {
-  opacity:calc(var(--fx-visual, 0) * .5);
-  background:
-    radial-gradient(120% 90% at var(--fx-mx,50%) var(--fx-my,50%),
-      rgba(150,200,255,.06), transparent 42%),
-    repeating-radial-gradient(circle at 50% 55%,
-      rgba(160,210,255,.035) 0 22px, transparent 22px 46px);
-  mix-blend-mode:screen;
-  animation:fxRippleDrift 9s ease-in-out infinite;
-}
-@keyframes fxRippleDrift {
-  0%,100% { background-position:0 0, 0 0; transform:scale(1); }
-  50% { background-position:0 -14px, 0 8px; transform:scale(1.01); }
-}
 
-/* -- CIGARETTES: raised saturation + restrained chromatic edges -- */
-html.fx-cigarettes .app-shell {
-  filter:saturate(calc(1 + var(--fx-visual,0) * .85))
-         contrast(calc(1 + var(--fx-visual,0) * .06));
+/* -- MIST RESTORER ("cigarettes"): no saturation boost. The whole site
+   enters a damp, out-of-focus state that the pointer can locally clear.
+   Layers are created by fog.js: .fog-blur (masked backdrop blur) and
+   #fog-canvas (drifting fog + pointer clear-trail + click breathing puffs). -- */
+.fog-blur {
+  position:fixed; inset:0; z-index:71; pointer-events:none;
+  --fog-x:50%; --fog-y:50%; --fog-density:0;
+  opacity:var(--fog-density);
+  background:radial-gradient(
+    circle 210px at var(--fog-x) var(--fog-y),
+    transparent 0,
+    transparent 42%,
+    rgba(90,126,113,.05) 58%,
+    rgba(60,96,84,.16) 70%,
+    rgba(38,68,58,.30) 82%,
+    rgba(19,38,32,.48) 100%);
+  -webkit-mask:radial-gradient(circle 210px at var(--fog-x) var(--fog-y), transparent 0, transparent 30%, #000 66%);
+  mask:radial-gradient(circle 210px at var(--fog-x) var(--fog-y), transparent 0, transparent 30%, #000 66%);
+  backdrop-filter:blur(5px) saturate(.72);
+  -webkit-backdrop-filter:blur(5px) saturate(.72);
+  transition:opacity .8s ease;
 }
-html.fx-cigarettes .fx-overlay-color {
-  opacity:calc(var(--fx-visual,0) * .38);
-  background:
-    linear-gradient(90deg, rgba(255,40,80,.05), transparent 8%, transparent 92%, rgba(40,120,255,.05)),
-    radial-gradient(140% 120% at 50% 120%, rgba(120,60,160,.06), transparent 60%);
-  mix-blend-mode:screen;
+/* Safari / no backdrop-filter: keep the animated fog canvas + clear trail,
+   don't force real-time background blur — just deepen the translucent fog. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .fog-blur {
+    background:radial-gradient(
+      circle 130px at var(--fog-x) var(--fog-y),
+      transparent 0,
+      rgba(90,126,113,.14) 46%,
+      rgba(19,38,32,.6) 100%);
+  }
 }
-html.fx-cigarettes .node-label strong,
-html.fx-cigarettes .age-number {
-  text-shadow:
-    calc(var(--fx-visual,0) * -1.1px) 0 rgba(255,0,80,.5),
-    calc(var(--fx-visual,0) * 1.1px) 0 rgba(0,180,255,.5);
+#fog-canvas {
+  position:fixed; inset:0; z-index:72; pointer-events:none;
+  mix-blend-mode:normal; opacity:.94;
 }
-
-/* -- COMBINED alcohol + cigarettes: slow colored oil film -- */
-html.fx-filmoil .app-shell { filter:url(#fx-refract) saturate(calc(1 + var(--fx-visual,0)*.55)); }
-html.fx-filmoil .fx-overlay-color {
-  opacity:calc(var(--fx-visual,0) * .3);
-  background:
-    conic-gradient(from 0deg at var(--fx-mx,50%) var(--fx-my,50%),
-      rgba(120,60,160,.05), rgba(40,120,180,.05), rgba(80,160,120,.05),
-      rgba(150,90,60,.05), rgba(120,60,160,.05));
-  mix-blend-mode:screen;
-  animation:fxRippleDrift 12s ease-in-out infinite;
-}
+/* Nodes/text/models get a mild depth-of-field difference (not a uniform blur).
+   Red privilege nodes are weakened by the mist but never fully vanish. */
+html.fx-mist .node-label { filter:blur(.4px); opacity:.9; transition:filter .8s ease, opacity .8s ease; }
+html.fx-mist .node.node-locked,
+html.fx-mist .node[data-locked="true"] { filter:blur(1px) saturate(.7); opacity:.72; }
+html.fx-mist #starfield { filter:blur(.6px) saturate(.82); transition:filter 1s ease; }
+/* NPC outlines soften; their lines arrive more slowly (handled in JS where possible). */
+html.fx-mist .market-npc-line { filter:blur(.3px); opacity:.82; transition:opacity 1.2s ease; }
+/* Important buttons stay crisp and keep their real hit position. */
+html.fx-mist .rail-button,
+html.fx-mist .modal-action,
+html.fx-mist .market-item,
+html.fx-mist .lottery-claim,
+html.fx-mist button { filter:none !important; }
+html.fx-mist.fx-reduced .fog-blur { backdrop-filter:none; -webkit-backdrop-filter:none; }
 
 /* -- ENERGY: motion sped via JS timeScale; hover feedback slightly early -- */
 html.fx-energy .rail-button,
@@ -1332,17 +1361,30 @@ html.fx-energy .node { transition-duration:.09s; }
 html.fx-fatigue .rail-button,
 html.fx-fatigue .modal-action,
 html.fx-fatigue .node { transition-duration:.5s; }
+/* Fatigue: subjective slow-down reads as a mild desaturation of the scene.
+   Buttons + inputs stay untouched so real interaction is never delayed. */
+html.fx-fatigue #starfield { filter:saturate(.72) brightness(.94); transition:filter 1.2s ease; }
+html.fx-fatigue .node-scene, html.fx-fatigue .market-shelf { filter:saturate(.8); transition:filter 1.2s ease; }
 
-/* Reduced motion: static refraction / static chroma, no drift */
+/* Reduced motion: no wave propagation — only a very slight static refraction */
 html.fx-reduced .fx-overlay { animation:none !important; transition:opacity .4s ease; }
 html.fx-reduced.fx-alcohol .app-shell { filter:contrast(1.02) hue-rotate(2deg); }
-html.fx-reduced .fx-overlay-ripple { background:radial-gradient(120% 90% at 50% 50%, rgba(150,200,255,.05), transparent 45%); }
 
-/* Mobile: cheaper refraction */
-@media (max-width:720px) {
-  html.fx-alcohol .app-shell,
-  html.fx-filmoil .app-shell { filter:contrast(1.03) saturate(1.15); }
+/* Instant purchase acknowledgement — a single barely-perceptible breath. */
+.fx-alcohol-enter .app-shell { animation:alcohol-arrival 700ms ease-out both; }
+@keyframes alcohol-arrival {
+  0%   { transform:scale(1); }
+  45%  { transform:scale(1.0025); }
+  100% { transform:scale(1); }
 }
+
+/* WebGL ripple layer: when on, hide the raw source art so only the warped
+   copy is visible (avoids a double image). Games keep their own canvases;
+   the ripple copy sits above them at reduced resolution on mobile. */
+html.fx-ripple-on #starfield { opacity:0; }
+#fx-ripple { will-change:transform; }
+
+/* Mobile: refraction handled by the field at reduced grid resolution (see fx.js) */
 
 /* -- Corner: active temporary states + remaining time -- */
 .fx-corner {
@@ -1363,6 +1405,14 @@ html.fx-reduced .fx-overlay-ripple { background:radial-gradient(120% 90% at 50% 
 }
 .fx-corner .fx-chip b { color:#cdeede; font-weight:600; }
 .fx-corner .fx-chip .fx-time { color:rgba(160,220,190,.7); font-variant-numeric:tabular-nums; }
+.fx-corner .fx-chip .fx-stop {
+  pointer-events:auto; cursor:pointer;
+  font:500 10px/1 ui-monospace,monospace; letter-spacing:.05em;
+  color:rgba(230,180,180,.9); background:rgba(40,14,14,.7);
+  border:1px solid rgba(200,90,90,.34); border-radius:3px;
+  padding:3px 7px; margin-left:2px; transition:background .2s ease, color .2s ease;
+}
+.fx-corner .fx-chip .fx-stop:hover { background:rgba(90,20,20,.85); color:#ffdede; }
 
 /* silence summary toast */
 .fx-toast {
@@ -1475,35 +1525,209 @@ html.fx-reduced .market-clerk { filter:blur(3px); }
 
 .market-back { position:fixed; left:16px; top:16px; z-index:42; }
 
-/* -- detail card + lottery modals -- */
-.market-detail-layer, .market-lottery-layer {
+/* -- detail card modal -- */
+.market-detail-layer {
   position:fixed; inset:0; z-index:90; display:none;
   align-items:center; justify-content:center; padding:20px;
   background:rgba(2,8,6,.7); backdrop-filter:blur(3px);
 }
-.market-detail-layer.open, .market-lottery-layer.open { display:flex; }
-.market-detail-card, .market-lottery-card {
+.market-detail-layer.open { display:flex; }
+.market-detail-card {
   position:relative; width:min(94vw,420px);
   background:linear-gradient(180deg, #0c2318, #071710);
   border:1px solid rgba(140,200,170,.24); border-radius:10px;
   padding:22px; color:#d6ece0;
 }
 .market-detail-code { font-size:10px; letter-spacing:.2em; color:rgba(150,200,175,.6); font-family:ui-monospace,monospace; }
-.market-detail-card h3, .market-lottery-card h3 { margin:.3em 0; font-size:20px; color:#e6f4ec; }
+
+/* -- VRU–18: real 3D object on the shelf -- */
+.market-item-vru { position:relative; overflow:hidden; min-height:240px; }
+.market-model-slot {
+  position:relative; width:100%; height:150px; margin-block-end:12px;
+  overflow:hidden; pointer-events:none;
+}
+.market-model-canvas { display:block; width:100%; height:100%; background:transparent; opacity:.82; }
+.market-model-fallback {
+  position:absolute; inset:14% 18%; border:1px solid rgba(180,223,207,.28);
+  border-radius:6px; background:
+    repeating-linear-gradient(45deg, rgba(180,223,207,.06) 0 6px, transparent 6px 12px);
+}
+.market-model-fallback[hidden] { display:none; }
+.market-item-vru::after {
+  content:""; position:absolute; inset:8% 12% 30%;
+  background:radial-gradient(ellipse at center, rgba(115,205,172,.07), transparent 68%);
+  filter:blur(18px); pointer-events:none;
+}
+
+/* -- VRU–18 fullscreen focus state (not a dialog) -- */
+.model-focus-layer {
+  position:fixed; inset:0; z-index:120; display:grid; place-items:center;
+  opacity:0; visibility:hidden;
+  background:rgba(1,8,7,.32);
+  backdrop-filter:blur(18px) saturate(.72) brightness(.55);
+  -webkit-backdrop-filter:blur(18px) saturate(.72) brightness(.55);
+  transition:opacity 420ms ease, visibility 420ms;
+}
+.model-focus-layer.open { opacity:1; visibility:visible; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .model-focus-layer { background:rgba(1,8,7,.88); }
+}
+.model-focus-canvas {
+  position:absolute; inset:7vh 8vw 12vh; width:84vw; height:81vh;
+  background:transparent; cursor:grab; touch-action:none;
+  opacity:0; transform:scale(.62);
+  transition:opacity 460ms ease, transform 620ms cubic-bezier(.16,1,.3,1);
+}
+.model-focus-canvas:active { cursor:grabbing; }
+.model-focus-layer.open .model-focus-canvas { opacity:1; transform:scale(1); }
+.model-focus-meta {
+  position:absolute; inset-inline-start:clamp(24px,6vw,90px);
+  inset-block-end:clamp(80px,10vh,130px); max-width:320px;
+  color:rgba(220,239,230,.84); pointer-events:none;
+}
+.model-focus-meta > span { font-size:11px; letter-spacing:.2em; font-family:ui-monospace,monospace; color:rgba(150,200,175,.6); }
+.model-focus-meta h3 { margin:8px 0 12px; font-weight:450; font-size:clamp(22px,3vw,42px); color:#e6f4ec; }
+.model-focus-meta p { color:rgba(190,216,204,.58); font-size:14px; line-height:1.5; }
+.model-focus-actions {
+  position:absolute; inset-inline-end:clamp(24px,6vw,90px);
+  inset-block-end:clamp(80px,10vh,130px); display:flex; gap:10px;
+}
+.model-focus-actions button {
+  padding:10px 18px; border-radius:999px; cursor:pointer;
+  font-size:13px; letter-spacing:.04em;
+  background:rgba(16,40,32,.7); border:1px solid rgba(140,200,170,.3); color:#d6ece0;
+  transition:border-color .25s, background .25s;
+}
+.model-focus-actions button:hover { border-color:rgba(150,220,180,.55); background:rgba(24,54,44,.8); }
+.model-focus-close {
+  position:absolute; inset-block-start:28px; inset-inline-end:34px; z-index:4;
+  width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; line-height:1;
+  background:rgba(10,26,20,.6); border:1px solid rgba(140,200,170,.28); color:rgba(210,234,224,.85);
+}
+.model-focus-hint {
+  position:absolute; inset-block-end:24px; left:50%; transform:translateX(-50%);
+  color:rgba(190,216,204,.42); font-size:11px; letter-spacing:.12em;
+}
+body.model-focus-open { overflow:hidden; }
+@media (max-width:720px) {
+  .model-focus-meta { inset-block-end:auto; inset-block-start:clamp(70px,12vh,120px); max-width:70vw; }
+  .model-focus-actions { inset-inline-end:50%; transform:translateX(50%); inset-block-end:clamp(56px,9vh,90px); }
+}
+.market-detail-card h3 { margin:.3em 0; font-size:20px; color:#e6f4ec; }
 .market-detail-desc { font-size:13px; color:rgba(185,215,200,.85); line-height:1.5; }
 .market-detail-facts { display:flex; gap:22px; margin:14px 0; }
 .market-detail-facts dt { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:rgba(150,190,170,.6); }
 .market-detail-facts dd { margin:2px 0 0; font-size:15px; color:#dff3e8; font-variant-numeric:tabular-nums; }
 .market-detail-actions { display:flex; gap:10px; flex-wrap:wrap; }
 
-.market-scratch-wrap { position:relative; width:100%; height:120px; margin:14px 0; border-radius:6px; overflow:hidden; }
-.market-scratch-prize {
-  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  text-align:center; padding:10px; font-size:14px; font-weight:600; color:#e6f4ec;
-  background:radial-gradient(circle at 50% 40%, rgba(60,120,90,.5), rgba(10,30,20,.9));
+/* =========================================================================
+   LOTTERY — fullscreen focus state (no dialog); paper left-of-center,
+   small scratch station on the right. Center-region reveal only.
+   ========================================================================= */
+.lottery-focus-layer {
+  position:fixed; inset:0; z-index:125;
+  opacity:0; visibility:hidden;
+  background:rgba(1,7,6,.34);
+  backdrop-filter:blur(18px) brightness(.5) saturate(.7);
+  -webkit-backdrop-filter:blur(18px) brightness(.5) saturate(.7);
+  transition:opacity 420ms ease, visibility 420ms;
 }
-.market-scratch { position:absolute; inset:0; width:100%; height:100%; cursor:grab; touch-action:none; }
-.market-lottery-result { min-height:1.4em; font-size:13px; text-align:center; color:rgba(190,220,204,.9); }
+.lottery-focus-layer.open { opacity:1; visibility:visible; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lottery-focus-layer { background:rgba(1,7,6,.9); }
+}
+body.lottery-focus-open { overflow:hidden; }
+
+.lottery-focus-close {
+  position:absolute; inset-block-start:28px; inset-inline-end:34px; z-index:4;
+  width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; line-height:1;
+  background:rgba(10,26,20,.6); border:1px solid rgba(140,200,170,.28); color:rgba(210,234,224,.85);
+}
+
+.lottery-object {
+  position:absolute; left:6vw; top:44%;
+  width:min(46vw,560px); aspect-ratio:0.9;
+  transform:translateY(-50%) rotate(-2deg);
+  perspective:1000px;
+}
+.lottery-model-canvas {
+  position:absolute; inset:0; z-index:2; width:100%; height:100%;
+  display:block; background:transparent;
+  cursor:grab; touch-action:none;
+}
+.lottery-model-canvas:active { cursor:grabbing; }
+/* CSS paper acts as the fallback backdrop behind the 3D model */
+.lottery-object.model-ready .lottery-paper { opacity:0; transition:opacity .5s ease; }
+.lottery-paper {
+  position:absolute; inset:0; padding:clamp(22px,4vw,52px);
+  display:flex; flex-direction:column; gap:.7em;
+  color:rgba(210,232,220,.72); font-family:ui-monospace,monospace;
+  background:linear-gradient(120deg, rgba(116,158,141,.16), rgba(23,46,38,.42));
+  border:1px solid rgba(139,191,169,.24);
+  box-shadow:0 35px 90px rgba(0,0,0,.36), inset 0 0 48px rgba(130,190,166,.035);
+  clip-path:polygon(1% 0, 99% 1%, 100% 97%, 96% 100%, 2% 98%, 0 3%);
+}
+.lottery-code { font-size:clamp(11px,1.4vw,15px); letter-spacing:.24em; color:rgba(150,200,175,.62); }
+.lottery-serial { font-size:clamp(9px,1vw,11px); letter-spacing:.3em; color:rgba(150,200,175,.4); }
+.lottery-mark { margin-top:auto; font-size:clamp(18px,2.6vw,34px); letter-spacing:.1em; color:rgba(214,236,224,.8); font-family:inherit; }
+.lottery-grid {
+  position:absolute; inset:0; pointer-events:none; opacity:.5;
+  background-image:
+    linear-gradient(rgba(150,200,175,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(150,200,175,.05) 1px, transparent 1px);
+  background-size:22px 22px;
+  clip-path:polygon(1% 0, 99% 1%, 100% 97%, 96% 100%, 2% 98%, 0 3%);
+}
+
+.lottery-scratch-station {
+  position:absolute; right:clamp(24px,6vw,90px); top:50%;
+  width:clamp(220px,24vw,330px); transform:translateY(-50%);
+}
+.lottery-station-label {
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(150,190,170,.6); margin:0 0 10px;
+}
+.lottery-scratch-wrap {
+  position:relative; width:100%; aspect-ratio:1.75;
+  overflow:hidden; border:1px solid rgba(136,198,174,.22);
+  background:rgba(4,14,12,.78);
+}
+.lottery-result, .lottery-scratch-canvas {
+  position:absolute; inset:0; width:100%; height:100%;
+}
+.lottery-scratch-canvas { z-index:2; cursor:crosshair; touch-action:none; }
+.lottery-result {
+  display:grid; place-content:center; gap:8px; padding:20px;
+  text-align:center; color:rgba(211,234,223,.86);
+}
+.lottery-result-main { font-size:clamp(17px,2vw,25px); letter-spacing:.08em; }
+.lottery-result-note { color:rgba(183,211,197,.52); font-size:11px; line-height:1.6; }
+.lottery-reading-status {
+  margin:12px 0 14px; font-size:11px; letter-spacing:.06em; color:rgba(183,211,197,.6);
+}
+.lottery-claim {
+  width:100%; padding:11px 16px; border-radius:6px; cursor:pointer;
+  font-size:13px; letter-spacing:.06em; color:#d6ece0;
+  background:rgba(16,40,32,.7); border:1px solid rgba(140,200,170,.3);
+  transition:opacity .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.lottery-claim:disabled { opacity:.28; cursor:not-allowed; }
+.lottery-claim:not(:disabled) {
+  opacity:1; border-color:rgba(141,211,181,.48);
+  box-shadow:0 0 22px rgba(102,177,147,.06);
+}
+.lottery-focus-hint {
+  position:absolute; inset-block-end:24px; left:50%; transform:translateX(-50%);
+  color:rgba(190,216,204,.42); font-size:11px; letter-spacing:.12em; text-align:center;
+}
+
+@media (max-width:720px) {
+  .lottery-object { left:8vw; top:11vh; width:84vw; aspect-ratio:1.3; transform:rotate(-2deg); }
+  .lottery-scratch-station {
+    left:50%; right:auto; top:auto; bottom:8vh;
+    width:min(82vw,330px); transform:translateX(-50%);
+  }
+}
 
 @media (max-width:720px) {
   .market-shelf { grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); }
