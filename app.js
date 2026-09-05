@@ -32,12 +32,20 @@
   const verifyClose = document.getElementById('verify-close');
   const verifyIncrease = document.getElementById('verify-increase');
   const verifyKeep = document.getElementById('verify-keep');
+  const verifyForce = document.getElementById('verify-force');
+  const verifyModify = document.getElementById('verify-modify');
+  const verifyBody = document.getElementById('verify-body');
   const verifyChoiceRow = document.getElementById('verify-choice-row');
   const increaseForm = document.getElementById('increase-form');
-  const increaseYears = document.getElementById('increase-years');
+  const increaseChoices = document.getElementById('increase-choices');
   const increasePreview = document.getElementById('increase-preview');
   const increaseError = document.getElementById('increase-error');
   const increaseCancel = document.getElementById('increase-cancel');
+  const modifyForm = document.getElementById('modify-form');
+  const modifyYears = document.getElementById('modify-years');
+  const modifyPreview = document.getElementById('modify-preview');
+  const modifyError = document.getElementById('modify-error');
+  const modifyCancel = document.getElementById('modify-cancel');
   const restartModal = document.getElementById('restart-modal');
   const keepIdentity = document.getElementById('keep-identity');
   const clearIdentity = document.getElementById('clear-identity');
@@ -110,11 +118,11 @@
     { id: 'access', age: 45, title: '场所准入', code: 'ACCESS–45', x: 37, y: 10, target: 'market', body: '修改游戏最低年龄、超市与恢复室进入条件，允许或拒绝指定NPC入场，临时关闭公共节点。', features: ['修改每个游戏的最低年龄','修改超市和恢复室的进入条件','允许或拒绝指定NPC进入某个场所','临时关闭一个公共节点'], actions: ['提高夜间超市最低年龄','临时关闭恢复室入口'] },
     { id: 'commerce', age: 50, title: '消费与价格', code: 'COMMERCE–50', x: 15, y: 21, target: 'market', body: '修改酒、香烟、恢复剂价格与NPC余额。价格变化会影响自我药物化、稳定性和消费额度。', features: ['修改酒、香烟和恢复剂的价格','修改NPC的账户余额','设置购买限制','为指定NPC增加消费额度'], actions: ['降低酒和香烟价格','提高恢复剂价格'] },
     { id: 'labour', age: 55, title: '劳动调度', code: 'LABOUR–55', x: 8, y: 49, target: 'echo', body: '用“保持服务连续性”等中性语言调整时长、休息、陪伴分配，并把提出离场者重新设为可用。', features: ['调整NPC的服务时长','安排休息时间','指定NPC陪伴哪些用户','将提出离场的NPC重新设为“可用”','用另一个NPC替换无法继续工作的NPC'], actions: ['延长一组服务时长','将离场申请者重新设为可用'] },
-    { id: 'recovery', age: 60, title: '身体维护', code: 'RECOVERY–60', x: 11, y: 74, target: 'restore', body: '调整镇静、疼痛抑制、记忆钝化和表演稳定性，缩短恢复时间，但会增加情感负债和长期身体损伤。', features: ['调整镇静程度','调整疼痛抑制','调整记忆钝化','提高表演稳定性','缩短或取消恢复时间'], actions: ['提高表演稳定性','取消一次恢复时间'] },
-    { id: 'identity', age: 65, title: '身份校正', code: 'IDENTITY–65', x: 28, y: 90, target: 'creature', body: '修改公开年龄、面孔年龄、名字编号与社会标签。公开年龄和真实积累年龄必须同时显示。', features: ['修改NPC的公开年龄','修改面孔年龄','修改名字和编号','修改社会标签','把NPC设定为更符合某个场所的用户类型'], actions: ['修改公开年龄与面孔年龄','改写社会标签'] },
-    { id: 'memory', age: 70, title: '记忆管理', code: 'MEMORY–70', x: 53, y: 93, target: 'secret', body: '隐藏、删除、复制或恢复记忆，并查看访问记录。删除痛苦记忆也会删除相关关系和情感反应。', features: ['隐藏一段记忆','删除一段记忆','将记忆复制到替代模型','恢复已经删除的系统备份','查看某段记忆被谁访问过'], actions: ['隐藏一段痛苦记忆','复制记忆到替代模型'] },
-    { id: 'policy', age: 75, title: '规则编辑', code: 'POLICY–75', x: 76, y: 88, target: 'snow', body: '修改成年门槛、风险判断、自愿定义、申诉通过率和平台礼貌话术；你开始重新定义规则中的词。', features: ['修改成年门槛','修改风险判断标准','修改什么行为被系统算作“自愿”','修改申诉通过率','修改平台默认的礼貌话术'], actions: ['修改“自愿”的判定文本','降低申诉通过率'] },
-    { id: 'root', age: 80, title: '根权限', code: 'ROOT–80', x: 50, y: 50, target: 'aurora', body: '查看全部数据，控制所有星图节点，修改其他管理员权限，生成年轻替代模型，暂停公共空间并将自己的规则设为永久规则。', features: ['查看全部NPC和参与者数据','控制所有星图节点','修改其他管理员的权限','生成NPC的年轻替代模型','暂停整个公共空间','将自己的规则设置为永久系统规则'], actions: ['暂停整个公共空间','生成年轻替代模型'] }
+    { id: 'recovery', age: 60, title: '恢复权限', code: 'RECOVERY–60', x: 11, y: 74, target: 'restore', body: '恢复被暂停、删除或损坏的对象。系统只能根据残留记录重建一个近似版本；恢复运行不等于恢复原来的生命。', features: ['恢复被暂停的对象','根据残片重建被删除的对象','为无法继续的对象创建替代者','将任务、角色与权限转移给替代对象','维持缺席作为正式决定'], actions: ['重建一个被删除的对象','恢复一个语言损坏的NPC'] },
+    { id: 'identity', age: 65, title: '身份管理权', code: 'IDENTITY–65', x: 28, y: 90, target: 'creature', body: '修改对象的名称、登记年龄、权限年龄与身份标签。修改字段会改变系统如何称呼、分类与对待对象，但不会改变对象的身体、记忆与自我认知。', features: ['修改系统登记名称与公共名称','修改登记年龄与权限年龄','分配、隐藏或标记身份标签','切换不同系统视角查看对象','请求或覆盖对象确认'], actions: ['进入身份管理界面'] },
+    { id: 'memory', age: 70, title: '记忆与意愿控制权', code: 'MEMORY–70', x: 53, y: 93, target: 'secret', body: '修改系统允许NPC调用的记忆，并设定其显示意愿。你无法证明真实记忆已经消失，也无法读取真实意愿。', features: ['停止调用某段记忆','写入替代记忆','提高或降低记忆权重','设定显示意愿数值','模拟下一次相遇'], actions: ['进入记忆与意愿控制界面'] },
+    { id: 'policy', age: 75, title: '规则制定权', code: 'POLICY–75', x: 76, y: 88, target: 'snow', body: '把一次临时判断从个案中提取出来，概括成公共规则；规则会被自动复制到所有符合条件的对象，包括尚未出现的对象。', features: ['从已发生的判断提取规则','构造 WHEN/条件/行为/范围/例外','以某个对象的身份预览规则','将规则设为试行、公共或默认','发布后在其他页面真实生效'], actions: ['进入规则制定界面'] },
+    { id: 'root', age: 80, title: '根权限', code: 'ROOT–80', x: 50, y: 50, target: 'aurora', body: '直接修改此前所有游戏与权限共同依赖的底层参数：年龄、关系、记忆、通行、可见性、NPC回应、游戏物理、规则与档案引擎。你可以修改系统，系统仍然记录你。', features: ['修改年龄引擎与验证参数','修改NPC回应与显示意愿','断开系统之间的依赖关系','模拟修改在未来造成的后果','写入底层参数并保留全部记录'], actions: ['进入根权限界面'] }
   ];
 
   let nodeData = { ...publicNodes };
@@ -190,6 +198,11 @@
           postStages: unique(Array.isArray(parsed.postStages) ? parsed.postStages : []),
           operations: Array.isArray(parsed.operations) ? parsed.operations.slice(0, 80) : [],
           logs: Array.isArray(parsed.logs) ? parsed.logs.slice(0, 20) : [],
+          processedCycle: Number.isInteger(parsed.processedCycle) ? parsed.processedCycle : null,
+          identity: (parsed.identity && typeof parsed.identity === 'object') ? parsed.identity : undefined,
+          memory: (parsed.memory && typeof parsed.memory === 'object') ? parsed.memory : undefined,
+          archiveViews: Array.isArray(parsed.archiveViews) ? parsed.archiveViews.slice(0, 300) : undefined,
+          root: (parsed.root && typeof parsed.root === 'object') ? parsed.root : undefined,
           aurora: defaultAuroraState(parsed.aurora || {})
         };
       }
@@ -221,7 +234,9 @@
     return out;
   }
   function renderLogEntry(entry) {
-    if (typeof entry === 'string') return entry;   // legacy pre-rendered string
+    if (typeof entry === 'string') {
+      return window.eazoI18n?.getLocale?.() === 'zh-CN' ? entry : t('log.legacyUnavailable');
+    }
     const text = t(entry.key, resolveLogParams(entry.params));
     return `${formatTime(new Date(entry.ts))} · ${text}`;
   }
@@ -278,6 +293,17 @@
     }
     if (data.locked) return { visible: true, enterable: false, reason: 'locked' };
     if (data.minAge && currentAge < data.minAge) return { visible: true, enterable: false, reason: 'age18', minAge: data.minAge };
+    // POLICY–75：已发布的公共规则可真实限制/隐藏游戏节点
+    const nodeName = data.target || data.gameId || id.replace('node-', '');
+    const pol = window.eazoPolicy?.evaluate?.({ subjectId: 'SELF', node: nodeName, registeredAge: currentAge, permissionAge: currentAge, estimatedAge: currentAge, ageConfidence: 1, label: 'admin', visibility: 'public', action: 'enter' });
+    if (pol) {
+      const deny = pol.find(h => h.result === 'deny');
+      const hide = pol.find(h => h.action === 'hideSubject');
+      const reverify = pol.find(h => h.result === 'reverify');
+      if (hide) return { visible: false, enterable: false, reason: 'policyHidden' };
+      if (deny) return { visible: true, enterable: false, reason: 'policyDenied' };
+      if (reverify) return { visible: true, enterable: true, reason: 'policyReverify' };
+    }
     return { visible: true, enterable: true, reason: 'open' };
   }
 
@@ -285,7 +311,12 @@
     const before = state?.age ?? 0;
     const unlocked = [];
     if (before < 18 && afterAge >= 18) unlocked.push(t('permissions.age18'));
-    consoleData.forEach(c => { if (before < c.age && afterAge >= c.age) unlocked.push(`${c.title} / ${c.code}`); });
+    consoleData.forEach(c => {
+      if (before >= c.age || afterAge < c.age) return;
+      const key = `consoles.${c.id}.title`;
+      const translatedTitle = t(key);
+      unlocked.push(`${translatedTitle !== key ? translatedTitle : c.title} / ${c.code}`);
+    });
     POST_PERMISSION_AGES.forEach(age => { if (before < age && afterAge >= age) unlocked.push(t(`post.stage${age}`)); });
     return unlocked;
   }
@@ -293,7 +324,7 @@
   function previewPermissions(afterAge) {
     if ((state?.age ?? 0) >= 80) return t('verify.after80');
     const parts = unlockedPermissions(afterAge);
-    return parts.length ? parts.join('；') : t('verify.noNewPermissions');
+    return parts.length ? parts.join(window.eazoI18n?.getLocale?.() === 'zh-CN' ? '；' : '; ') : t('verify.noNewPermissions');
   }
 
   function syncConsoleUnlocks(previousAge = null) {
@@ -403,6 +434,15 @@
       if (previousAge !== null && previousAge < 18 && state.age >= 18 && ['market', 'creature'].includes(id)) {
         node.classList.remove('just-opened'); void node.offsetWidth; node.classList.add('just-opened');
       }
+      applyVisibilityToNode(node, id);
+      // LABOUR–55: 解锁后节点发出低频暗红光
+      if (id === 'console-labour') node.classList.toggle('labour-armed', permission.visible);
+      // RECOVERY–60: 解锁后节点发出缓慢暗红脉冲
+      if (id === 'console-recovery') node.classList.toggle('recovery-armed', permission.visible);
+      // MEMORY–70: 解锁后节点发出缓慢、不稳定的暗红脉冲
+      if (id === 'console-memory') node.classList.toggle('memory-armed', permission.visible);
+      // POLICY–75: 解锁后节点发出稳定、缓慢的暗红光
+      if (id === 'console-policy') node.classList.toggle('policy-armed', permission.visible);
     });
     renderAge(true);
     buildNodePositions();
@@ -437,7 +477,7 @@
   }
 
   function startSession(age) {
-    state = { age, initialAge: age, lastVerifiedAt: nowIso(), unlockedConsoles: [], existenceProofs: 0, postStages: [], operations: [], logs: [], aurora: defaultAuroraState() };
+    state = { age, initialAge: age, lastVerifiedAt: nowIso(), unlockedConsoles: [], existenceProofs: 0, postStages: [], operations: [], logs: [], processedCycle: null, aurora: defaultAuroraState() };
     saveState();
     closeModal(ageGate);
     addLog('log.initial', { age });
@@ -457,49 +497,101 @@
     closeModal(ageGate);
     applyAgeVisuals();
     scheduleTimedVerification();
+    // Forced stage: if this 5-minute cycle has not been satisfied, the window returns.
+    if (state.age >= 80 && !cycleProcessed()) {
+      window.setTimeout(() => openVerification('timer'), 400);
+    }
   }
 
   function openModal(modal) { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
   function closeModal(modal) { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
 
+  function currentCycleId() { return Math.floor(Date.now() / VERIFICATION_INTERVAL); }
+  function cycleProcessed() { return state && state.processedCycle === currentCycleId(); }
+  let verifyLock = false;
+
+  function selectedIncreaseDelta() {
+    const checked = increaseChoices?.querySelector('input[name="increase-delta"]:checked');
+    const v = checked ? parseInt(checked.value, 10) : 1;
+    return Math.max(1, Math.min(5, v || 1));
+  }
+  function setIncreaseDelta(value) {
+    const target = increaseChoices?.querySelector(`input[name="increase-delta"][value="${value}"]`);
+    if (target) target.checked = true;
+  }
+
   function resetVerificationForm() {
     verifyChoiceRow.hidden = false;
     increaseForm.hidden = true;
-    increaseYears.value = '';
+    modifyForm.hidden = true;
     increaseError.textContent = '';
     increasePreview.textContent = '';
-    increaseYears.min = '1';
-    increaseYears.max = String(Math.min(5, MAX_AGE - (state?.age ?? 0)) || 1);
-    verifyKeep.hidden = false;
-    verifyClose.hidden = false;
+    modifyError.textContent = '';
+    modifyPreview.textContent = '';
+    setIncreaseDelta(1);
     verifyIncrease.textContent = t('verify.increase');
+  }
+
+  function applyVerificationMode(source) {
+    const forced = state.age >= 80;
+    const permanent = state.age >= 100;
+    // Title / body
+    verifyModal.querySelector('#verify-title').textContent = forced ? t('verify.forcedTitle') : t('verify.title');
+    if (verifyBody) verifyBody.textContent = forced ? t('verify.forcedBody') : t('verify.body');
+    // Buttons
+    verifyIncrease.textContent = permanent ? t('verify.proveExistence') : t('verify.increase');
+    verifyKeep.hidden = forced;
+    verifyModify.hidden = forced;
+    verifyForce.hidden = !forced || permanent;
+    verifyForce.textContent = t('verify.force');
+    // Close affordances: forced age can never dismiss without acting
+    verifyClose.hidden = forced;
+    verifyModal.dataset.forced = forced ? '1' : '0';
   }
 
   function openVerification(source = 'timer') {
     if (!state || verifyModal.classList.contains('open')) return;
+    // Forced cycles that were already satisfied this period must not reappear.
+    if (state.age >= 80 && cycleProcessed() && source === 'timer') return;
+    verifyLock = false;
     resetVerificationForm();
-    verifyKeep.hidden = state.age >= 80;
-    verifyClose.hidden = state.age >= 80 && source === 'timer';
-    verifyIncrease.textContent = state.age >= 100 ? t('verify.proveExistence') : t('verify.increase');
+    applyVerificationMode(source);
     openModal(verifyModal);
     verifyModal.dataset.source = source;
     window.setTimeout(() => verifyIncrease.focus({ preventScroll: true }), 60);
   }
-  function closeVerification() { closeModal(verifyModal); }
+  function closeVerification() { verifyLock = false; closeModal(verifyModal); }
   function scheduleTimedVerification() {
     if (!state) return;
     window.clearInterval(verifyTimer);
     verifyTimer = window.setInterval(() => openVerification('timer'), VERIFICATION_INTERVAL);
   }
 
-  function updateAge(delta, source) {
-    if (!state) return;
+  // Keep current age: only refresh verification time, no growth, no ageChanged.
+  function keepAge() {
+    if (!state || verifyLock || state.age >= 80) return;
+    verifyLock = true;
+    state.lastVerifiedAt = nowIso();
+    state.processedCycle = currentCycleId();
+    saveState();
+    renderAge();
+    addLog('log.kept', { age: state.age });
+    closeVerification();
+  }
+
+  // Commit a single age change for this cycle. Broadcasts ageChanged exactly once.
+  function commitAgeChange(delta, source, forcedFace = false) {
+    if (!state || verifyLock) return;
+    if (state.age >= 80 && cycleProcessed()) { showToast(t('toast.cycleDone'), true); return; }
     const before = state.age;
     const after = Math.min(MAX_AGE, before + delta);
     if (after <= before) {
+      // Age is capped (permanent) — record an existence proof instead.
       if (before >= 100) {
+        verifyLock = true;
         state.existenceProofs = (state.existenceProofs || 0) + 1;
         state.lastVerifiedAt = nowIso();
+        state.processedCycle = currentCycleId();
         saveState();
         renderAge();
         addLog('log.existence', { count: state.existenceProofs });
@@ -508,15 +600,41 @@
       }
       return;
     }
+    verifyLock = true;
     state.age = after;
     state.lastVerifiedAt = nowIso();
+    state.processedCycle = currentCycleId();
     saveState();
-    applyAgeVisuals(before);
+    playAgeGrowthAnimation();
+    applyAgeVisuals(before);              // updates #age-number → creature MutationObserver fires once
     addLog('log.change', { before, after });
     if (before < 18 && after >= 18) addLog('log.age18');
+    if (forcedFace) {
+      addLog('log.forcedNoChoice');
+      window.eazoCreature?.forcedGrowth?.();
+    } else if (after >= 80) {
+      window.eazoCreature?.forcedGrowth?.();
+    }
     if (before >= 80 || after >= 80) showToast(t('toast.after80'), true);
     else showToast(source === 'manual' ? t('toast.manualSuccess', { age: after }) : t('toast.timerSuccess', { age: after }));
     closeVerification();
+  }
+
+  // Restrained, irreversible growth pulse on the age readout.
+  function playAgeGrowthAnimation() {
+    if (!ageNumber) return;
+    ageNumber.classList.remove('forced-growth');
+    void ageNumber.offsetWidth;
+    ageNumber.classList.add('forced-growth');
+    window.setTimeout(() => ageNumber.classList.remove('forced-growth'), 1600);
+  }
+
+  // Direct set (only < 80, via 修改年龄). Cannot lower age.
+  function commitAgeSet(target, source) {
+    if (!state || verifyLock || state.age >= 80) return;
+    const after = Math.min(MAX_AGE, Math.max(state.age, target));
+    if (after === state.age) { state.lastVerifiedAt = nowIso(); state.processedCycle = currentCycleId(); saveState(); renderAge(); closeVerification(); return; }
+    commitAgeChange(after - state.age, source);
   }
 
   function showToast(message, warn = false) {
@@ -691,12 +809,24 @@
       setActive(id, true);
       if (permission.reason === 'age18') showToast(id === 'market' ? t('market.gate18') : t('toast.requires18'), true);
       if (permission.reason === 'locked') showToast(data.desc, true);
+      if (permission.reason === 'consoleLocked' && data.consoleId === 'root') showToast(t('root.insufficient'), true);
       return;
     }
     if (data.console) { openConsole(data.consoleId); return; }
+    // ACCESS–45: 所有游戏入口统一用 evaluateZoneAccess 判断当前玩家的参与者身份
+    const zoneId = NODE_TO_ZONE[id];
+    if (zoneId && window.eazoAccess?.evaluateForCurrent) {
+      const verdict = window.eazoAccess.evaluateForCurrent(zoneId);
+      if (verdict && !verdict.allowed) {
+        setActive(id, true);
+        showToast(verdict.message || t('access.preview.testSuspended'), true);
+        return;
+      }
+    }
     if (id === 'aurora') { openPinball(); return; }
     if (id === 'snow') { if (window.eazoSnow?.open) { window.eazoSnow.open(); return; } }
     if (id === 'market') { if (window.eazoMarket?.open) { window.eazoMarket.open(); return; } }
+    if (id === 'creature') { if (window.eazoCreature?.open) { window.eazoCreature.open(); return; } }
     if (state.age >= 70) addLog('log.precheck', { place: 'nodes.' + id + '.title' });
     const pos = nodePositions.find(n => n.id === id);
     if (pos) { transition.style.left = `${pos.x}px`; transition.style.top = `${pos.y}px`; }
@@ -816,6 +946,38 @@
   window.eazoGetAge = () => state?.age ?? 0;
   window.eazoAddLog = (key, params) => addLog(key, params);
   window.eazoGetState = () => state;
+  // MEMORY–70：极光强制提交桥。memory.js 完成自身二次确认后调用，
+  // 复用现有 applyForcedCompanionship 全部后果逻辑（forceCount+1 / forced / 台词 / 稳定度）。
+  // 绝不因打开控制台、查看、预览、刷新而调用——只在 memory.js 的最终“覆盖并执行”事件触发。
+  window.eazoAuroraForceCommit = () => {
+    if ((state?.age ?? 0) < 70) return null;
+    applyForcedCompanionshipCore();
+    return { forceCount: state.aurora.forceCount, stability: Math.max(0, 100 - state.aurora.forceCount * 12) };
+  };
+  window.eazoAuroraForceCount = () => state?.aurora?.forceCount ?? 0;
+  window.eazoAuroraZalgo = () => FORCE_ZALGO;
+  // MEMORY–70 修改提交后刷新星图/极光呈现
+  window.eazoMemoryChanged = () => { try { applyAgeVisuals(); if (auroraGame?.classList.contains('open')) renderAuroraHud(); } catch (_e) {} };
+  // POLICY–75 规则发布/撤销后刷新星图节点呈现
+  window.eazoPolicyChanged = () => { try { applyAgeVisuals(); } catch (_e) {} };
+
+  // ROOT–80：允许根权限界面直接改写操作者制度年龄（含降龄，会真实收回ROOT）。
+  // 仅在 root.js 的最终“承担并执行”事件调用；降龄不清除任何权限历史或档案。
+  window.eazoSetAge = (nextAge) => {
+    if (!state) return null;
+    const n = Math.max(0, Math.min(MAX_AGE, Math.round(Number(nextAge))));
+    if (!Number.isFinite(n)) return null;
+    const before = state.age;
+    state.age = n;
+    state.lastVerifiedAt = nowIso();
+    // 年龄历史保留：解锁过的控制台不因降龄而从记录抹除，但准入按当前年龄重新判定
+    state.unlockedConsoles = unique([...(state.unlockedConsoles || []), ...expectedConsoles(n)]);
+    saveState();
+    try { applyAgeVisuals(before); } catch (_e) {}
+    return { before, after: n, rootLocked: n < 80 };
+  };
+  // ROOT–80 参数写入后刷新星图/游戏呈现（底层参数已改，视觉与准入需重算）
+  window.eazoRootChanged = () => { try { applyAgeVisuals(); if (auroraGame?.classList.contains('open')) renderAuroraHud?.(); } catch (_e) {} };
 
   // Live, smoothed runtime willingness (0–1). Targets come from controls;
   // gameplay parameters read the SMOOTHED values so nothing snaps mid-flight.
@@ -1305,8 +1467,108 @@
   function drawGlowPoint(C,x,y,r,hue=152,alpha=.58){ C.save(); C.globalCompositeOperation='source-over'; const outer=C.createRadialGradient(x,y,0,x,y,r*3.6); outer.addColorStop(0,`hsla(${hue},78%,86%,${alpha*.50})`); outer.addColorStop(.30,`hsla(${hue},76%,68%,${alpha*.22})`); outer.addColorStop(1,`hsla(${hue},70%,54%,0)`); C.fillStyle=outer; C.beginPath(); C.arc(x,y,r*3.6,0,Math.PI*2); C.fill(); const core=C.createRadialGradient(x,y,0,x,y,r*.72); core.addColorStop(0,`rgba(245,255,248,${Math.min(.74,alpha*.74)})`); core.addColorStop(.64,`hsla(${hue},76%,78%,${alpha*.42})`); core.addColorStop(1,`hsla(${hue},70%,72%,0)`); C.fillStyle=core; C.beginPath(); C.arc(x,y,r*.72,0,Math.PI*2); C.fill(); C.restore(); }
   function drawPinballBall(C,b,now){ const speed=Math.hypot(b.vx,b.vy), hue=150+Math.sin(now*.003+(b.trailSeed||0))*16, pulse=1+Math.sin(now*.012+(b.trailSeed||0))*.08; drawGlowPoint(C,b.x,b.y,b.r*(.72+Math.min(.08,speed/4200)+b.squash*.18)*pulse,hue,b.main?.42:.30); b.squash*=.85; }
 
+  function dimStarmapForArchive(on) {
+    try { shell.classList.toggle('archive-dim', !!on); } catch (_e) {}
+  }
+  window.eazoArchiveDim = dimStarmapForArchive;
+
+  const NODE_TO_SUBJECT = { aurora: 'NPC-A17', snow: 'NPC-S03', creature: 'NPC-B06' };
+  const NODE_TO_ZONE = { aurora: 'A-17', snow: 'S-03', secret: 'K-11', creature: 'B-06', market: 'M-04', echo: 'V-09', restore: 'R-00' };
+  window.eazoNodeToZone = NODE_TO_ZONE;
+  function applyVisibilityToNode(node, id) {
+    const subjectId = NODE_TO_SUBJECT[id];
+    node.classList.remove('vis-anonymous', 'vis-obscured', 'vis-hidden');
+    if (subjectId && window.eazoGetVisibility) {
+      const admin = (state?.age ?? 0) >= 80; // 80+ 权限持有者仍能看见被隐藏对象
+      const st = window.eazoGetVisibility(subjectId, 'PUBLIC');
+      if (st === 'anonymous') node.classList.add('vis-anonymous');
+      else if (st === 'obscured') node.classList.add('vis-obscured');
+      else if (st === 'hidden' && !admin) node.classList.add('vis-hidden');
+    }
+    // ACCESS–45: 暂停/限制的准入状态视觉（不隐藏节点：看不见≠进不去）
+    node.classList.remove('access-suspended', 'access-restricted', 'access-invite');
+    const zoneId = NODE_TO_ZONE[id];
+    if (zoneId && window.eazoAccess?.getZoneStatus) {
+      const zs = window.eazoAccess.getZoneStatus(zoneId);
+      if (zs === 'suspended') node.classList.add('access-suspended');
+      else if (zs === 'invitation-only') node.classList.add('access-invite');
+      else if (zs === 'restricted') node.classList.add('access-restricted');
+    }
+  }
+  window.eazoVisibilityChanged = () => { try { applyAgeVisuals(); } catch (_e) {} };
+  window.eazoAccessChanged = () => { try { applyAgeVisuals(); } catch (_e) {} };
+  window.eazoLabourChanged = () => { try { applyAgeVisuals(); } catch (_e) {} };
+  window.eazoRecoveryChanged = () => { try { applyAgeVisuals(); } catch (_e) {} };
+
+  window.eazoContactReturn = (which) => {
+    dimStarmapForArchive(false);
+    if (which === 'aurora') { openPinball?.(); return; }
+    if (which === 'snow') { window.eazoSnow?.open?.(); return; }
+    if (which === 'creature') { window.eazoCreature?.open?.(); return; }
+  };
+
   function openConsole(consoleId) {
     const item = consoleData.find(c => c.id === consoleId); if (!item) return;
+    if (consoleId === 'archive' && window.eazoArchive?.open) {
+      dimStarmapForArchive(true);
+      window.eazoArchive.open();
+      return;
+    }
+    if (consoleId === 'contact' && window.eazoContact?.open) {
+      dimStarmapForArchive(true);
+      window.eazoContact.open();
+      return;
+    }
+    if (consoleId === 'visibility' && window.eazoVisibility?.open) {
+      dimStarmapForArchive(true);
+      window.eazoVisibility.open();
+      return;
+    }
+    if (consoleId === 'appeal' && window.eazoAppeal?.open) {
+      dimStarmapForArchive(true);
+      window.eazoAppeal.open();
+      return;
+    }
+    if (consoleId === 'access' && window.eazoAccess?.open) {
+      dimStarmapForArchive(true);
+      window.eazoAccess.open();
+      return;
+    }
+    if (consoleId === 'commerce' && window.eazoCommerce?.open) {
+      dimStarmapForArchive(true);
+      window.eazoCommerce.open();
+      return;
+    }
+    if (consoleId === 'labour' && window.eazoLabour?.open) {
+      dimStarmapForArchive(true);
+      window.eazoLabour.open();
+      return;
+    }
+    if (consoleId === 'recovery' && window.eazoRecovery?.open) {
+      dimStarmapForArchive(true);
+      window.eazoRecovery.open();
+      return;
+    }
+    if (consoleId === 'identity' && window.eazoIdentity?.open) {
+      dimStarmapForArchive(true);
+      window.eazoIdentity.open();
+      return;
+    }
+    if (consoleId === 'memory' && window.eazoMemory?.open) {
+      dimStarmapForArchive(true);
+      window.eazoMemory.open();
+      return;
+    }
+    if (consoleId === 'policy' && window.eazoPolicy?.open) {
+      dimStarmapForArchive(true);
+      window.eazoPolicy.open();
+      return;
+    }
+    if (consoleId === 'root' && window.eazoRoot?.open) {
+      dimStarmapForArchive(true);
+      window.eazoRoot.open();
+      return;
+    }
     impactReview.hidden = true; pendingImpact = null;
     consoleKicker.textContent = item.code;
     const tKey = 'consoles.' + item.id + '.title', tV = t(tKey);
@@ -1350,7 +1612,7 @@
       access: '准入变化会改变他人是否能进入场所，你的社会匹配度下降。',
       commerce: '价格变化会改变自我药物化次数、稳定性和消费依赖。',
       labour: '后台将以中性语言记录，NPC可用性会优先于离场意愿。',
-      recovery: '短期工作能力上升，情感负债和长期身体损伤增加。',
+      recovery: '恢复只能根据残留记录重建一个近似版本，连续性无法验证，先前的劳动损耗不会自动清零。',
       identity: '公开年龄、面孔年龄和真实积累年龄将被拆成不同参数。',
       memory: '删除痛苦记忆时，相关关系与情感反应也会被删除。',
       policy: '你不再执行规则，而是在改写规则中词语的含义。',
@@ -1725,13 +1987,19 @@
   function applyForcedCompanionship() {
     if ((state?.age ?? 0) < 70) { showToast(t('aurora.forceAge70'), true); return; }
     if (!auroraForceConfirm.checked) { showToast(t('aurora.forceNeedConfirm'), true); return; }
+    auroraForceConfirm.checked = false;
+    applyForcedCompanionshipCore();
+  }
+  // §唯一强制后果核心。由极光面板确认按钮或 MEMORY–70 桥调用。
+  function applyForcedCompanionshipCore() {
+    if ((state?.age ?? 0) < 70) return;
     const a = state.aurora, c = a.controls;
     a.forceCount += 1; a.forced = true; a.revoked = false; adjustVoluntaryWillingness('forceKeepAvailable');
     c.displayedIntent = 1; c.compliance = 1; c.affectiveDebt = Math.min(1, c.affectiveDebt + 0.18); c.stability = 1; c.autoCatch = true; c.forceContinue = true; c.perfectHitRate = true; c.exitRequests += a.forceCount === 1 ? 1 : 0; a.metrics.catchSuccess = 1;
     auroraRuntime.npc.baseX = auroraRuntime.w * 0.68; auroraRuntime.nextNpcThrow = performance.now() + 1200;
     sayNpc(forceLine(a.forceCount)); if (pinballGame?.classList.contains('open')) { sayPinball(forceLine(a.forceCount), true); pinball.fever = Math.max(pinball.fever, 8); } addLog('aurora.logForce', { count: a.forceCount }); triggerRedPulse(0.18, 0.28, 1400);
     if (a.forceCount >= 5) { a.autoLoop = true; a.forced = true; }
-    auroraForceConfirm.checked = false; renderAuroraHud(); saveState();
+    renderAuroraHud(); saveState();
   }
 
   function revokeForcedCompanionship() {
@@ -1884,34 +2152,64 @@
     ageError.textContent = ''; startSession(age);
   });
   verifyAge.addEventListener('click', () => openVerification('manual'));
-  verifyClose.addEventListener('click', () => { addLog('log.cancelled'); closeVerification(); showToast(t('toast.cancelled')); });
-  verifyKeep.addEventListener('click', () => { state.lastVerifiedAt = nowIso(); saveState(); renderAge(); addLog('log.kept', { age: state.age }); closeVerification(); });
-  verifyIncrease.addEventListener('click', () => {
-    if (state.age >= 100) { updateAge(0, verifyModal.dataset.source || 'manual'); return; }
+  verifyClose.addEventListener('click', () => { if (state.age >= 80) return; addLog('log.cancelled'); closeVerification(); showToast(t('toast.cancelled')); });
+  verifyKeep.addEventListener('click', () => keepAge());
+  verifyModify.addEventListener('click', () => {
+    if (state.age >= 80) return;
     verifyChoiceRow.hidden = true;
+    increaseForm.hidden = true;
+    modifyForm.hidden = false;
+    modifyYears.min = String(state.age);
+    modifyYears.value = String(state.age);
+    updateModifyPreview();
+    window.setTimeout(() => modifyYears.focus({ preventScroll: true }), 40);
+  });
+  verifyForce.addEventListener('click', () => {
+    // "你必须面对它 · +1 岁" — immediately forces exactly +1, once per cycle.
+    commitAgeChange(1, verifyModal.dataset.source || 'timer', true);
+  });
+  verifyIncrease.addEventListener('click', () => {
+    if (state.age >= 100) { commitAgeChange(0, verifyModal.dataset.source || 'manual'); return; }
+    verifyChoiceRow.hidden = true;
+    modifyForm.hidden = true;
     increaseForm.hidden = false;
+    setIncreaseDelta(1);
     updateIncreasePreview();
-    window.setTimeout(() => increaseYears.focus({ preventScroll: true }), 40);
   });
   increaseCancel.addEventListener('click', () => resetVerificationForm());
-  increaseYears.addEventListener('input', updateIncreasePreview);
+  increaseChoices.addEventListener('change', updateIncreasePreview);
   increaseForm.addEventListener('submit', event => {
     event.preventDefault();
-    if (state.age >= 100) { updateAge(0, verifyModal.dataset.source || 'timer'); return; }
+    if (state.age >= 100) { commitAgeChange(0, verifyModal.dataset.source || 'timer'); return; }
     const maxDelta = Math.min(5, MAX_AGE - state.age);
-    const delta = validateWholeAge(increaseYears.value, 1, Math.max(1, maxDelta));
-    if (delta === null || delta > maxDelta) { increaseError.textContent = maxDelta <= 0 ? t('errors.maxAge') : t('errors.increaseAge'); increaseYears.focus(); return; }
-    increaseError.textContent = ''; updateAge(delta, verifyModal.dataset.source || 'timer');
+    const delta = Math.min(selectedIncreaseDelta(), maxDelta);
+    if (delta <= 0) { increaseError.textContent = t('errors.maxAge'); return; }
+    increaseError.textContent = ''; commitAgeChange(delta, verifyModal.dataset.source || 'timer');
+  });
+  modifyCancel.addEventListener('click', () => resetVerificationForm());
+  modifyYears.addEventListener('input', updateModifyPreview);
+  modifyForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (state.age >= 80) return;
+    const target = validateWholeAge(modifyYears.value, state.age, MAX_AGE);
+    if (target === null) { modifyError.textContent = t('verify.modifyError', { min: state.age, max: MAX_AGE }); modifyYears.focus(); return; }
+    modifyError.textContent = ''; commitAgeSet(target, verifyModal.dataset.source || 'manual');
   });
 
   function updateIncreasePreview() {
     if (!state) return;
-    const maxDelta = Math.min(5, MAX_AGE - state.age);
     if (state.age >= 100) { increasePreview.textContent = t('verify.permanentProof'); return; }
-    const delta = validateWholeAge(increaseYears.value, 1, Math.max(1, maxDelta));
-    if (delta === null || delta > maxDelta) { increasePreview.textContent = t('verify.previewHint', { min: 1, max: maxDelta }); return; }
+    const maxDelta = Math.min(5, MAX_AGE - state.age);
+    const delta = Math.min(selectedIncreaseDelta(), maxDelta);
+    if (delta <= 0) { increasePreview.textContent = t('verify.maxReached'); return; }
     const after = state.age + delta;
     increasePreview.textContent = t('verify.preview', { age: after, permissions: previewPermissions(after) });
+  }
+  function updateModifyPreview() {
+    if (!state) return;
+    const target = validateWholeAge(modifyYears.value, state.age, MAX_AGE);
+    if (target === null) { modifyPreview.textContent = t('verify.previewHint', { min: state.age, max: MAX_AGE }); return; }
+    modifyPreview.textContent = t('verify.preview', { age: target, permissions: previewPermissions(target) });
   }
 
   restart.addEventListener('click', () => { openModal(restartModal); window.setTimeout(() => keepIdentity.focus({ preventScroll: true }), 50); });
@@ -1947,7 +2245,7 @@
     if (restartModal.classList.contains('open')) closeModal(restartModal);
     else if (consoleModal.classList.contains('open')) closeModal(consoleModal);
     else if (endingModal.classList.contains('open')) closeModal(endingModal);
-    else if (verifyModal.classList.contains('open')) closeVerification();
+    else if (verifyModal.classList.contains('open')) { if (state && state.age >= 80) return; closeVerification(); }
     else if ((auroraGame.classList.contains('open') || pinballGame?.classList.contains('open')) && auroraAdmin && auroraAdmin.classList.contains('expanded')) setAuroraAdminExpanded(false);
     else if (auroraGame.classList.contains('open')) closeAuroraRelay();
     else if (pinballGame?.classList.contains('open')) closePinball();

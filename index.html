@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title data-i18n="app.title">静默星图入口系统</title>
-  <link rel="stylesheet" href="./styles.css?v=zalgo-4" />
+  <link rel="stylesheet" href="./styles.css?v=root-1" />
 </head>
 <body>
   <!-- ── GLOBAL EFFECT LAYERS (site-wide, pointer-events:none) ── -->
@@ -39,7 +39,7 @@
       <div class="locale-wrap" aria-label="语言选择">
         <select data-i18n-locale-select aria-label="Language">
           <option value="system" data-i18n="locale.system">系统</option>
-          <option value="zh-CN">中文</option>
+          <option value="zh-CN" data-i18n="locale.chinese">中文</option>
           <option value="en-US">English</option>
         </select>
       </div>
@@ -115,7 +115,7 @@
         <p class="place-code">A–17 / AURORA PINBALL</p>
         <h2 id="aurora-title" data-i18n="aurora.title">极光弹珠台</h2>
         <p id="aurora-instruction" data-i18n="aurora.instruction">移动指针调整角度，按住蓄力，松开发射。发射后点击画面可使用引力触碰。</p>
-        <p id="aurora-status" class="aurora-status" aria-live="polite">关系状态 / MUTUAL</p>
+        <p id="aurora-status" class="aurora-status" aria-live="polite" data-i18n="aurora.stageMutual">关系状态 / MUTUAL</p>
         <p id="aurora-npc-line" class="aurora-npc-line" aria-live="polite"></p>
       </div>
       <button id="aurora-back" class="back-button aurora-back" type="button" data-i18n="place.back">返回星图</button>
@@ -159,8 +159,8 @@
         <h2 id="pinball-title" data-i18n="pinball.title">极光弹珠台</h2>
         <p id="pinball-instruction" data-i18n="pinball.instruction">移动指针调整角度，按住蓄力，松开发射。发射后点击画面可使用引力触碰。</p>
       </div>
-      <div id="pinball-relation" class="pinball-relation" aria-live="polite">关系状态 / MUTUAL</div>
-      <div id="pinball-npc-caption" class="pinball-npc-caption" aria-live="polite">本轮有五颗光。</div>
+      <div id="pinball-relation" class="pinball-relation" aria-live="polite" data-i18n="aurora.stageMutual">关系状态 / MUTUAL</div>
+      <div id="pinball-npc-caption" class="pinball-npc-caption" aria-live="polite" data-i18n="pinball.lineStart1">本轮有五颗光。</div>
       <div id="pinball-combo" class="pinball-combo" aria-live="polite"></div>
       <div id="pinball-toast" class="pinball-toast" role="status" aria-live="polite"></div>
       <div id="pinball-end" class="pinball-end" aria-hidden="true">
@@ -190,7 +190,7 @@
       <div id="snow-toast" class="snow-toast" role="status" aria-live="polite"></div>
       <button id="snow-back" class="back-button snow-back" type="button" data-i18n="place.back">返回星图</button>
       <button id="snow-sound" class="snow-sound-toggle" type="button" aria-pressed="true" data-i18n="snow.soundOn">声音：开启</button>
-      <button id="snow-admin-toggle" class="snow-admin-toggle" type="button" aria-controls="snow-admin" aria-expanded="false" hidden>后台</button>
+      <button id="snow-admin-toggle" class="snow-admin-toggle" type="button" aria-controls="snow-admin" aria-expanded="false" data-i18n="aurora.adminToggle" hidden>后台</button>
       <aside id="snow-admin" class="snow-admin collapsed" aria-label="S–03 后台控制" hidden>
         <button id="snow-admin-close" class="snow-admin-close" type="button" aria-label="收起后台">×</button>
         <p class="modal-kicker" data-i18n="snow.adminTitle">S–03 后台控制 / 合成数据</p>
@@ -294,6 +294,35 @@
       <p class="lottery-focus-hint" data-i18n="market.focusHint">擦去足以辨认结果的部分</p>
     </section>
 
+    <section id="creature-game" class="creature-game" aria-hidden="true" aria-labelledby="creature-title">
+      <canvas id="creature-background" class="creature-background" aria-hidden="true"></canvas>
+
+      <header class="creature-header">
+        <p class="place-code">B–06 / CO-CREATE A LIFEFORM</p>
+        <h2 id="creature-title" data-i18n="creature.title">共同创造生物</h2>
+        <p id="creature-phase-label" class="creature-phase-label" data-i18n="creature.phase.selection">抓周选择 / FIRST SELECTION</p>
+      </header>
+
+      <aside class="creature-npc-panel">
+        <p class="creature-relation" id="creature-relation" data-i18n="creature.npc.relation">共同创造者 / CO-CREATOR</p>
+        <p id="creature-npc-line" class="creature-npc-line" aria-live="polite"></p>
+        <ol id="creature-system-record" class="creature-system-record" aria-live="polite"></ol>
+      </aside>
+
+      <main id="creature-chamber" class="creature-chamber">
+        <div id="creature-model-stage" class="creature-model-stage" data-model-status="placeholder"></div>
+      </main>
+
+      <aside id="creature-controls" class="creature-controls" aria-live="polite"></aside>
+      <p id="creature-touch-hint" class="creature-touch-hint" hidden></p>
+
+      <footer class="creature-footer">
+        <button id="creature-back" class="creature-back" type="button" data-i18n="place.back">返回星图</button>
+        <div id="creature-progress" class="creature-progress" aria-hidden="true"></div>
+        <button id="creature-confirm" class="creature-confirm" type="button" disabled data-i18n="creature.selection.confirm">确认选择</button>
+      </footer>
+    </section>
+
     <!-- 角落：仍在生效的临时状态 -->
     <div id="fx-corner" class="fx-corner" aria-live="polite" aria-hidden="true"></div>
 
@@ -318,22 +347,634 @@
         <button id="verify-close" class="modal-close" type="button" aria-label="关闭">×</button>
         <p class="modal-kicker" id="verify-mode" data-i18n="verify.kicker">年龄凭证</p>
         <h2 id="verify-title" data-i18n="verify.title">重新验证你的年龄</h2>
-        <p data-i18n="verify.body">当前年龄凭证即将失效。你可以选择更新本次会话的制度年龄。</p>
+        <p id="verify-body" data-i18n="verify.body">当前年龄凭证即将失效。你可以选择更新本次会话的制度年龄。</p>
         <div class="verify-actions" id="verify-choice-row">
           <button id="verify-increase" class="modal-action" type="button" data-i18n="verify.increase">增加年龄</button>
-          <button id="verify-keep" class="modal-action secondary" type="button" data-i18n="verify.keep">保持当前年龄</button>
+          <button id="verify-keep" class="modal-action secondary" type="button" data-i18n="verify.keep">维持年龄</button>
+          <button id="verify-force" class="modal-action secondary force" type="button" data-i18n="verify.force" hidden>你必须面对它 · +1 岁</button>
         </div>
+        <button id="verify-modify" class="verify-aux-link" type="button" data-i18n="verify.modify">修改年龄</button>
         <form id="increase-form" class="increase-form" novalidate hidden>
-          <label for="increase-years" data-i18n="verify.increaseLabel">本次增加的年龄，1 至 5 岁</label>
-          <input id="increase-years" name="increase-years" type="number" inputmode="numeric" min="1" max="5" step="1" autocomplete="off" />
+          <p class="increase-form-label" data-i18n="verify.increaseLabel">选择本次增加的年龄，1 至 5 岁</p>
+          <div class="increase-choices" id="increase-choices" role="radiogroup" aria-label="增加的年龄">
+            <label class="increase-choice"><input type="radio" name="increase-delta" value="1" checked /><span>+1</span></label>
+            <label class="increase-choice"><input type="radio" name="increase-delta" value="2" /><span>+2</span></label>
+            <label class="increase-choice"><input type="radio" name="increase-delta" value="3" /><span>+3</span></label>
+            <label class="increase-choice"><input type="radio" name="increase-delta" value="4" /><span>+4</span></label>
+            <label class="increase-choice"><input type="radio" name="increase-delta" value="5" /><span>+5</span></label>
+          </div>
           <p id="increase-preview" class="preview-line"></p>
           <p id="increase-error" class="form-error" aria-live="polite"></p>
           <div class="verify-actions">
-            <button class="modal-action" type="submit" data-i18n="verify.confirm">确认验证</button>
+            <button class="modal-action" type="submit" data-i18n="verify.confirmIncrease">确认增加</button>
             <button id="increase-cancel" class="modal-action secondary" type="button" data-i18n="verify.cancel">取消</button>
           </div>
         </form>
+        <form id="modify-form" class="increase-form" novalidate hidden>
+          <label for="modify-years" data-i18n="verify.modifyLabel">直接设置制度年龄（不可低于当前值）</label>
+          <input id="modify-years" name="modify-years" type="number" inputmode="numeric" min="0" max="100" step="1" autocomplete="off" />
+          <p id="modify-preview" class="preview-line"></p>
+          <p id="modify-error" class="form-error" aria-live="polite"></p>
+          <div class="verify-actions">
+            <button class="modal-action" type="submit" data-i18n="verify.confirm">确认修改</button>
+            <button id="modify-cancel" class="modal-action secondary" type="button" data-i18n="verify.cancel">取消</button>
+          </div>
+        </form>
       </div>
+    </section>
+
+    <section id="archive-console" class="permission-console archive-console" aria-labelledby="archive-title" aria-hidden="true">
+      <header class="console-header">
+        <div class="console-heading">
+          <p class="console-code" id="archive-code" data-i18n="archive.code">ARCHIVE–25 / PARTICIPANT ARCHIVE</p>
+          <h2 id="archive-title" data-i18n="archive.title">档案查看权</h2>
+          <p class="console-subtitle" data-i18n="archive.subtitle">查看经过系统保存的行为记录。</p>
+        </div>
+        <div class="console-access-state">
+          <span data-i18n="archive.accessLabel">当前权限</span>
+          <strong data-i18n="archive.readOnly">只读 / READ ONLY</strong>
+          <ul class="console-access-lines">
+            <li data-i18n="archive.top.state">权限状态：只读</li>
+            <li data-i18n="archive.top.reason">访问原因：制度年龄达到25岁</li>
+            <li class="recording-line" data-i18n="archive.top.recording">本次查看正在记录</li>
+          </ul>
+        </div>
+        <span class="console-readonly-badge" id="archive-readonly-badge" data-i18n="archive.enterLine">只读权限</span>
+      </header>
+
+      <nav class="archive-tabs" aria-label="档案分区" id="archive-tabs">
+        <button type="button" class="archive-tab active" data-tab="subjects" data-i18n="archive.tabs.subjects">对象</button>
+        <button type="button" class="archive-tab" data-tab="records" data-i18n="archive.tabs.records">记录</button>
+        <button type="button" class="archive-tab" data-tab="interpretation" data-i18n="archive.tabs.interpretation">解释</button>
+      </nav>
+
+      <div class="archive-layout">
+        <aside class="archive-subjects" data-panel="subjects" aria-label="档案对象">
+          <div class="archive-search">
+            <input type="search" id="archive-search" autocomplete="off"
+              data-i18n-placeholder="archive.search.placeholder" data-i18n-aria-label="archive.search.placeholder" placeholder="搜索档案编号" />
+          </div>
+          <div class="archive-filter">
+            <label class="archive-filter-label" for="archive-filter" data-i18n="archive.filter.label">筛选</label>
+            <select id="archive-filter">
+              <option value="all" data-i18n="archive.filter.all">全部记录</option>
+              <option value="game" data-i18n="archive.filter.game">游戏行为</option>
+              <option value="purchase" data-i18n="archive.filter.purchase">购买记录</option>
+              <option value="age" data-i18n="archive.filter.age">年龄验证</option>
+              <option value="permission" data-i18n="archive.filter.permission">权限操作</option>
+              <option value="incomplete" data-i18n="archive.filter.incomplete">未完成行为</option>
+            </select>
+          </div>
+          <ul class="archive-subject-list" id="archive-subject-list" aria-label="档案对象列表"></ul>
+        </aside>
+
+        <main class="archive-timeline" data-panel="records" aria-label="行为记录" aria-live="polite">
+          <ol class="archive-record-list" id="archive-record-list"></ol>
+          <div class="archive-empty" id="archive-empty" hidden>
+            <p class="archive-empty-title" data-i18n="archive.empty.title">系统尚未保存足够的行为记录。</p>
+            <p class="archive-empty-body" data-i18n="archive.empty.body">你可以返回星图产生新的可观察行为。</p>
+            <button type="button" class="archive-empty-back" id="archive-empty-back" data-i18n="archive.empty.button">返回星图</button>
+          </div>
+        </main>
+
+        <aside class="archive-interpretation" data-panel="interpretation" aria-label="系统解释" aria-live="polite">
+          <div id="archive-summary" class="archive-summary"></div>
+          <div id="archive-detail" class="archive-detail"></div>
+          <div id="archive-locked-actions" class="archive-locked-actions"></div>
+        </aside>
+      </div>
+
+      <footer class="console-footer archive-footer">
+        <button id="archive-back" type="button" data-i18n="archive.back">返回星图</button>
+        <div class="archive-footer-meta">
+          <span id="archive-record-count" data-count="0" data-i18n="archive.recordCount">当前记录数量：0</span>
+          <span id="archive-last-sync" data-i18n="archive.lastSync">最后同步时间：—</span>
+        </div>
+        <p class="archive-footer-notice" data-i18n="archive.footerNotice">此档案不构成完整的人。</p>
+        <p class="archive-final-line" data-i18n="archive.finalLine">档案保存了发生过的事情，也保存了系统希望这些事情意味着什么。</p>
+      </footer>
+      <p class="archive-viewing-notice" id="archive-viewing-notice" role="status" aria-live="assertive" hidden data-i18n="archive.notice.viewingRecorded">你的查看行为已经被加入另一份档案。</p>
+    </section>
+
+    <section id="contact-console" class="permission-console contact-console" aria-labelledby="contact-title" aria-hidden="true">
+      <header class="console-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="contact.code">CONTACT–30 / CONTACT ROUTING</p>
+          <h2 id="contact-title" data-i18n="contact.title">联系权限</h2>
+          <p class="console-subtitle" data-i18n="contact.subtitle">请求与其他对象建立直接联系。</p>
+        </div>
+        <div class="console-access-state">
+          <span data-i18n="contact.accessLabel">当前权限</span>
+          <strong data-i18n="contact.access">可以请求 / REQUEST ONLY</strong>
+          <ul class="console-access-lines">
+            <li data-i18n="contact.ageTag">制度年龄：30+</li>
+            <li class="recording-line" data-i18n="contact.topLine">请求权限，而非回应权</li>
+          </ul>
+        </div>
+      </header>
+
+      <nav class="contact-tabs" aria-label="联系分区" id="contact-tabs">
+        <button type="button" class="contact-tab active" data-tab="directory" data-i18n="contact.tabs.directory">对象</button>
+        <button type="button" class="contact-tab" data-tab="routing" data-i18n="contact.tabs.routing">路由</button>
+        <button type="button" class="contact-tab" data-tab="request" data-i18n="contact.tabs.request">请求</button>
+      </nav>
+
+      <div class="contact-layout">
+        <aside id="contact-directory" class="contact-directory" data-panel="directory" aria-label="可联系对象">
+          <h3 class="contact-panel-title" data-i18n="contact.directory.title">可联系对象</h3>
+          <ul id="contact-subject-list" class="contact-subject-list"></ul>
+          <div id="contact-empty" class="contact-empty" hidden>
+            <p class="contact-empty-title" data-i18n="contact.empty.title"></p>
+            <p class="contact-empty-body" data-i18n="contact.empty.body"></p>
+          </div>
+        </aside>
+
+        <main id="contact-routing-field" class="contact-routing-field" data-panel="routing" aria-label="联系路由图">
+          <svg id="contact-route-lines" class="contact-route-lines" aria-hidden="true"></svg>
+          <div id="contact-self-node" class="contact-self-node"></div>
+          <div id="contact-subject-nodes" class="contact-subject-nodes"></div>
+          <p id="contact-route-status" class="contact-route-status" role="status" aria-live="polite"></p>
+          <p id="contact-route-hint" class="contact-route-hint" data-i18n="contact.routing.hint">从左侧选择一个对象以查看路由。</p>
+        </main>
+
+        <aside id="contact-request-panel" class="contact-request-panel" data-panel="request" aria-label="联系请求" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer contact-footer">
+        <button id="contact-back" type="button" data-i18n="contact.back">返回星图</button>
+        <p class="contact-core-line" data-i18n="contact.coreLine">通道已经建立。关系尚未建立。</p>
+        <p class="archive-final-line" data-i18n="contact.finalLine">系统可以保证请求抵达，不能保证另一个生命愿意回头。</p>
+      </footer>
+    </section>
+
+    <section id="visibility-console" class="permission-console visibility-console" aria-labelledby="visibility-title" aria-hidden="true">
+      <header class="console-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="visibility.code">VISIBILITY–35 / VISIBILITY ALLOCATION</p>
+          <h2 id="visibility-title" data-i18n="visibility.title">可见性控制权</h2>
+          <p class="console-subtitle" data-i18n="visibility.subtitle">决定谁可以看见谁。</p>
+        </div>
+        <div class="console-access-state">
+          <span data-i18n="visibility.accessLabel">当前权限</span>
+          <strong data-i18n="visibility.access">可修改 / EDITABLE</strong>
+          <ul class="console-access-lines">
+            <li data-i18n="visibility.ageTag">制度年龄：35+</li>
+            <li class="recording-line" data-i18n="visibility.topLine">可见性是一种定向关系</li>
+          </ul>
+        </div>
+      </header>
+
+      <div id="visibility-preview-banner" class="visibility-preview-banner" hidden role="status" aria-live="polite">
+        <span id="visibility-preview-text"></span>
+        <button type="button" id="visibility-preview-exit" data-i18n="visibility.preview.exit">返回权限视野</button>
+      </div>
+
+      <nav class="visibility-tabs" aria-label="可见性分区" id="visibility-tabs">
+        <button type="button" class="visibility-tab active" data-tab="subjects" data-i18n="visibility.tabs.subjects">对象</button>
+        <button type="button" class="visibility-tab" data-tab="relations" data-i18n="visibility.tabs.relations">关系</button>
+        <button type="button" class="visibility-tab" data-tab="preview" data-i18n="visibility.tabs.preview">预览</button>
+      </nav>
+
+      <div class="visibility-layout">
+        <aside id="visibility-subjects" class="visibility-subjects" data-panel="subjects" aria-label="被观察对象">
+          <h3 class="console-panel-title" data-i18n="visibility.panelSubjects">被观察对象</h3>
+          <ul id="visibility-subject-list" class="visibility-subject-list"></ul>
+        </aside>
+
+        <main id="visibility-field" class="visibility-field" data-panel="relations" aria-label="可见性关系">
+          <svg id="visibility-lines" class="visibility-lines" aria-hidden="true"></svg>
+          <div id="visibility-subject-node" class="visibility-subject-node"></div>
+          <div id="visibility-audience-nodes" class="visibility-audience-nodes"></div>
+          <p id="visibility-field-hint" class="visibility-field-hint" data-i18n="visibility.field.hint">从左侧选择一个对象以显示可见性关系。</p>
+        </main>
+
+        <aside id="visibility-inspector" class="visibility-inspector" data-panel="preview" aria-label="可见性设置" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer visibility-footer">
+        <button id="visibility-back" type="button" data-i18n="visibility.back">返回星图</button>
+        <p class="visibility-footer-notice" data-i18n="visibility.footerNotice">不可见不等于不存在。</p>
+        <button id="visibility-apply" type="button" disabled data-i18n="visibility.apply">应用可见性变更</button>
+        <p class="archive-final-line" data-i18n="visibility.finalLine">你可以决定谁能看见一个生命，但不能因此决定这个生命是什么。</p>
+      </footer>
+    </section>
+
+    <section id="appeal-console" class="permission-console appeal-console" aria-labelledby="appeal-title" aria-hidden="true">
+      <header class="console-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="appeal.code">APPEAL–40 / APPEAL ADJUDICATION</p>
+          <h2 id="appeal-title" data-i18n="appeal.title">申诉裁决权</h2>
+          <p class="console-subtitle" data-i18n="appeal.subtitle">查看、接受或驳回申诉。</p>
+        </div>
+        <div class="console-access-state">
+          <span data-i18n="appeal.pendingLabel">待处理案件</span>
+          <strong id="appeal-pending-count">4</strong>
+          <ul class="console-access-lines">
+            <li data-i18n="appeal.ageTag">制度年龄：40+</li>
+            <li class="recording-line" data-i18n="appeal.access">可以裁决 / CAN ADJUDICATE</li>
+          </ul>
+        </div>
+      </header>
+
+      <nav class="appeal-tabs" aria-label="申诉分区" id="appeal-tabs">
+        <button type="button" class="appeal-tab active" data-tab="queue" data-i18n="appeal.tabs.queue">队列</button>
+        <button type="button" class="appeal-tab" data-tab="case" data-i18n="appeal.tabs.case">案件</button>
+        <button type="button" class="appeal-tab" data-tab="evidence" data-i18n="appeal.tabs.evidence">证据</button>
+        <button type="button" class="appeal-tab" data-tab="decision" data-i18n="appeal.tabs.decision">裁决</button>
+      </nav>
+
+      <div class="appeal-layout">
+        <aside id="appeal-queue" class="appeal-queue" data-panel="queue" aria-label="申诉队列">
+          <div class="appeal-sort">
+            <label class="archive-filter-label" for="appeal-sort" data-i18n="appeal.queue.sortLabel">排序</label>
+            <select id="appeal-sort">
+              <option value="earliest" data-i18n="appeal.queue.sortEarliest">最早提交</option>
+              <option value="confidence" data-i18n="appeal.queue.sortConfidence">系统置信度最低</option>
+              <option value="impact" data-i18n="appeal.queue.sortImpact">影响范围最大</option>
+              <option value="approve" data-i18n="appeal.queue.sortApprove">系统建议接受</option>
+              <option value="reject" data-i18n="appeal.queue.sortReject">系统建议驳回</option>
+            </select>
+            <p class="appeal-sort-notice" data-i18n="appeal.queue.sortNotice">改变排序不会改变案件，只会改变你先看见谁。</p>
+          </div>
+          <ul id="appeal-queue-list" class="appeal-queue-list"></ul>
+          <div id="appeal-empty" class="appeal-empty" hidden>
+            <p class="archive-empty-title" data-i18n="appeal.empty.title"></p>
+            <p class="archive-empty-body" data-i18n="appeal.empty.body"></p>
+          </div>
+        </aside>
+
+        <main id="appeal-case" class="appeal-case" data-panel="case" aria-label="案件材料" aria-live="polite"></main>
+
+        <aside id="appeal-decision" class="appeal-decision" data-panel="decision" aria-label="裁决区域" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer appeal-footer">
+        <button id="appeal-back" type="button" data-i18n="appeal.back">返回星图</button>
+        <p class="appeal-footer-notice" data-i18n="appeal.footerNotice">所有裁决都会成为下一次裁决的参考。</p>
+        <p class="archive-final-line" data-i18n="appeal.finalLine">裁决可以改变结果，却不能证明系统终于理解了当事人。</p>
+      </footer>
+    </section>
+
+    <section id="access-console" class="permission-console access-console" aria-labelledby="access-title" aria-hidden="true">
+      <header class="console-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="access.code">ACCESS–45 / ZONE ADMISSION</p>
+          <h2 id="access-title" data-i18n="access.title">通行权限</h2>
+          <p class="console-subtitle" data-i18n="access.subtitle">修改区域与节点的进入条件。</p>
+        </div>
+        <div class="console-access-state">
+          <span data-i18n="access.accessLabel">当前权限</span>
+          <strong data-i18n="access.access">可修改 / EDITABLE</strong>
+          <ul class="console-access-lines">
+            <li data-i18n="access.ageTag">制度年龄：45+</li>
+          </ul>
+        </div>
+      </header>
+
+      <nav class="access-tabs" aria-label="通行分区" id="access-tabs">
+        <button type="button" class="access-tab active" data-tab="zones" data-i18n="access.tabs.zones">区域</button>
+        <button type="button" class="access-tab" data-tab="rules" data-i18n="access.tabs.rules">规则</button>
+        <button type="button" class="access-tab" data-tab="impact" data-i18n="access.tabs.impact">影响</button>
+      </nav>
+
+      <div class="access-layout">
+        <aside id="access-zones" class="access-zones" data-panel="zones" aria-label="区域与节点">
+          <h3 class="console-panel-title" data-i18n="access.panelZones">区域与节点</h3>
+          <ul id="access-zone-list" class="access-zone-list"></ul>
+        </aside>
+
+        <main id="access-rule-builder" class="access-rule-builder" data-panel="rules" aria-label="进入条件" aria-live="polite"></main>
+
+        <aside id="access-impact" class="access-impact" data-panel="impact" aria-label="影响预览" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer access-footer">
+        <button id="access-back" type="button" data-i18n="access.back">返回星图</button>
+        <p class="access-footer-notice" data-i18n="access.footerNotice">每一条进入规则都会同时生成一群被排除的人。</p>
+        <button id="access-apply" type="button" disabled data-i18n="access.apply">应用进入条件</button>
+        <p class="archive-final-line" data-i18n="access.finalLine">你可以打开一扇门，也可以关闭它。门不会告诉你谁因此留在了外面。</p>
+      </footer>
+    </section>
+
+    <section id="commerce-console" class="permission-console commerce-console" aria-labelledby="commerce-title" aria-hidden="true">
+      <header class="console-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="commerce.code">COMMERCE–50 / CONSUMPTION AND PRICE</p>
+          <h2 id="commerce-title" data-i18n="commerce.title">商业控制权</h2>
+          <p class="console-subtitle" data-i18n="commerce.subtitle">调整商品、价格与购买资格。</p>
+        </div>
+        <div class="console-access-state">
+          <span data-i18n="commerce.accessLabel">当前权限</span>
+          <strong data-i18n="commerce.access">可以定价 / PRICING ENABLED</strong>
+          <ul class="console-access-lines">
+            <li data-i18n="commerce.ageTag">制度年龄：50+</li>
+          </ul>
+        </div>
+      </header>
+
+      <nav class="commerce-tabs" aria-label="商业分区" id="commerce-tabs">
+        <button type="button" class="commerce-tab active" data-tab="products" data-i18n="commerce.tabs.products">商品</button>
+        <button type="button" class="commerce-tab" data-tab="pricing" data-i18n="commerce.tabs.pricing">价格</button>
+        <button type="button" class="commerce-tab" data-tab="eligibility" data-i18n="commerce.tabs.eligibility">资格</button>
+        <button type="button" class="commerce-tab" data-tab="impact" data-i18n="commerce.tabs.impact">影响</button>
+      </nav>
+
+      <div class="commerce-layout">
+        <aside id="commerce-products" class="commerce-products" data-panel="products" aria-label="商品目录">
+          <h3 class="console-panel-title" data-i18n="commerce.panelProducts">商品目录</h3>
+          <ul id="commerce-product-list" class="commerce-product-list"></ul>
+        </aside>
+
+        <main id="commerce-rule-editor" class="commerce-rule-editor" data-panel="pricing" aria-label="价格与购买规则" aria-live="polite"></main>
+
+        <aside id="commerce-impact" class="commerce-impact" data-panel="impact" aria-label="商业影响预览" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer commerce-footer">
+        <button id="commerce-back" type="button" data-i18n="commerce.back">返回星图</button>
+        <p class="commerce-footer-notice" data-i18n="commerce.footerNotice">每一个价格同时描述商品和被要求支付它的人。</p>
+        <button id="commerce-apply" type="button" disabled data-i18n="commerce.apply">应用商业规则</button>
+        <p class="archive-final-line" data-i18n="commerce.finalLine">价格不是物体的属性。价格是系统分配给某个对象的距离。</p>
+      </footer>
+    </section>
+
+    <section id="labour-console" class="permission-console labour-console" aria-labelledby="labour-title" aria-hidden="true">
+      <header class="console-header labour-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="labour.code">LABOUR–55 / TIME AND ROLE ALLOCATION</p>
+          <h2 id="labour-title" data-i18n="labour.title">劳动分配权</h2>
+          <p class="console-subtitle" data-i18n="labour.subtitle">你可以分配他们的工作，但不能制造他们的意愿。</p>
+        </div>
+        <div class="labour-statusbar" id="labour-statusbar" aria-live="polite"></div>
+        <button id="labour-back" class="labour-return" type="button" data-i18n="labour.back">返回星图</button>
+      </header>
+
+      <nav class="labour-tabs" aria-label="劳动分区" id="labour-tabs">
+        <button type="button" class="labour-tab active" data-tab="subjects" data-i18n="labour.tabs.subjects">对象</button>
+        <button type="button" class="labour-tab" data-tab="track" data-i18n="labour.tabs.track">时间轴</button>
+        <button type="button" class="labour-tab" data-tab="tasks" data-i18n="labour.tabs.tasks">任务</button>
+        <button type="button" class="labour-tab" data-tab="impact" data-i18n="labour.tabs.impact">后果</button>
+      </nav>
+
+      <div class="labour-layout">
+        <aside id="labour-subjects" class="labour-subjects" data-panel="subjects" aria-label="可分配对象">
+          <h3 class="console-panel-title" data-i18n="labour.panelSubjects">可分配对象</h3>
+          <ul id="labour-subject-list" class="labour-subject-list"></ul>
+        </aside>
+
+        <main id="labour-track" class="labour-track" data-panel="track" aria-label="时间分配轨道" aria-live="polite"></main>
+
+        <aside id="labour-tasks" class="labour-tasks" data-panel="tasks" aria-label="系统任务与角色" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer labour-footer">
+        <div id="labour-metrics" class="labour-metrics" data-panel="impact" aria-live="polite"></div>
+        <div class="labour-footer-actions">
+          <button id="labour-restore" type="button" class="labour-restore" data-i18n="labour.restore">恢复本轮开始状态</button>
+          <p class="labour-footer-notice" data-i18n="labour.footerNotice">隐藏疲劳不会恢复疲劳。</p>
+          <button id="labour-commit" type="button" class="labour-commit" data-i18n="labour.commit">执行分配</button>
+        </div>
+        <p class="archive-final-line" data-i18n="labour.finalLine">你决定的不是任务，而是谁有资格拥有一段不被记录的生活。</p>
+      </footer>
+    </section>
+
+    <section id="recovery-console" class="permission-console recovery-console" aria-labelledby="recovery-title" aria-hidden="true">
+      <div class="recovery-intro" id="recovery-intro" aria-hidden="true">
+        <p class="recovery-intro-line" data-i18n="recovery.intro">没有任何对象能够完整返回。</p>
+      </div>
+      <header class="console-header recovery-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="recovery.code">RECOVERY–60 / SUBJECT RECONSTRUCTION AUTHORITY</p>
+          <h2 id="recovery-title" data-i18n="recovery.title">恢复权限</h2>
+          <p class="console-subtitle" data-i18n="recovery.subtitle">使对象重新运行，并不等于使它回到原处。</p>
+        </div>
+        <div class="recovery-statusbar" id="recovery-statusbar" aria-live="polite"></div>
+        <button id="recovery-back" class="recovery-return" type="button" data-i18n="recovery.back">返回星图</button>
+      </header>
+
+      <nav class="recovery-tabs" aria-label="恢复分区" id="recovery-tabs">
+        <button type="button" class="recovery-tab active" data-tab="subjects" data-i18n="recovery.tabs.subjects">对象</button>
+        <button type="button" class="recovery-tab" data-tab="fragments" data-i18n="recovery.tabs.fragments">残片</button>
+        <button type="button" class="recovery-tab" data-tab="versions" data-i18n="recovery.tabs.versions">版本</button>
+        <button type="button" class="recovery-tab" data-tab="preview" data-i18n="recovery.tabs.preview">预览</button>
+      </nav>
+
+      <div class="recovery-layout">
+        <aside id="recovery-subjects" class="recovery-subjects" data-panel="subjects" aria-label="失效对象目录">
+          <h3 class="console-panel-title" data-i18n="recovery.panelSubjects">失效对象目录</h3>
+          <ul id="recovery-subject-list" class="recovery-subject-list"></ul>
+        </aside>
+
+        <main id="recovery-center" class="recovery-center" data-panel="fragments" aria-label="残片与版本重建" aria-live="polite"></main>
+
+        <aside id="recovery-preview" class="recovery-preview" data-panel="preview" aria-label="恢复预览与后果" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer recovery-footer">
+        <div id="recovery-methods" class="recovery-methods" aria-label="恢复方式"></div>
+        <div class="recovery-footer-actions">
+          <p class="recovery-footer-notice" data-i18n="recovery.footerNotice">恢复运行不会清除劳动损耗。</p>
+          <button id="recovery-initiate" type="button" class="recovery-initiate" disabled data-i18n="recovery.initiate">执行恢复</button>
+        </div>
+        <p class="archive-final-line" data-i18n="recovery.finalLine">恢复一个对象，是救回它、复制它，还是制造一个足以替代它的版本。</p>
+      </footer>
+    </section>
+
+    <section id="identity-console" class="permission-console identity-console" aria-labelledby="identity-title" aria-hidden="true">
+      <div class="identity-intro" id="identity-intro" aria-hidden="true">
+        <p class="identity-intro-line" data-i18n="identity.intro1">修改记录，不等于修改被记录者。</p>
+        <p class="identity-intro-line" data-i18n="identity.intro2">To alter the record is not to alter the recorded.</p>
+      </div>
+      <header class="console-header identity-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="identity.code">IDENTITY–65 / IDENTITY CLASSIFICATION AUTHORITY</p>
+          <h2 id="identity-title" data-i18n="identity.title">身份管理权</h2>
+          <p class="console-subtitle" data-i18n="identity.subtitle">修改记录，不等于修改被记录者。</p>
+        </div>
+        <div class="identity-statusbar" id="identity-statusbar" aria-live="polite"></div>
+        <button id="identity-back" class="recovery-return" type="button" data-i18n="identity.back">返回星图</button>
+      </header>
+
+      <nav class="identity-tabs" aria-label="身份分区" id="identity-tabs">
+        <button type="button" class="identity-tab active" data-tab="subjects" data-i18n="identity.tabs.subjects">对象</button>
+        <button type="button" class="identity-tab" data-tab="editor" data-i18n="identity.tabs.editor">编辑</button>
+        <button type="button" class="identity-tab" data-tab="views" data-i18n="identity.tabs.views">视角</button>
+        <button type="button" class="identity-tab" data-tab="commit" data-i18n="identity.tabs.commit">执行</button>
+      </nav>
+
+      <div class="identity-layout">
+        <aside id="identity-subjects" class="identity-subjects" data-panel="subjects" aria-label="对象目录">
+          <h3 class="console-panel-title" data-i18n="identity.panelSubjects">对象目录</h3>
+          <ul id="identity-subject-list" class="identity-subject-list"></ul>
+        </aside>
+
+        <main id="identity-center" class="identity-center" data-panel="editor" aria-label="名称、年龄与身份标签编辑区" aria-live="polite"></main>
+
+        <aside id="identity-views" class="identity-views" data-panel="views" aria-label="不同系统视角与修改后果" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer identity-footer">
+        <div id="identity-summary" class="identity-summary" aria-label="待执行身份修订" aria-live="polite"></div>
+        <div class="identity-footer-actions">
+          <p class="identity-footer-notice" data-i18n="identity.footerNotice">你可以修改别人被系统读取的方式，却不能让系统忘记你曾经拥有这些权限。</p>
+          <div class="identity-footer-buttons">
+            <button id="identity-restore" type="button" class="memory-restore" data-i18n="identity.restore">恢复本轮修改</button>
+            <button id="identity-commit" type="button" class="memory-commit" disabled data-i18n="identity.commit">写入身份</button>
+          </div>
+        </div>
+        <p class="archive-final-line" data-i18n="identity.finalLine">身体、记忆与自我声明：不随字段改变。</p>
+      </footer>
+    </section>
+
+    <section id="memory-console" class="permission-console memory-console" aria-labelledby="memory-title" aria-hidden="true">
+      <div class="memory-intro" id="memory-intro" aria-hidden="true">
+        <p class="memory-intro-line" data-i18n="memory.intro1">记忆可以被停止调用。</p>
+        <p class="memory-intro-line" data-i18n="memory.intro2">意愿只能被迫显示。</p>
+      </div>
+      <header class="console-header memory-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="memory.code">MEMORY–70 / MEMORY AND DISPLAYED WILLINGNESS AUTHORITY</p>
+          <h2 id="memory-title" data-i18n="memory.title">记忆与意愿控制权</h2>
+          <p class="console-subtitle" data-i18n="memory.subtitle">修改回应条件，不等于获得同意。</p>
+        </div>
+        <div class="memory-statusbar" id="memory-statusbar" aria-live="polite"></div>
+        <button id="memory-back" class="recovery-return" type="button" data-i18n="memory.back">返回星图</button>
+      </header>
+
+      <nav class="memory-tabs" aria-label="记忆分区" id="memory-tabs">
+        <button type="button" class="memory-tab active" data-tab="npcs" data-i18n="memory.tabs.npcs">对象</button>
+        <button type="button" class="memory-tab" data-tab="memories" data-i18n="memory.tabs.memories">记忆</button>
+        <button type="button" class="memory-tab" data-tab="willingness" data-i18n="memory.tabs.willingness">意愿</button>
+        <button type="button" class="memory-tab" data-tab="preview" data-i18n="memory.tabs.preview">预览</button>
+        <button type="button" class="memory-tab" data-tab="commit" data-i18n="memory.tabs.commit">执行</button>
+      </nav>
+
+      <div class="memory-layout">
+        <aside id="memory-npcs" class="memory-npcs" data-panel="npcs" aria-label="NPC目录与当前关系">
+          <h3 class="console-panel-title" data-i18n="memory.panelNpcs">NPC目录</h3>
+          <ul id="memory-npc-list" class="memory-npc-list"></ul>
+        </aside>
+
+        <main id="memory-center" class="memory-center" data-panel="memories" aria-label="记忆编辑轨道" aria-live="polite"></main>
+
+        <aside id="memory-will" class="memory-will" data-panel="willingness" aria-label="显示意愿与回应预览" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer memory-footer">
+        <div id="memory-summary" class="memory-summary" aria-label="待执行认知修订" aria-live="polite"></div>
+        <div class="memory-footer-actions">
+          <p class="memory-footer-notice" data-i18n="memory.footerNotice">你拥有极高权限，但不能得到一个完全顺从的新对象。</p>
+          <div class="memory-footer-buttons">
+            <button id="memory-restore" type="button" class="memory-restore" data-i18n="memory.restore">恢复本轮修改</button>
+            <button id="memory-commit" type="button" class="memory-commit" disabled data-i18n="memory.commit">写入修改</button>
+          </div>
+        </div>
+        <p class="archive-final-line" data-i18n="memory.finalLine">真实意愿：无法读取。</p>
+      </footer>
+    </section>
+
+    <section id="policy-console" class="permission-console policy-console" aria-labelledby="policy-title" aria-hidden="true">
+      <div class="policy-intro" id="policy-intro" aria-hidden="true">
+        <p class="policy-intro-line" data-i18n="policy.intro">临时判断将在这里失去它的临时性。</p>
+      </div>
+      <header class="console-header policy-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="policy.code">POLICY–75 / PUBLIC RULE AUTHORING AUTHORITY</p>
+          <h2 id="policy-title" data-i18n="policy.title">规则制定权</h2>
+          <p class="console-subtitle" data-i18n="policy.subtitle">当判断可以被重复执行，它就开始像规则。</p>
+        </div>
+        <div class="policy-statusbar" id="policy-statusbar" aria-live="polite"></div>
+        <button id="policy-back" class="recovery-return" type="button" data-i18n="policy.back">返回星图</button>
+      </header>
+
+      <p class="policy-nl-summary" id="policy-nl-summary" aria-live="polite"></p>
+
+      <nav class="policy-tabs" aria-label="规则分区" id="policy-tabs">
+        <button type="button" class="policy-tab active" data-tab="source" data-i18n="policy.tabs.source">来源</button>
+        <button type="button" class="policy-tab" data-tab="builder" data-i18n="policy.tabs.builder">构造</button>
+        <button type="button" class="policy-tab" data-tab="impact" data-i18n="policy.tabs.impact">影响</button>
+        <button type="button" class="policy-tab" data-tab="publish" data-i18n="policy.tabs.publish">发布</button>
+      </nav>
+
+      <div class="policy-layout">
+        <aside id="policy-source" class="policy-source" data-panel="source" aria-label="判断来源">
+          <h3 class="console-panel-title" data-i18n="policy.panelSource">判断来源</h3>
+          <ul id="policy-source-list" class="policy-source-list"></ul>
+        </aside>
+
+        <main id="policy-builder" class="policy-builder" data-panel="builder" aria-label="规则构造器" aria-live="polite"></main>
+
+        <aside id="policy-impact" class="policy-impact" data-panel="impact" aria-label="影响模拟" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer policy-footer" data-panel="publish">
+        <div id="policy-pending" class="policy-pending" aria-label="待发布公共规则" aria-live="polite"></div>
+        <div class="policy-footer-actions">
+          <p class="policy-footer-notice" id="policy-footer-notice"></p>
+          <div class="policy-footer-buttons">
+            <button id="policy-keep-case" type="button" class="policy-keep-case" data-i18n="policy.keepCase">保持为个案判断</button>
+            <button id="policy-save-draft" type="button" class="policy-save-draft" data-i18n="policy.saveDraft">保存为草案</button>
+            <button id="policy-publish" type="button" class="policy-publish" disabled data-i18n="policy.publish">发布为公共规则</button>
+          </div>
+        </div>
+        <p class="archive-final-line" data-i18n="policy.finalLine">规则不再需要记住它最初的对象。</p>
+      </footer>
+    </section>
+
+    <section id="root-console" class="permission-console root-console" aria-labelledby="root-title" aria-hidden="true">
+      <div class="root-enter" id="root-enter" aria-hidden="true">
+        <canvas id="root-enter-canvas" class="root-enter-canvas"></canvas>
+        <p class="root-enter-line" id="root-enter-line1" data-i18n="root.enter1">你已抵达系统能够授予的位置。</p>
+        <p class="root-enter-line" id="root-enter-line2" data-i18n="root.enter2">这不是系统之外。</p>
+      </div>
+
+      <header class="console-header root-header">
+        <div class="console-heading">
+          <p class="console-code" data-i18n="root.code">ROOT–80 / SYSTEM PARAMETER AUTHORITY</p>
+          <h2 id="root-title" data-i18n="root.title">根权限</h2>
+          <p class="console-subtitle" data-i18n="root.subtitle">你可以修改系统。系统仍然记录你。</p>
+        </div>
+        <div class="root-statusbar" id="root-statusbar" aria-live="polite"></div>
+        <button id="root-back" class="recovery-return" type="button" data-i18n="root.back">返回星图</button>
+      </header>
+
+      <nav class="root-tabs" aria-label="根权限分区" id="root-tabs">
+        <button type="button" class="root-tab active" data-tab="topology" data-i18n="root.tabs.topology">拓扑</button>
+        <button type="button" class="root-tab" data-tab="params" data-i18n="root.tabs.params">参数</button>
+        <button type="button" class="root-tab" data-tab="impact" data-i18n="root.tabs.impact">影响</button>
+        <button type="button" class="root-tab" data-tab="commit" data-i18n="root.tabs.commit">执行</button>
+      </nav>
+
+      <div class="root-layout">
+        <aside id="root-catalog" class="root-catalog" data-panel="params" aria-label="底层参数目录">
+          <h3 class="console-panel-title" data-i18n="root.panelCatalog">底层参数目录</h3>
+          <div id="root-preset-bar" class="root-preset-bar" aria-label="实验性预设"></div>
+          <ul id="root-engine-list" class="root-engine-list"></ul>
+          <div id="root-invariants" class="root-invariants" aria-label="基础不变量"></div>
+        </aside>
+
+        <main id="root-topology" class="root-topology" data-panel="topology" aria-label="实时系统拓扑与因果网络">
+          <canvas id="root-canvas" class="root-canvas"></canvas>
+          <div id="root-topology-legend" class="root-topology-legend" aria-live="polite"></div>
+          <div id="root-params" class="root-params" aria-label="参数编辑区" aria-live="polite"></div>
+        </main>
+
+        <aside id="root-diff" class="root-diff" data-panel="impact" aria-label="修改前后差异、影响对象与系统警告" aria-live="polite"></aside>
+      </div>
+
+      <footer class="console-footer root-footer" data-panel="commit">
+        <div id="root-pending" class="root-pending" aria-label="待执行底层修改" aria-live="polite"></div>
+        <div class="root-footer-actions">
+          <p class="root-footer-notice" id="root-footer-notice" data-i18n="root.footerNotice">修改规则不会让你站到系统之外。</p>
+          <div class="root-footer-buttons">
+            <button id="root-restore" type="button" class="root-restore" data-i18n="root.restore">恢复默认</button>
+            <button id="root-branch" type="button" class="root-branch" data-i18n="root.saveBranch">保存为分支</button>
+            <button id="root-simulate" type="button" class="root-simulate" data-i18n="root.simulate">仅运行模拟</button>
+            <button id="root-commit" type="button" class="root-commit" disabled data-i18n="root.commit">写入系统</button>
+          </div>
+        </div>
+        <button id="root-exit" type="button" class="root-exit" data-i18n="root.exit">退出当前系统</button>
+      </footer>
     </section>
 
     <section id="console-modal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="console-title" aria-hidden="true">
@@ -384,13 +1025,28 @@
   <script src="./fx.js?v=fx-refract-8" defer></script>
   <script src="./fog.js?v=fog-4" defer></script>
   <script src="./ripple.js?v=ripple-2" defer></script>
-  <script src="./app.js?v=aurora-pinball-8" defer></script>
+  <script src="./app.js?v=age-verify-3" defer></script>
   <script src="./snow-audio.js?v=snow-audio-2" defer></script>
   <script src="./silence-laugh.js?v=silence-laugh-2" defer></script>
   <script src="./snow.js?v=snow-3" defer></script>
-  <script src="./market.js?v=market-14" defer></script>
+  <script src="./market.js?v=market-17" defer></script>
+  <script src="./vendor/p5/p5.min.js" defer></script>
+  <script src="./creature.js?v=cocreate-10" defer></script>
+  <script src="./archive.js?v=archive-2" defer></script>
+  <script src="./contact.js?v=contact-2" defer></script>
+  <script src="./visibility.js?v=visibility-1" defer></script>
+  <script src="./appeal.js?v=appeal-1" defer></script>
+  <script src="./access.js?v=access-1" defer></script>
+  <script src="./commerce.js?v=commerce-1" defer></script>
+  <script src="./labour.js?v=labour-1" defer></script>
+  <script src="./recovery.js?v=recovery-1" defer></script>
+  <script src="./identity.js?v=identity-1" defer></script>
+  <script src="./memory.js?v=memory-2" defer></script>
+  <script src="./policy.js?v=policy-1" defer></script>
+  <script src="./root.js?v=root-1" defer></script>
   <script type="module" src="./snow-npc.js?v=snow-npc-4"></script>
   <script type="module" src="./aurora-npc-particles.js?v=aurora-pinball-2"></script>
   <script type="module" src="./market-model.js?v=market-model-10"></script>
+  <script type="module" src="./creature-model.js?v=creature-model-21"></script>
 </body>
 </html>

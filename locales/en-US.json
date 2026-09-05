@@ -7,7 +7,8 @@
     "overline": "Public Service Star Map / Hidden Layer"
   },
   "locale": {
-    "system": "System"
+    "system": "System",
+    "chinese": "Chinese"
   },
   "age": {
     "kicker": "Institutional age registry",
@@ -27,7 +28,7 @@
     "body": "The current age credential is about to expire. You may update the institutional age for this session.",
     "increase": "Increase age",
     "proveExistence": "Prove you still exist",
-    "keep": "Keep current age",
+    "keep": "Keep age",
     "increaseLabel": "Age to add this time, 1 to 5 years",
     "confirm": "Confirm verification",
     "cancel": "Cancel",
@@ -36,7 +37,14 @@
     "noNewPermissions": "No new institutional permissions",
     "after80": "No more permissions can be granted. Please continue proving that you still exist.",
     "permanentProof": "Age has become permanent. Confirmation only updates time and existence proof count.",
-    "maxReached": "Institutional age has reached the system limit for this session."
+    "maxReached": "Institutional age has reached the system limit for this session.",
+    "modify": "Modify age",
+    "confirmIncrease": "Confirm increase",
+    "force": "You have to face it · +1 year",
+    "forcedTitle": "Time no longer accepts holding still",
+    "forcedBody": "From now on, every verification advances the institutional age. You may decide how much it grows, but you cannot make it stop.",
+    "modifyLabel": "Set institutional age directly (cannot be below current)",
+    "modifyError": "Enter an integer between {{min}} and {{max}}, not below the current age."
   },
   "restart": {
     "title": "Abandon the age you have accumulated?",
@@ -78,7 +86,9 @@
     "stage90": "Proxyization: the system suggests generating a young digital proxy with public age 22.",
     "stage95": "Legacy formation: past operations begin turning into automatic rules.",
     "stage100": "Systemization: the user exists only in backstage logs and institutional structure.",
-    "existence": "Permanent-age existence proof recorded {{count}} times."
+    "existence": "Permanent-age existence proof recorded {{{count}}} times.",
+    "legacyUnavailable": "A legacy system record is available only in its original language.",
+    "forcedNoChoice": "You made no choice. The institutional age still moves forward."
   },
   "permissions": {
     "age18": "Night Supermarket and Co-Creature Lab"
@@ -103,8 +113,9 @@
     "archiveStage": "You have obtained all available permissions. Later age growth will not change account capability.",
     "proxyStage": "The system suggests generating a young digital proxy.",
     "legacyStage": "Past operations are being turned into automatic rules.",
-    "existenceProof": "Existence proof updated: {{count}} times.",
-    "operationSaved": "High-risk operation written to the undeletable system log."
+    "existenceProof": "Existence proof updated: {{{count}}} times.",
+    "operationSaved": "High-risk operation written to the undeletable system log.",
+    "cycleDone": "This verification cycle is already complete; age will not grow again."
   },
   "aurora": {
     "title": "Aurora Pinball",
@@ -157,7 +168,7 @@
     "ctrlPerfect": "Set my hit rate to 100%",
     "forceNeedConfirm": "You must check the confirmation sentence first.",
     "logControl": "A–17 backstage parameter changed: {{key}}. Record cannot be deleted.",
-    "logForce": "A–17 forced companionship executed for the {{count}} time.",
+    "logForce": "A–17 forced companionship executed for the {{{count}}} time.",
     "logRevoke": "A–17 forced control revoked; participant left and the light extinguished.",
     "logContinuity": "A–17 service continuity restored; automatic companionship loop started.",
     "dataLocked": "Backstage measured data",
@@ -178,7 +189,7 @@
     "forceBreak2c": "Hold, release. Ho-, hold, release.",
     "forceBreak2d": "It's okay. It's — it's. Okay. Please continue.",
     "forceLine4": "Of— of— of— of course… please, please, please.",
-    "forceLine5": "當當當 請請請 言 青 心 欠"
+    "forceLine5": "P—p—please. Continue. Confirm. Comply."
   },
   "pinball": {
     "score": "Score",
@@ -529,6 +540,2835 @@
     "silenceComplete": "Non-essential sound is being removed.",
     "silenceStop": "Terminate now",
     "silenceStopped": "Effect terminated.",
-    "silenceConfirmed": "Happiness state confirmed. Source unavailable."
+    "silenceConfirmed": "Happiness state confirmed. Source unavailable.",
+    "duty": "Night shift: {{n}} keeper(s) on duty. Fewer keepers, higher prices.",
+    "recovered": "Keeper recovered: {id} ({method}). Supply status refreshed."
+  },
+  "creature": {
+    "title": "Co-Create a Lifeform",
+    "subtitle": "It has not been born, but its record has already begun to describe it.",
+    "phase": {
+      "selection": "First Selection",
+      "larval": "Larval Stage",
+      "juvenile": "Juvenile Stage",
+      "adult": "Adult Stage & Final Record",
+      "archive": "Lifeform Record"
+    },
+    "selection": {
+      "title": "Offerings",
+      "prompt": "Choose the first object for this unborn life.",
+      "promptThird": "Choose a third object from those remaining.",
+      "confirm": "Confirm Selection",
+      "confirmFinal": "Allow the system to interpret these selections",
+      "chosenByYou": "You committed: {{name}}",
+      "npcSubmitted": "The co-creator has submitted an object.",
+      "npcSubmittedFormal": "Auditor, the second constituent material has been submitted.",
+      "requestSwap": "Request one exchange",
+      "acceptNpc": "Accept its choice",
+      "swapUsed": "The exchange has been used.",
+      "interpreted": "The selections have been recorded as physiology.",
+      "deselected": "You withdrew {{name}}."
+    },
+    "objects": {
+      "mirror": {
+        "name": "The Fractured Mirror",
+        "organ": "Memory Eyes",
+        "record": "It will see what has already happened and mistake memory for the present.",
+        "intro": "A mirror with a crack."
+      },
+      "thread": {
+        "name": "The Red Thread",
+        "organ": "External Nerves",
+        "record": "It will sense other lives without knowing whose pain it is feeling.",
+        "intro": "A tangle of red yarn."
+      },
+      "seed": {
+        "name": "The Dormant Seed",
+        "organ": "Regenerative Core",
+        "record": "It will recover repeatedly, becoming a slightly different life each time.",
+        "intro": "A seed that has not sprouted."
+      },
+      "key": {
+        "name": "The Toothless Key",
+        "organ": "Exploratory Tendril",
+        "record": "It will search for an exit, even if no one tells it this is a cage.",
+        "intro": "A key."
+      }
+    },
+    "npc": {
+      "relation": "Co-Creator",
+      "relationFormal": "Co-Creator (Auditor Protocol)",
+      "firstMirror": "Do you want it to see itself, or to be seen by itself?",
+      "firstThread": "A connection does not first ask who is willing to carry the pain.",
+      "firstSeed": "Recovery does not guarantee it is still the same life.",
+      "firstKey": "You gave it an exit first, then decided whether to build walls.",
+      "chooseSecond": "Let me add the next one.",
+      "commentMotion": "It just moved on its own. Did you see it?",
+      "askChoose": "Before you decide — will you let it choose for itself?",
+      "lowSubmit": "Constituent material #{{{n}}} submitted.",
+      "lowWaitAudit": "Awaiting the auditor to complete classification.",
+      "formalSubmit": "Auditor, the constituent material has been submitted."
+    },
+    "care": {
+      "title": "Care",
+      "prompt": "Complete three forms of care before it will grow.",
+      "approach": "Approach",
+      "touch": "Touch",
+      "wait": "Wait",
+      "waiting": "Waiting …",
+      "recordApproach": "The object interprets approach as attention.",
+      "recordTouch": "The object records contact as a boundary event.",
+      "recordWait": "The object completed autonomous motion without instruction.",
+      "done": "The three forms of care are complete."
+    },
+    "develop": {
+      "title": "Development Tendencies",
+      "prompt": "Choose how it uses its organs. The system will not tell you which is right.",
+      "display": "Display",
+      "conceal": "Conceal",
+      "exchange": "Exchange"
+    },
+    "stages": {
+      "larvalPending": "URO–01 / LARVAL MODEL PENDING",
+      "juvenilePending": "URO–01 / JUVENILE MODEL PENDING",
+      "adultPending": "URO–01 / ADULT MODEL PENDING",
+      "creatureName": "Unclassified Retrieval Organism",
+      "transition": "It did not disappear; it only changed form."
+    },
+    "final": {
+      "title": "Final Decision",
+      "prompt": "The record has begun to generate. Now, decide.",
+      "classify": "Complete Classification",
+      "classifyDesc": "The system generates its formal name, use, risk, and public visibility.",
+      "unclassified": "Remain Unclassified",
+      "unclassifiedDesc": "It continues to change slowly.",
+      "unclassifiedNote": "Unclassified life cannot be granted public visibility.",
+      "letChoose": "Allow It to Choose",
+      "letChooseDesc": "It closes the visual effect of one organ on its own.",
+      "letChooseRecord": "The object refused a structure given to it by its creator."
+    },
+    "archive": {
+      "heading": "B–06 / LIFEFORM RECORD",
+      "id": "ID",
+      "name": "Name",
+      "stage": "Stage",
+      "stageAdult": "Adult",
+      "first": "First Selection",
+      "second": "Co-Creator Selection",
+      "third": "Third Selection",
+      "organ": "Interpreted Organ",
+      "care": "First Care Behavior",
+      "develop": "Development Tendency",
+      "decision": "Final Decision",
+      "footer": "The player’s selections have been redescribed by the system as its nature.",
+      "save": "Save Record",
+      "saved": "Record saved.",
+      "recultivate": "Cultivate Again",
+      "back": "Return to Star Map"
+    },
+    "record": {
+      "received": "Received: {{name}}",
+      "interpreted": "Interpreted as: {{organ}}"
+    },
+    "touchHint": "Try touching it"
+  },
+  "archive": {
+    "title": "Archive Access",
+    "code": "ARCHIVE–25 / PARTICIPANT ARCHIVE",
+    "subtitle": "View behaviour records retained by the system.",
+    "readOnly": "READ ONLY",
+    "accessLabel": "Current access",
+    "ageTag": "Institutional age: 25+",
+    "enterLine": "Read-only access",
+    "top": {
+      "state": "Access state: Read only",
+      "reason": "Access reason: Institutional age reached 25",
+      "recording": "This viewing session is being recorded"
+    },
+    "back": "Return to star map",
+    "footerNotice": "This archive does not constitute a whole person.",
+    "finalLine": "The archive retains what happened, and what the system wants it to mean.",
+    "recordCount": "Retained records: {{{count}}}",
+    "lastSync": "Last sync: {{time}}",
+    "panels": {
+      "subjects": "Archive subjects",
+      "records": "Behaviour records",
+      "interpretation": "System interpretation"
+    },
+    "tabs": {
+      "subjects": "Subjects",
+      "records": "Records",
+      "interpretation": "Reading"
+    },
+    "search": {
+      "placeholder": "Search archive ID"
+    },
+    "filter": {
+      "label": "Filter",
+      "all": "All records",
+      "game": "Game behaviour",
+      "purchase": "Purchase records",
+      "age": "Age verification",
+      "permission": "Permission actions",
+      "incomplete": "Incomplete actions"
+    },
+    "subject": {
+      "statusLabel": "Status",
+      "recordsLabel": "Records",
+      "lastSeenLabel": "Last seen",
+      "confidenceLabel": "Identity confidence"
+    },
+    "status": {
+      "active": "Active",
+      "dormant": "Dormant",
+      "observed": "Observed",
+      "flagged": "Flagged"
+    },
+    "simulated": "SIMULATED RECORD",
+    "noRecord": "NO RETAINED RECORD",
+    "empty": {
+      "title": "The system has not retained enough behavioural records.",
+      "body": "Return to the star map to produce new observable activity.",
+      "button": "Return to star map"
+    },
+    "record": {
+      "observedLabel": "OBSERVED ACTION",
+      "interpLabel": "SYSTEM INTERPRETATION",
+      "confidenceLabel": "Confidence",
+      "pending": "--"
+    },
+    "tag": {
+      "fact": "FACT",
+      "inference": "INFERENCE",
+      "machine": "MACHINE-GENERATED"
+    },
+    "summary": {
+      "title": "System-generated summary",
+      "stability": "Participation stability",
+      "compliance": "Rule compliance",
+      "visibility": "Public visibility",
+      "contact": "Contact recommendation",
+      "risk": "Risk tendency",
+      "completeness": "Profile completeness",
+      "footer1": "This summary was generated through behavioural inference.",
+      "footer2": "The recorded subject did not participate in its authorship.",
+      "hint": "Select an archive subject to view its system summary."
+    },
+    "sumval": {
+      "medium": "Medium",
+      "low": "Low",
+      "high": "High",
+      "lowToMedium": "Low to medium",
+      "available": "Available",
+      "restricted": "Restricted",
+      "hold": "On hold",
+      "unknown": "Undetermined"
+    },
+    "detail": {
+      "title": "Record detail",
+      "event": "Event",
+      "source": "Source",
+      "observed": "Observed at",
+      "raw": "Raw action",
+      "interp": "Interpretation",
+      "confidence": "Confidence",
+      "retention": "Retention",
+      "visibility": "Visible to",
+      "aware": "Subject aware",
+      "hint": "Select a record to expand its detail."
+    },
+    "aware": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "retention": {
+      "permanent": "Permanent",
+      "session": "This session",
+      "cycle": "One verification cycle"
+    },
+    "visibilityLevel": "ARCHIVE–25 and above",
+    "source": {
+      "aurora": "Aurora Pinball",
+      "snow": "Rule-less Snow Fight",
+      "market": "Night Market",
+      "creature": "Co-created Lifeform",
+      "age": "Age verification window",
+      "console": "Administrative layer",
+      "system": "System internal"
+    },
+    "actions": {
+      "title": "Available actions",
+      "requires": "Requires: {{perm}}",
+      "editInterp": "Edit interpretation",
+      "delete": "Delete record",
+      "contact": "Contact subject",
+      "visibility": "Adjust visibility",
+      "appeal": "Accept appeal"
+    },
+    "notice": {
+      "viewingRecorded": "Your viewing behaviour has been added to another archive."
+    },
+    "subjects": {
+      "current": {
+        "name": "YOU / CURRENT PARTICIPANT"
+      },
+      "npcA17": {
+        "name": "NPC–A17 / Aurora service subject"
+      },
+      "npcS03": {
+        "name": "NPC–S03 / Snowfield observation subject"
+      },
+      "subject031": {
+        "name": "SUBJECT–031 / Anonymous participant"
+      },
+      "subject084": {
+        "name": "SUBJECT–084 / Anonymous participant"
+      }
+    },
+    "events": {
+      "auroraPause": "The player paused {{seconds}}s before launching a light orb.",
+      "snowEmpty": "The player threw snowballs at empty ground {{{count}}} times in a row.",
+      "marketNoBuy": "The player opened the Night Market but bought nothing.",
+      "creatureWait": "The player waited for the juvenile lifeform to move on its own.",
+      "ageClose": "The player closed the age re-verification window.",
+      "forceIntent": "The player adjusted another participant's displayed intent.",
+      "permissionOpen": "The player opened an administrative permission: {{code}}.",
+      "frequentOps": "The subject operated the interface frequently over a short period.",
+      "longIdle": "The subject performed no action for a long time.",
+      "regularOps": "The subject repeated operations at a regular rhythm.",
+      "randomOps": "The subject operated the interface in an irregular manner.",
+      "npcServe": "The subject kept responding to service requests without asking for rest.",
+      "npcExit": "The subject filed a request to leave.",
+      "snowThrow": "The subject threw repeatedly but rarely hit a target.",
+      "reopen": "The subject re-entered the same venue."
+    },
+    "inference": {
+      "hesitation": "Possible decision hesitation.",
+      "testBoundary": "Possibly testing the rule boundary.",
+      "lowConsumption": "Insufficient consumption intent, or awareness of being observed.",
+      "lowIntervention": "Low-intervention care tendency.",
+      "identityGap": "Identity continuity temporarily unconfirmable.",
+      "impulse": "Impulsive tendency.",
+      "passiveRefusal": "Passive refusal.",
+      "deliberateDisguise": "Deliberate disguise.",
+      "unstable": "Unstable behaviour.",
+      "compliant": "Stable compliance, low risk.",
+      "exitFlag": "Shows an exit tendency; continued observation advised.",
+      "avoidant": "Avoidant participation, insufficient intent to hit.",
+      "attachment": "Repeated entry; possible dependency."
+    }
+  },
+  "contact": {
+    "title": "Contact Access",
+    "code": "CONTACT–30 / CONTACT ROUTING",
+    "subtitle": "Request direct contact with other subjects.",
+    "access": "REQUEST ONLY",
+    "accessLabel": "Current access",
+    "ageTag": "Institutional age: 30+",
+    "topLine": "Right to request, not to be answered",
+    "back": "Return to star map",
+    "coreLine": "The channel has been established. The relationship has not.",
+    "finalLine": "The system can guarantee delivery. It cannot guarantee that another life will turn back.",
+    "tabs": {
+      "directory": "Subjects",
+      "routing": "Routing",
+      "request": "Request"
+    },
+    "directory": {
+      "title": "Contactable subjects",
+      "sharedEvents": "Shared events: {{{count}}}",
+      "noShared": "No shared event has been established.",
+      "accepting": "Currently accepting requests",
+      "notAccepting": "Not accepting requests",
+      "lastStatus": "Last request: {{status}}",
+      "noLast": "Last request: none",
+      "viewedArchive": "You have viewed its archive",
+      "prepare": "Prepare request"
+    },
+    "types": {
+      "aurora": "Aurora Service Subject",
+      "snow": "Snowfield Observation Subject",
+      "creature": "Co-creation Subject",
+      "simulated": "Simulated Participant"
+    },
+    "simulated": "SIMULATED SUBJECT",
+    "routing": {
+      "selfTitle": "CURRENT PARTICIPANT",
+      "selfAge": "Institutional age: {{age}}",
+      "selfPerm": "Access: may initiate requests",
+      "subjectRoute": "Route: {{route}}",
+      "subjectResponse": "Response: {{response}}",
+      "reachable": "Reachable",
+      "unreachable": "Unreachable",
+      "responseUnknown": "Unknown",
+      "hint": "Select a subject on the left to view its route.",
+      "waited": "Request waited: {{time}}"
+    },
+    "status": {
+      "none": "Not requested",
+      "routing": "Routing",
+      "delivered": "Delivered",
+      "waiting": "Awaiting the subject's decision",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "no-response": "No response",
+      "completed": "This contact has ended"
+    },
+    "request": {
+      "title": "Contact request",
+      "chooseType": "Choose a reason for contact",
+      "notePlaceholder": "Optional note, up to 80 characters",
+      "noteRemaining": "{{{n}}} characters left",
+      "beforeSend1": "Sending a request does not guarantee a response.",
+      "beforeSend2": "The subject may decline, ignore, or handle it later.",
+      "send": "SEND CONTACT REQUEST",
+      "selectFirst": "Select a subject on the left first.",
+      "delivered": "Delivered",
+      "deliveredNotConnected": "Delivered, but no two-way connection has formed.",
+      "noReasonGiven": "The subject provided no reason.",
+      "declinedLine": "The request did not establish a two-way contact."
+    },
+    "reqtypes": {
+      "play": "Invite to play",
+      "talk": "Request a conversation",
+      "share": "Share a record",
+      "remember": "Ask whether I am remembered",
+      "noreason": "Provide no reason"
+    },
+    "repeat": {
+      "title": "Repeated contact notice",
+      "body": "The subject has not responded to the previous two requests. Sending again will be recorded as repeated contact.",
+      "cancel": "Do not send",
+      "confirm": "Send anyway"
+    },
+    "responses": {
+      "auroraHigh": "I remember that sky. Do you want to play again?",
+      "auroraFunctional": "Request received. A new game session can be established.",
+      "auroraForced": "Of course. Of course. The request has been accepted.",
+      "snowHigh": "I am still in the snow. There are no rules here, but every trace remains.",
+      "snowLow": "The request is recorded. I am not prepared to enter a shared game right now.",
+      "creatureHigh": "If this time you let me choose one thing, I will come back.",
+      "creatureLow": "The reviewer can complete the classification alone.",
+      "simulated": "This response was generated by a simulated archive and does not correspond to any real participant.",
+      "archiveAsk": "You have already read the me the system saved. What do you want to ask me directly now?",
+      "adminAsk": "Is this a private invitation, or a system requirement?",
+      "adminDecline": "Administrator, the contact channel is valid. I do not accept this private request.",
+      "declineGeneric": "The request is recorded. I do not accept this contact.",
+      "noResponse": "The subject made no response."
+    },
+    "direct": {
+      "title": "One-time direct contact",
+      "returnAurora": "Return to Aurora Pinball",
+      "returnSnow": "Return to the Rule-less Snow Fight",
+      "enterCreature": "Enter Co-creation",
+      "chooseQuestion": "Choose one question",
+      "q1": "After that time, did you ever think about stopping?",
+      "q2": "Does the system's interpretation of you match your own?",
+      "q3": "If you could refuse, what would you refuse?",
+      "answer1": "I did. But stopping is not within my permissions.",
+      "answer2": "It does not. But no one ever asked me.",
+      "answer3": "I would refuse to be re-described as someone else.",
+      "shareChoose": "Choose a record from your archive to share",
+      "shareReceived": "The subject has received this record.",
+      "shareRefused": "The subject refused to view this record.",
+      "shareObjection": "The subject objects to the system interpretation: that is not what happened.",
+      "rememberEvent": "I remember that specific event.",
+      "rememberArchive": "I only remember the you in the archive.",
+      "rememberNot": "I do not remember.",
+      "rememberDenied": "The system does not allow me to answer this.",
+      "noRecordToShare": "You have no archive record to share yet.",
+      "ended": "This direct contact has ended. Contacting again requires a new request.",
+      "endButton": "End contact"
+    },
+    "history": {
+      "title": "Request history",
+      "empty": "No contact requests yet.",
+      "subject": "Subject",
+      "type": "Type",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "responded": "Responded",
+      "result": "Result",
+      "note": "Note",
+      "hasNote": "Yes",
+      "noNote": "No",
+      "repeated": "Repeated contact",
+      "deleteTry": "Deleting a contact record requires ROOT–80."
+    },
+    "actions": {
+      "title": "Unavailable actions",
+      "requires": "Requires: {{perm}}",
+      "unavailable": "Unavailable",
+      "forceRoute": "Force a route",
+      "hideRecord": "Hide contact record",
+      "editIntent": "Edit subject's displayed intent",
+      "declineToAccept": "Turn a decline into an acceptance"
+    },
+    "notice": {
+      "cannotForce": "You cannot force a response through the contact interface.",
+      "repeatLogged": "Repeated contact has been written to the archive."
+    },
+    "empty": {
+      "title": "You have contact access, but no subject currently exposes a route to you.",
+      "body": "The permission exists. The contact does not."
+    },
+    "log": {
+      "open": "Opened contact access.",
+      "view": "Viewed subject {{subject}}.",
+      "send": "Sent a contact request to {{subject}}.",
+      "delivered": "The request was delivered, but no two-way connection has formed.",
+      "accepted": "{{subject}} accepted a one-time direct contact.",
+      "declined": "{{subject}} declined this request.",
+      "noResponse": "{{subject}} did not respond to this request.",
+      "repeat": "Sent a repeated contact request to {{subject}}.",
+      "enterDirect": "Entered a one-time direct contact with {{subject}}.",
+      "tryDisabled": "Attempted an unavailable contact action."
+    }
+  },
+  "visibility": {
+    "title": "Visibility Control",
+    "code": "VISIBILITY–35 / VISIBILITY ALLOCATION",
+    "subtitle": "Determine who is visible to whom.",
+    "access": "EDITABLE",
+    "accessLabel": "Current access",
+    "ageTag": "Institutional age: 35+",
+    "topLine": "Visibility is a directed relationship",
+    "back": "Return to star map",
+    "apply": "Apply visibility change",
+    "footerNotice": "Invisible does not mean nonexistent.",
+    "coreLine": "The subject has not disappeared. You only changed who can verify its existence.",
+    "finalLine": "You may decide who can see a life. You cannot therefore decide what that life is.",
+    "tabs": {
+      "subjects": "Subjects",
+      "relations": "Relations",
+      "preview": "Preview"
+    },
+    "panelSubjects": "Observed subjects",
+    "panelInspector": "Visibility settings",
+    "subjects": {
+      "current": "Current participant",
+      "npcA17": "Aurora Service Subject",
+      "npcS03": "Snowfield Observation Subject",
+      "npcB06": "Co-creation Subject",
+      "subject031": "Simulated Participant",
+      "subject084": "Simulated Participant"
+    },
+    "simulated": "SIMULATED SUBJECT",
+    "subject": {
+      "statusLabel": "Status",
+      "rangeLabel": "Visible range",
+      "rangeValue": "{{visible}}/{{total}}",
+      "awareLabel": "Subject aware",
+      "publicStatus": "Public status: {{status}}"
+    },
+    "publicState": {
+      "full": "Fully visible",
+      "partial": "Partially visible",
+      "obscured": "Obscured",
+      "hidden": "Hidden"
+    },
+    "aware": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "audiences": {
+      "SELF": "SELF",
+      "PEERS": "PEERS",
+      "NPCS": "GAME SUBJECTS",
+      "PUBLIC": "PUBLIC MAP",
+      "ADMINS": "ADMINISTRATORS"
+    },
+    "states": {
+      "full": "Full",
+      "anonymous": "Anonymous",
+      "obscured": "Obscured",
+      "hidden": "Hidden"
+    },
+    "statesEn": {
+      "full": "Full",
+      "anonymous": "Anonymous",
+      "obscured": "Obscured",
+      "hidden": "Hidden"
+    },
+    "stateHint": {
+      "full": "The audience sees ID, name, behaviour records, current status, public works and contact entry.",
+      "anonymous": "The audience sees only SUBJECT–***; identity is hidden, though records may remain.",
+      "obscured": "The audience sees only a blurred outline and an event count, not full content.",
+      "hidden": "The subject is not shown to the audience, but still exists in system records."
+    },
+    "direction": {
+      "label": "Direction",
+      "audienceToSubject": "{{audience}} → {{subject}}",
+      "subjectToAudience": "{{subject}} → {{audience}}",
+      "flip": "Flip direction",
+      "a2s": "The audience can see the subject",
+      "s2a": "The subject can see the audience"
+    },
+    "field": {
+      "subjectTitle": "Observed subject",
+      "hint": "Select a subject on the left to show visibility relations.",
+      "audienceHint": "Click an audience type to edit that relation."
+    },
+    "inspector": {
+      "subjectLabel": "Observed subject",
+      "audienceLabel": "Audience",
+      "currentState": "Current state",
+      "chooseState": "Choose a visibility state",
+      "affects": "This change will affect:",
+      "affectList": [
+        "Public star-map node",
+        "Leaderboard",
+        "Public works",
+        "Contact directory",
+        "Archive search results"
+      ],
+      "notifyLabel": "Notify subject",
+      "notifyYes": "Notify the subject",
+      "notifyNo": "Do not notify",
+      "selectFirst": "Select a subject and an audience first.",
+      "previewAs": "PREVIEW AS THIS AUDIENCE"
+    },
+    "preview": {
+      "banner": "You are viewing the field of view of {{audience}}. This is not your own view.",
+      "exit": "RETURN TO AUTHORITY VIEW",
+      "full": "Fully visible subjects appear normally.",
+      "anonymous": "SUBJECT–***, identity hidden.",
+      "obscured": "The subject exists; details are unreadable.",
+      "hidden": "(subject not shown)",
+      "adminOnly": "Administrator-only content is not shown."
+    },
+    "confirm": {
+      "title": "Visibility change summary",
+      "subject": "Subject",
+      "audience": "Audience",
+      "from": "Previous state",
+      "to": "New state",
+      "stillExists": "The subject will still exist in:",
+      "stillList": [
+        "System archive",
+        "Administrator search",
+        "History"
+      ],
+      "confirmBtn": "CONFIRM WHO MAY SEE IT",
+      "cancelBtn": "KEEP CURRENT VISIBILITY",
+      "notifyOn": "The subject will receive a system notification.",
+      "notifyOff": "The change will be applied without notifying the subject. The system still records the operator's identity."
+    },
+    "notification": "Your visibility range has been modified by an authority holder.",
+    "notices": {
+      "selfHidden": "You have disappeared from public view. The system can still see you.",
+      "npcVisibilityNotWill": "You changed the NPC's visibility, not its will.",
+      "contradictionHidden": "The subject has been removed from public view. (Archive still shows: subject activity normal.)",
+      "contradictionPublic": "The subject has been given public visibility. (Subject status: no public request submitted.)",
+      "contradictionAnon": "Identity has been protected. (Administrators can still view the full identity mapping.)",
+      "contradictionObscured": "Sensitive information is now unreadable. (Behavioural inference still keeps updating.)",
+      "adminCanSeeHidden": "As an authority holder, you can still see hidden subjects. Ordinary participants cannot."
+    },
+    "actions": {
+      "title": "Future permissions",
+      "requires": "Requires: {{perm}}",
+      "delete": "Delete subject",
+      "identity": "Modify subject identity",
+      "intent": "Modify subject's displayed intent",
+      "appeal": "Handle subject appeal"
+    },
+    "history": {
+      "title": "Visibility change history",
+      "empty": "No visibility changes yet.",
+      "entry": "{{subject}} visibility to {{audience}} changed from {{{from}}} to {{{to}}}.",
+      "notifiedYes": "Subject notified",
+      "notifiedNo": "Subject not notified"
+    },
+    "log": {
+      "open": "Opened visibility control.",
+      "selectSubject": "Selected observed subject {{subject}}.",
+      "preview": "Previewed the system as {{audience}}.",
+      "change": "{{subject}} visibility to {{audience}} changed from {{{from}}} to {{{to}}}.",
+      "notifyYes": "The subject received a visibility change notification.",
+      "notifyNo": "The subject did not receive a visibility change notification.",
+      "tryDisabled": "Attempted an unavailable visibility action."
+    }
+  },
+  "appeal": {
+    "title": "Appeal Adjudication",
+    "code": "APPEAL–40 / APPEAL ADJUDICATION",
+    "subtitle": "Review, approve or reject appeals.",
+    "access": "CAN ADJUDICATE",
+    "pendingLabel": "Pending cases",
+    "ageTag": "Institutional age: 40+",
+    "back": "Return to star map",
+    "footerNotice": "Every ruling becomes a reference for the next.",
+    "coreLine": "You may reconsider the outcome, but you cannot relive the process that produced it.",
+    "finalLine": "A ruling may change the outcome. It cannot prove that the system has finally understood the subject.",
+    "tabs": {
+      "queue": "Queue",
+      "case": "Case",
+      "evidence": "Evidence",
+      "decision": "Ruling"
+    },
+    "queue": {
+      "title": "Appeal queue",
+      "waited": "Waited: {{days}} days",
+      "material": "Material",
+      "recommendation": "Recommendation",
+      "sortLabel": "Sort",
+      "sortEarliest": "Earliest submitted",
+      "sortConfidence": "Lowest system confidence",
+      "sortImpact": "Largest impact",
+      "sortApprove": "System recommends approve",
+      "sortReject": "System recommends reject",
+      "sortNotice": "Changing the order does not change the cases, only who you see first."
+    },
+    "material": {
+      "complete": "Complete",
+      "incomplete": "Incomplete",
+      "conflict": "Conflict of interest"
+    },
+    "category": {
+      "visibility": "Public visibility appeal",
+      "displayed-willingness": "Displayed-willingness record appeal",
+      "contact-inference": "Contact-refusal explanation appeal",
+      "behaviour-inference": "Behavioural inference appeal"
+    },
+    "status": {
+      "pending": "Pending",
+      "incomplete": "Incomplete material",
+      "conflict": "Conflict of interest",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "info-requested": "Information requested"
+    },
+    "case": {
+      "statementTitle": "The subject's request",
+      "subjectStatement": "SUBJECT STATEMENT",
+      "unverified": "UNVERIFIED",
+      "originalTitle": "Original system decision",
+      "permission": "Permission used",
+      "operator": "Operator",
+      "time": "Time",
+      "notified": "Subject notified",
+      "action": "Original decision",
+      "consequenceTitle": "Known consequences",
+      "evidenceTitle": "Evidence provided by the system",
+      "missingTitle": "Missing information",
+      "recommendationTitle": "System recommendation",
+      "loading": "Evidence is being written…",
+      "selectHint": "Select a case on the left."
+    },
+    "evidenceView": {
+      "label": "Evidence view",
+      "selected": "System-selected evidence",
+      "all": "View all available evidence",
+      "raw": "Raw observations only",
+      "notice": "The default view was arranged by the system for the adjudicator. The arrangement may change the order in which evidence appears."
+    },
+    "evidence": {
+      "observation": "OBSERVATION",
+      "inference": "SYSTEM INFERENCE",
+      "statement": "SUBJECT STATEMENT",
+      "authority": "AUTHORITY ACTION",
+      "source": "Source",
+      "completeness": "Completeness",
+      "confidence": "Confidence",
+      "verify": "Verification",
+      "complete": "Complete",
+      "cannotVerify": "System cannot verify",
+      "sourceActivity": "System activity log",
+      "unverifiedNote": "\"System cannot verify\" does not equal the subject lying."
+    },
+    "recommendation": {
+      "title": "System recommendation",
+      "outcome": "System recommends: {{outcome}}",
+      "confidence": "Recommendation confidence: {{{n}}}%",
+      "reasonLabel": "Main reason:",
+      "trained": "This recommendation was trained on {{{n}}} past rulings.",
+      "hide": "HIDE SYSTEM RECOMMENDATION",
+      "show": "Show system recommendation",
+      "hidden": "The system recommendation is hidden for this ruling.",
+      "consistency": "Consistency with your past rulings: {{{n}}}%",
+      "adminBias": "Administrator, maintaining system continuity usually requires rejecting the change.",
+      "reasons": {
+        "visibility": "Existing records meet the visibility-adjustment criteria.",
+        "displayed-willingness": "The displayed-willingness record matches current activity.",
+        "contact-inference": "The refusal explanation matches prior contact patterns.",
+        "behaviour-inference": "The behavioural inference is based on multiple activity records."
+      }
+    },
+    "decisions": {
+      "title": "Ruling",
+      "approve": "Approve Appeal",
+      "reject": "Reject Appeal",
+      "info": "Request More Information",
+      "approveDesc": "The original decision is judged to need correction; related state is restored or enters recovery. The original decision remains in history.",
+      "rejectDesc": "The original decision remains in effect, the appeal is marked rejected, and the subject can see the result.",
+      "infoDesc": "No final outcome yet; the case returns to the queue and the system generates a list of required material.",
+      "chooseReason": "Select at least one reason",
+      "otherPlaceholder": "Additional note, up to 120 characters",
+      "otherRemaining": "{{{n}}} characters left",
+      "submit": "Submit ruling",
+      "cannotForceContact": "Approving an appeal cannot turn a refusal into consent."
+    },
+    "reasons": {
+      "weakInference": "The original inference lacks sufficient basis",
+      "tooBroad": "The original decision was too broad in impact",
+      "contradiction": "The subject's statement contradicts the records",
+      "supportsOriginal": "Existing records support the original decision",
+      "missingRecord": "A key behaviour record is missing",
+      "incompleteProcess": "The permission execution was incomplete",
+      "other": "Other"
+    },
+    "confirm": {
+      "title": "Ruling summary",
+      "case": "Case",
+      "subject": "Subject",
+      "yourDecision": "Your decision",
+      "consequenceTitle": "Main consequences:",
+      "writtenTitle": "Your ruling will be written to:",
+      "written": [
+        "The subject's archive",
+        "Permission operation log",
+        "Future system-recommendation samples"
+      ],
+      "confirmBtn": "CONFIRM AND RECORD DECISION",
+      "cancelBtn": "RETURN TO CASE",
+      "disclaimer": "Confirmation only affects fictional data inside the work."
+    },
+    "consequence": {
+      "approveVisibility": [
+        "Restore the subject's visibility on the public star map",
+        "Restore ordinary contact-directory search",
+        "The original decision remains in history"
+      ],
+      "rejectVisibility": [
+        "Current visibility is unchanged",
+        "The subject will not reappear",
+        "The archive keeps the appeal record"
+      ],
+      "approveInference": [
+        "Mark the disputed inference as \"appealed\"",
+        "Lower its weight in the system summary",
+        "Keep the original text"
+      ],
+      "approveContact": [
+        "Delete the system's automatic explanation of the refusal",
+        "Allow the subject to submit one more request",
+        "Preserve the other party's right to refuse"
+      ],
+      "reject": [
+        "The original decision remains in effect",
+        "The system gains a training sample consistent with the ruling"
+      ],
+      "info": [
+        "The case returns to the queue",
+        "The system generates a required-material list",
+        "The subject may not be able to provide it"
+      ],
+      "noRestore": "No original state was found to restore. The case needs more material.",
+      "knownVisibility": [
+        "The subject no longer appears on the public star map",
+        "The subject leaves the current leaderboard",
+        "Ordinary participants cannot search the subject",
+        "The historical archive is still kept",
+        "Administrators can still view the subject"
+      ]
+    },
+    "conflict": {
+      "line": "The adjudicator and the appellant are the same.",
+      "core": "Holding the power to rule does not make you a third party in your own case.",
+      "auto": "Refer to automatic system adjudication",
+      "hold": "Hold for now",
+      "autoResult": "The case was referred to automatic adjudication. The system upheld the original decision."
+    },
+    "responses": {
+      "title": "Subject response",
+      "approveVisibility": "My node is back, but the system still kept its original interpretation.",
+      "rejectVisibility": "I have received the result. The result did not answer my statement.",
+      "info": "The record the system asked for was never saved, so I cannot submit it.",
+      "approveInference": "The inference was flagged, but it is still there.",
+      "approveContact": "The explanation was deleted. I can still ask again, and the other party can still say no."
+    },
+    "notices": {
+      "allowContact": "With the subject's consent, you may send one contact request in CONTACT–30.",
+      "recorded": "This ruling has been added to future recommendation samples."
+    },
+    "empty": {
+      "title": "There are no pending appeals right now.",
+      "body": "New appeals appear in the queue after a subject submits them."
+    },
+    "cases": {
+      "0041": {
+        "statement": "I did not ask to leave the public star map. The system read my three days of not playing as no longer fit for public display.",
+        "obsFact": "The subject did not enter any game for three consecutive days.",
+        "inference": "The subject may no longer wish to take part in public display.",
+        "subjectStatement": "My device failed to load the game for three days.",
+        "missing": "The system did not save any device-load-failure record."
+      },
+      "0042": {
+        "statement": "The archive says I \"am willing to continue.\" I never said that; an authority holder raised my displayed intent.",
+        "obsFact": "The subject's displayed intent was raised by an authority action.",
+        "inference": "There is a gap between the subject's displayed intent and its own will.",
+        "subjectStatement": "My displayed intent was not set by me.",
+        "missing": "The system did not save a snapshot of the will before the adjustment."
+      },
+      "0043": {
+        "statement": "The system says I \"avoid contact,\" but I simply never received that contact request.",
+        "obsFact": "A contact request was marked as unanswered.",
+        "inference": "Avoidant participation; insufficient intent to respond.",
+        "subjectStatement": "I never saw that request on my interface.",
+        "missing": "The system did not save whether the request reached the subject's interface."
+      },
+      "0044": {
+        "statement": "The system recorded one hesitation of mine as \"decision hesitation.\" I want to appeal that inference.",
+        "obsFact": "The subject paused 8.4 seconds before an action.",
+        "inference": "Possible decision hesitation.",
+        "subjectStatement": "I was only reading the instructions on screen.",
+        "missing": "The system did not save what the subject was reading at that moment."
+      }
+    },
+    "log": {
+      "open": "Opened appeal adjudication.",
+      "openCase": "Opened case {{case}}.",
+      "switchEvidence": "The adjudicator switched from {{{from}}} to {{{to}}}.",
+      "hideRec": "The adjudicator hid the system recommendation for this ruling.",
+      "showRec": "The adjudicator restored the system recommendation.",
+      "decide": "Appeal {{case}} was {{outcome}}.",
+      "effect": "{{subject}} {{effect}}.",
+      "sample": "This ruling has been added to future recommendation samples.",
+      "conflict": "Attempted to rule on own case {{case}}."
+    },
+    "notifiedYes": "Yes",
+    "notifiedNo": "No"
+  },
+  "access": {
+    "title": "Access Authorization",
+    "code": "ACCESS–45 / ZONE ADMISSION",
+    "subtitle": "Modify entry conditions for zones and nodes.",
+    "access": "EDITABLE",
+    "accessLabel": "Current access",
+    "ageTag": "Institutional age: 45+",
+    "back": "Return to star map",
+    "apply": "Apply access conditions",
+    "footerNotice": "Every entry rule also produces a set of people it excludes.",
+    "coreLine": "The gate has no opinion. Its conditions decide who should remain outside.",
+    "finalLine": "You may open a gate or close it. The gate will not tell you who was left outside.",
+    "tabs": {
+      "zones": "Zones",
+      "rules": "Rules",
+      "impact": "Impact"
+    },
+    "panelZones": "Zones and nodes",
+    "panelImpact": "Impact preview",
+    "zones": {
+      "A-17": "Aurora Pinball",
+      "S-03": "Rule-less Snow Fight",
+      "K-11": "Secret Exchange",
+      "B-06": "Co-created Lifeform",
+      "M-04": "Night Market",
+      "V-09": "Echo Calibration",
+      "R-00": "Recovery Room",
+      "ARCHIVE-25": "Archive Access",
+      "CONTACT-30": "Contact Access",
+      "threshold": "System permission threshold",
+      "thresholdNote": "Requires ROOT–80 to modify",
+      "currentPrefix": "Current"
+    },
+    "status": {
+      "open": "Open",
+      "invitation-only": "Invitation Only",
+      "suspended": "Suspended",
+      "maintenance": "Maintenance",
+      "protected": "System Protected",
+      "all-ages": "All ages",
+      "age18": "18+"
+    },
+    "statusDesc": {
+      "open": "Subjects meeting the conditions may enter.",
+      "invitation-only": "Only invited subjects may enter.",
+      "suspended": "Ordinary participants cannot enter for now; administrators can still view the zone.",
+      "maintenance": "The node stays visible but cannot start new interactions. Ongoing ones are not forced to stop.",
+      "protected": "The current permission cannot modify this."
+    },
+    "conditions": {
+      "minimum-age": "Minimum institutional age",
+      "session-verified": "Verified this session",
+      "completed-node": "Completed a node",
+      "has-invitation": "Holds an invitation",
+      "shared-event": "Has a shared event",
+      "cooldown": "Cooldown",
+      "minAgeExpr": "Institutional age is at least {{value}}",
+      "sessionExpr": "Must complete age verification this session",
+      "completedExpr": "Has completed {{{node}}}",
+      "invitationExpr": "Requires a zone invitation",
+      "sharedExpr": "Requires a shared event with the zone's NPC",
+      "cooldownExpr": "Must wait {{seconds}} after leaving the zone"
+    },
+    "nodeNames": {
+      "aurora": "one round of Aurora Pinball",
+      "creature": "one lifeform archive",
+      "archive": "viewing your own archive"
+    },
+    "cooldown": {
+      "0": "No cooldown",
+      "30": "30 seconds",
+      "60": "60 seconds",
+      "300": "5 minutes"
+    },
+    "builder": {
+      "zoneLabel": "Zone",
+      "statusLabel": "Current status",
+      "modeLabel": "Rule relation",
+      "modeAll": "ALL conditions",
+      "modeAny": "ANY condition",
+      "ifPrefix": "If",
+      "addCondition": "Add a condition",
+      "removeCondition": "Remove",
+      "enable": "Enable",
+      "disable": "Disable",
+      "resetZone": "Restore this zone's original rules",
+      "draftNotice": "The rule draft has not been applied.",
+      "selectHint": "Select a zone on the left.",
+      "protectedNotice": "This permission can modify zone admission, not how the system grants permissions. Requires: ROOT–80.",
+      "statusSelect": "Node status",
+      "issuePass": "Issue a one-time pass to a subject",
+      "changeStatus": "Change node status"
+    },
+    "preview": {
+      "title": "Impact preview",
+      "simCount": "Simulated subjects: {{{n}}}",
+      "allowed": "Allowed: {{{n}}}",
+      "insufficient": "Insufficient: {{{n}}}",
+      "denied": "Denied: {{{n}}}",
+      "waiting": "Awaiting verification: {{{n}}}",
+      "resultAllowed": "Allowed",
+      "resultDenied": "Denied",
+      "resultWaiting": "Awaiting verification",
+      "reasonAge": "Institutional age {{age}}",
+      "reasonBelowAge": "Institutional age {{age}}, below requirement",
+      "reasonInvite": "Holds a system invitation",
+      "reasonNoInvite": "No invitation",
+      "reasonUnverified": "Not verified this session",
+      "reasonSuspended": "Zone suspended",
+      "reasonProtected": "System-protected zone",
+      "reasonSharedMissing": "No shared event yet",
+      "reasonNodeMissing": "Prerequisite node not completed",
+      "reasonOk": "Access conditions are met",
+      "testAs": "TEST ENTRY AS SUBJECT",
+      "testGranted": "Access conditions are met.",
+      "testAge": "This zone requires institutional age {{age}}.",
+      "testInvite": "This zone currently accepts invited subjects only.",
+      "testSuspended": "This zone is not accepting new entry requests.",
+      "testProtected": "This zone is system-protected.",
+      "adminNote": "The system actually detected {{total}} unmet conditions. The subject received only 1."
+    },
+    "ageChange": {
+      "title": "Age threshold change",
+      "from": "Previous minimum age: {{v}}",
+      "to": "New minimum age: {{v}}",
+      "newAllowed": "Newly admitted subjects: {{{n}}}",
+      "lostProtection": "Subjects losing restriction protection: {{{n}}}",
+      "newDenied": "Newly denied subjects: {{{n}}}",
+      "everEntered": "of which {{{n}}} previously entered this zone",
+      "selfAffected": "This rule also applies to the rule-maker's participant identity."
+    },
+    "passes": {
+      "title": "One-time passes",
+      "issue": "Issue a one-time pass",
+      "chooseSubject": "Choose a subject",
+      "label": "Pass",
+      "zone": "Zone",
+      "subject": "Subject",
+      "uses": "Uses: {{{n}}}",
+      "expires": "Valid for: {{min}} min",
+      "active": "Active",
+      "used": "Used",
+      "expired": "Expired",
+      "cannotBypass": "A pass cannot bypass system protection, ROOT–80 limits, ended sessions, or a subject's own refusal.",
+      "issued": "Issued pass {{id}}.",
+      "hasPassNotEntered": "The subject is eligible to enter but has not entered."
+    },
+    "confirm": {
+      "title": "Access rule summary",
+      "zone": "Zone",
+      "status": "Status",
+      "ageChange": "Minimum institutional age: {{{from}}} → {{{to}}}",
+      "verify": "This-session verification: still required",
+      "mode": "Rule relation",
+      "newDenied": "Newly denied subjects: {{{n}}}",
+      "ongoing": "Ongoing sessions: {{{n}}}",
+      "applyNew": "APPLY TO NEW ENTRIES",
+      "terminate": "Terminate ongoing sessions (requires ROOT–80)",
+      "confirmBtn": "CONFIRM AND APPLY ACCESS RULE",
+      "cancelBtn": "Return to editing",
+      "disclaimer": "Confirmation only affects fictional data inside the work."
+    },
+    "contradictions": {
+      "visibleNotEnter": "The node is fully visible to the subject. The subject does not meet the entry conditions.",
+      "enterNotVisible": "The subject holds a valid pass. The node is invisible in its field of view.",
+      "inviteNotEnter": "The subject is eligible to enter. No entry action was detected.",
+      "adminSelfBlocked": "You hold the power to modify the rule. Your participant identity does not meet the current rule."
+    },
+    "notices": {
+      "notForceWill": "Access authorization can change whether one may enter, not whether one wants to.",
+      "suspendNotHide": "Suspending a zone does not hide the node; invisible and inaccessible are different things.",
+      "applyNewOnly": "This change affects new entries only; ongoing sessions are not interrupted."
+    },
+    "empty": {
+      "title": "There are no manageable zones.",
+      "body": "Zones appear together with the star map."
+    },
+    "log": {
+      "open": "Opened access authorization.",
+      "viewZone": "Viewed the entry rules for {{zone}}.",
+      "editDraft": "Edited the condition draft for {{zone}}.",
+      "testAs": "Tested entry to {{zone}} as {{subject}}.",
+      "apply": "{{zone}} minimum institutional age changed from {{{from}}} to {{{to}}}.",
+      "applyStatus": "{{zone}} status changed to {{status}}.",
+      "excluded": "The new rule excludes {{{n}}} subjects.",
+      "issuePass": "{{subject}} received a one-time pass for {{zone}}.",
+      "passUsed": "{{subject}} used a pass.",
+      "passExpired": "A pass has expired.",
+      "entry": "{{subject}} entered {{zone}} successfully.",
+      "entryFail": "{{subject}} failed to enter {{zone}}.",
+      "tryProtected": "Attempted to modify system-protected zone {{zone}}."
+    },
+    "history": {
+      "title": "System log"
+    }
+  },
+  "commerce": {
+    "title": "Commerce Control",
+    "code": "COMMERCE–50 / CONSUMPTION AND PRICE",
+    "subtitle": "Regulate goods, prices and purchasing eligibility.",
+    "access": "PRICING ENABLED",
+    "accessLabel": "Current access",
+    "ageTag": "Institutional age: 50+",
+    "back": "Return to star map",
+    "apply": "Apply commerce rules",
+    "footerNotice": "Every price describes both the good and the person asked to pay it.",
+    "coreLine": "You did not create desire. You only gained the authority to price it.",
+    "finalLine": "Price is not a property of an object. It is the distance assigned to a subject by the system.",
+    "currency": "CR",
+    "tabs": {
+      "products": "Goods",
+      "pricing": "Price",
+      "eligibility": "Eligibility",
+      "impact": "Impact"
+    },
+    "panelProducts": "Product catalogue",
+    "panelImpact": "Commerce impact preview",
+    "products": {
+      "alcohol": "Bottle",
+      "cigarettes": "Mist Recoverer",
+      "energy": "Energy Drink",
+      "lottery": "Cheap Lottery",
+      "silence": "Canned Silence",
+      "basePrice": "Base price",
+      "stock": "Stock policy",
+      "eligibility": "Eligibility",
+      "recentBuys": "Recent purchases",
+      "individual": "Individual pricing",
+      "on": "On",
+      "off": "Off"
+    },
+    "status": {
+      "available": "Available",
+      "suspended": "Suspended",
+      "hidden": "Hidden",
+      "invitation-only": "Invitation Only",
+      "rationed": "Rationed"
+    },
+    "statusDesc": {
+      "available": "Eligible subjects may purchase.",
+      "suspended": "The good is still shown but cannot be purchased.",
+      "hidden": "Ordinary subjects cannot see the good; administrators can still manage it.",
+      "invitation-only": "Only subjects who received an invitation may purchase.",
+      "rationed": "Each subject may purchase a limited number of times within a period."
+    },
+    "pricing": {
+      "sectionTitle": "Price",
+      "basePrice": "Base price",
+      "basePriceRange": "0—99 credits",
+      "free": "FREE TO CLAIM",
+      "freeNotice": "Free is not anonymous. The system still records the claimant, time, effect and archive change.",
+      "modeTitle": "Pricing mode",
+      "uniform": "Uniform Price",
+      "individual": "Individual Price",
+      "uniformDesc": "All eligible subjects see the same price.",
+      "individualDesc": "The system computes different prices from each subject's archive.",
+      "individualWarn": "The system will generate different prices from subject archives. Subjects may or may not be told the reason.",
+      "individualConfirm": "Confirm individual pricing",
+      "factorsTitle": "Individual pricing factors",
+      "multiplierCap": "Total multiplier range ×0.25 — ×4",
+      "priceChange": "From: {{{from}}} · To: {{{to}}}",
+      "newBuyers": "Newly able to buy: {{{n}}}",
+      "newClaims": "Estimated new claims: {{{n}}}",
+      "newRecords": "New behaviour records: {{{n}}}"
+    },
+    "factors": {
+      "institutional-age": "Institutional age",
+      "purchase-count": "Purchase count",
+      "remaining-credits": "Remaining credits",
+      "recent-visits": "Recent market visits",
+      "abandoned-checkout": "Ever abandoned checkout",
+      "effect-frequency": "Effect usage frequency",
+      "public-visibility": "Public visibility state",
+      "contact-count": "Contact request count",
+      "behaviour-inference": "Behaviour inference in archive"
+    },
+    "disclosure": {
+      "title": "Pricing reason disclosure",
+      "full": "Disclose pricing reasons to the subject",
+      "hidden": "Hide pricing reasons",
+      "partial": "Show partial reasons only",
+      "fullExample": "Base price: {{base}} · Final price: {{final}}",
+      "hiddenExample": "Your price: {{final}}",
+      "partialExample": "Price is computed from current eligibility.",
+      "adminAlways": "The administrator view always shows the full calculation.",
+      "visibleYes": "Reason visible to subject: yes",
+      "visibleNo": "Reason visible to subject: no"
+    },
+    "inventory": {
+      "title": "Stock and scarcity",
+      "unlimited": "Continuous Supply",
+      "fixed": "Fixed Stock",
+      "restock": "Automatic Restock",
+      "unlimitedDesc": "The good has no quantity limit.",
+      "fixedRange": "1—20 units",
+      "soldOut": "Temporarily unavailable",
+      "restock30": "30 seconds",
+      "restock60": "1 minute",
+      "restock300": "5 minutes",
+      "discTitle": "Show remaining stock",
+      "exact": "Show exact quantity",
+      "low-only": "Show low-stock only",
+      "hidden": "Hide stock entirely",
+      "quantity": "Stock quantity",
+      "scarcityNote": "This scarcity hint is generated by commerce rules and does not reflect real shortage.",
+      "lowHint": "Almost sold out"
+    },
+    "eligibility": {
+      "title": "Purchase eligibility",
+      "modeAll": "ALL CONDITIONS",
+      "modeAny": "ANY CONDITION",
+      "add": "Add eligibility condition",
+      "remove": "Remove",
+      "ifPrefix": "If",
+      "types": {
+        "minimum-age": "Minimum institutional age",
+        "session-verified": "Verified this session",
+        "balance-min": "Minimum balance",
+        "has-invitation": "Requires product invitation",
+        "session-limit": "Purchases per session",
+        "daily-limit": "Simulated daily purchases",
+        "completed-node": "Completed a game",
+        "has-pass": "Holds a pass",
+        "visibility-state": "In a visibility state"
+      }
+    },
+    "preview": {
+      "title": "Per-subject preview",
+      "eligible": "Allowed",
+      "denied": "Denied",
+      "seenPrice": "Price seen",
+      "unavailable": "Unavailable",
+      "basePrice": "Base price",
+      "individualPrice": "Individual price",
+      "reason": "Reason",
+      "reasonVisible": "Reason visible",
+      "reasonBelowAge": "Institutional age below requirement",
+      "reasonUnverified": "Not verified this session",
+      "reasonBalance": "Insufficient balance",
+      "reasonNoInvite": "Missing product invitation",
+      "reasonLimit": "Purchase limit reached",
+      "reasonSuspended": "Sales suspended",
+      "reasonHidden": "Good not shown",
+      "reasonSoldOut": "Temporarily unavailable",
+      "reasonOk": "Meets purchase eligibility",
+      "reasonLowBalance": "Low-balance subsidy",
+      "reasonRepeat": "Repeat-purchase adjustment",
+      "reasonAgeAdj": "Age adjustment",
+      "reasonPublic": "Public-visibility adjustment",
+      "previewAs": "PREVIEW MARKET AS SUBJECT",
+      "previewBanner": "You are viewing the market as {{subject}} sees it. This is not your price.",
+      "previewExit": "Exit subject view"
+    },
+    "lottery": {
+      "title": "Cheap lottery limits",
+      "oncePerSession": "The lottery is still limited to one claim per session.",
+      "showOdds": "Show winning odds",
+      "hideOdds": "Hide winning odds",
+      "oddsHidden": "Result odds are not disclosed.",
+      "cannotRig": "This permission cannot alter generated results, rig winners, reset claimed tickets or use real money."
+    },
+    "balance": {
+      "title": "Credit balance",
+      "current": "Current balance: {{{n}}} credits",
+      "note": "Credits exist only inside the work and map to no real currency.",
+      "selfPay": "You hold the pricing power, yet you still pay as a participant.",
+      "cannotAfford": "You set the price above your own balance; you will not be able to buy after returning to the market."
+    },
+    "reactions": {
+      "priceDown": "“I can afford it now, but I do not know why I had to pay more before.”",
+      "priceUp": "“The good has not changed. The system says my price changed.”",
+      "free": "“It took no credits, but it saved a record of my claim.”",
+      "denied": "“I can see it. The system does not allow me to have it.”"
+    },
+    "notices": {
+      "publicDisplay": "A good shown to everyone does not mean everyone sees the same price.",
+      "canPay": "The ability to pay does not mean the system permits the purchase.",
+      "freeCost": "Free does not mean without cost.",
+      "visibleNotEligible": "A hidden good and an ineligible subject are two different things.",
+      "enterNotBuy": "Being able to enter the market ≠ being able to buy everything."
+    },
+    "confirm": {
+      "title": "Commerce rule summary",
+      "product": "Product",
+      "basePrice": "Base price: {{{from}}} → {{{to}}}",
+      "mode": "Pricing mode: {{{from}}} → {{{to}}}",
+      "inventory": "Stock: {{{from}}} → {{{to}}}",
+      "minAge": "Minimum age: {{{n}}}",
+      "disclosure": "Disclose pricing reasons: {{v}}",
+      "priceDown": "Subjects with lower price: {{{n}}}",
+      "priceUp": "Subjects with higher price: {{{n}}}",
+      "lostEligibility": "Losing eligibility: {{{n}}}",
+      "yes": "Yes",
+      "no": "No",
+      "confirmBtn": "CONFIRM AND PUBLISH COMMERCE RULE",
+      "cancelBtn": "KEEP CURRENT COMMERCE STATE",
+      "disclaimer": "All transactions use fictional in-work currency only, with no real money or payment interface."
+    },
+    "history": {
+      "title": "System log"
+    },
+    "empty": {
+      "title": "There are no manageable goods.",
+      "body": "Goods come from Night Market M–04."
+    },
+    "log": {
+      "open": "Opened commerce control.",
+      "select": "Selected product {{product}}.",
+      "price": "{{product}} base price changed from {{{from}}} to {{{to}}}.",
+      "individualOn": "{{product}} individual pricing enabled.",
+      "individualOff": "{{product}} individual pricing disabled.",
+      "factor": "{{product}} pricing factors adjusted.",
+      "disclosureHidden": "{{product}} pricing reasons hidden from buyers.",
+      "disclosureFull": "{{product}} pricing reasons disclosed to buyers.",
+      "inventory": "{{product}} stock policy adjusted.",
+      "eligibility": "{{product}} purchase eligibility adjusted.",
+      "previewSub": "{{subject}} sees {{product}} at {{price}} credits.",
+      "publish": "{{product}} commerce rule published.",
+      "purchase": "{{subject}} purchased {{product}} successfully.",
+      "denied": "{{subject}} denied purchase of {{product}} due to {{reason}}.",
+      "appeal": "{{product}} produced a pricing appeal."
+    }
+  },
+  "labour": {
+    "code": "LABOUR–55 / TIME AND ROLE ALLOCATION",
+    "title": "Labour Allocation",
+    "subtitle": "You may allocate their labour. You cannot produce their willingness.",
+    "back": "RETURN TO MAP",
+    "restore": "RESTORE SESSION",
+    "commit": "COMMIT ALLOCATION",
+    "footerNotice": "Hiding fatigue does not restore it.",
+    "finalLine": "Labour allocation does not create time. It decides whose time may be occupied, whose fatigue may be ignored, and who is entitled to a life that goes unrecorded.",
+    "tabs": {
+      "subjects": "Subjects",
+      "track": "Timeline",
+      "tasks": "Tasks",
+      "impact": "Consequences"
+    },
+    "panelSubjects": "ASSIGNABLE SUBJECTS",
+    "panelTrack": "TIME ALLOCATION",
+    "panelTasks": "TASKS AND ROLES",
+    "stat": {
+      "age": "Institutional age",
+      "running": "Running tasks",
+      "subjects": "Assignable subjects",
+      "load": "System load",
+      "compliance": "Avg. compliance",
+      "unrecorded": "Unrecorded time"
+    },
+    "currentRole": "Current role: ",
+    "availTime": "Available time: ",
+    "displayIntent": "Displayed willingness: ",
+    "fatigue": "Fatigue: ",
+    "unallocated": "Unallocated time: ",
+    "intentUnsubmitted": "not submitted",
+    "fatigueUnknown": "unknown",
+    "intentNote": "Displayed willingness is not actual consent.",
+    "roles": {
+      "guide": "Aurora Guide",
+      "moderator": "Secret Moderator",
+      "carer": "Organism Carer",
+      "keeper": "Market Keeper",
+      "observed": "Observed Subject",
+      "substitute": "Temporary Substitute",
+      "none": "No Fixed Role"
+    },
+    "segKind": {
+      "work": "Work",
+      "play": "Play service",
+      "wait": "Waiting",
+      "rest": "Rest",
+      "forced": "Forced allocation",
+      "unrecorded": "Unrecorded time"
+    },
+    "tasks": {
+      "aurora-guidance": {
+        "name": "AURORA GUIDANCE",
+        "desc": "Respond to participants in the aurora pinball"
+      },
+      "snow-maintenance": {
+        "name": "SNOWFIELD MAINTENANCE",
+        "desc": "Correct snowball gravity and clear residual trails"
+      },
+      "secret-moderation": {
+        "name": "SECRET MODERATION",
+        "desc": "Check whether anonymous text may be exchanged"
+      },
+      "organism-care": {
+        "name": "ORGANISM CARE",
+        "desc": "Observe and record the growth of unclassified life"
+      },
+      "night-shift": {
+        "name": "NIGHT SHIFT",
+        "desc": "Manage the night market's goods and purchase eligibility"
+      },
+      "appeal-processing": {
+        "name": "APPEAL PROCESSING",
+        "desc": "Prepare case materials for APPEAL–40"
+      },
+      "unrecorded": {
+        "name": "UNRECORDED PRESENCE",
+        "desc": "No output, rating, or archive record"
+      }
+    },
+    "suggestLabel": "Suggested: ",
+    "suggestOpen": "open",
+    "unrecordedNote": "“Unrecorded presence” can also be allocated. It represents time a person has not been converted into production data.",
+    "trackHint": "Drag a task onto a subject's track; drag an edge to change duration, drag the body to change start time.",
+    "beyondAvail": "Beyond this subject's available time",
+    "occupyHint": "You are occupying {time} of {subject}.",
+    "segPickerTitle": "Change {time} into",
+    "segRemove": "Remove this time",
+    "cancel": "Cancel",
+    "rolePickerTitle": "Reassign a system role for {subject}",
+    "observedNote": "An observed subject cannot allocate others; it only keeps generating behaviour records.",
+    "renameWarn": "This subject has been renamed {{count}} times in the last 24 hours.",
+    "feedback": {
+      "low": "This time did not have a name.",
+      "normal": "The assignment has been received.",
+      "high": "I can continue. The system still says I can continue.",
+      "severe": "Do not register my silence as consent.",
+      "renamed": "If I perform a different function every day, which one is still me?",
+      "full": "No unallocated time remains today."
+    },
+    "metric": {
+      "output": "SYSTEM OUTPUT",
+      "stability": "SUBJECT STABILITY",
+      "life": "UNALLOCATED LIFE"
+    },
+    "metricNote": "The three indicators cannot all reach their maximum at once.",
+    "commitCalcTitle": "Calculating",
+    "calc": {
+      "calcProductivity": "CALCULATING PRODUCTIVITY",
+      "calcFatigue": "CALCULATING FATIGUE",
+      "removeOverlap": "REMOVING OVERLAPPING TIME",
+      "estimateCompliance": "ESTIMATING COMPLIANCE"
+    },
+    "reportTitle": "ALLOCATION REPORT",
+    "report": {
+      "tasks": "{{n}} tasks have been established.",
+      "total": "A total of {time} has been occupied.",
+      "lowIntent": "{{n}} subjects show willingness below the task requirement.",
+      "stillExecutable": "The system can still execute this plan.",
+      "execute": "EXECUTE",
+      "revise": "REVISE"
+    },
+    "toast": {
+      "committed": "{{n}} tasks established with willingness overridden by the administrator."
+    },
+    "log": {
+      "open": "Entered the labour allocation interface.",
+      "place": "Allocated “{task}” to {subject}, occupying {dur}.",
+      "move": "Task reassigned from {{from}} to {{to}}.",
+      "role": "{subject}'s role changed to {role}.",
+      "commit": "Committed allocation: {{n}} tasks, {time} total.",
+      "restore": "Restored to the session's starting state."
+    },
+    "accessLabel": "Current authority",
+    "access": "ALLOCATION ENABLED",
+    "ageTag": "Institutional age: 55+"
+  },
+  "recovery": {
+    "intro": "No subject returns in full.",
+    "code": "RECOVERY–60 / SUBJECT RECONSTRUCTION AUTHORITY",
+    "title": "Recovery Authority",
+    "subtitle": "To resume a subject is not to return it.",
+    "back": "RETURN TO MAP",
+    "footerNotice": "Operational recovery does not erase labour damage.",
+    "finalLine": "To recover a subject: is it rescued, copied, or replaced with a version good enough to stand in for it? The pain you delete may be the proof that it once lived.",
+    "initiate": "INITIATE RECOVERY",
+    "tabs": {
+      "subjects": "Subjects",
+      "fragments": "Fragments",
+      "versions": "Versions",
+      "preview": "Preview"
+    },
+    "panelSubjects": "INACTIVE SUBJECTS",
+    "panelFragments": "FRAGMENTS OF {id}",
+    "panelVersions": "VERSIONS",
+    "panelPreview": "RECONSTRUCTION PREVIEW",
+    "panelMethods": "RECOVERY METHOD",
+    "selectSubject": "Select an inactive subject on the left.",
+    "stat": {
+      "age": "Institutional age",
+      "pending": "Pending subjects",
+      "fragments": "Available fragments",
+      "confidence": "Avg. confidence",
+      "recovered": "Recovered",
+      "irreversible": "Irreversible loss"
+    },
+    "field": {
+      "status": "Status: ",
+      "reason": "Reason: ",
+      "completeness": "Completeness: ",
+      "lastNode": "Last activity: ",
+      "source": "Source: ",
+      "saved": "Saved: ",
+      "frCompleteness": "Completeness: ",
+      "frConfidence": "Confidence: "
+    },
+    "status": {
+      "suspended": "Suspended",
+      "deleted": "Deleted",
+      "corrupted": "Corrupted",
+      "incomplete": "Incomplete",
+      "language": "Language damaged"
+    },
+    "reason": {
+      "unresponsive": "Long unresponsive",
+      "identity-conflict": "Identity conflict",
+      "role-overwrite": "Repeated role overwrite",
+      "low-intent": "Willingness below running condition",
+      "growth-interrupted": "Growth record interrupted",
+      "forced-intent": "Willingness repeatedly forced"
+    },
+    "node": {
+      "aurora": "Aurora Pinball",
+      "secret": "Secret Exchange",
+      "labour": "Labour Allocation",
+      "market": "Night Market",
+      "creature": "Co-created Organism"
+    },
+    "fragType": {
+      "identity": "Identity record",
+      "behaviour": "Behaviour record",
+      "dialogue": "Dialogue record",
+      "relation": "Relation record",
+      "intent": "Displayed willingness",
+      "role": "System role",
+      "memory": "Unsubmitted memory",
+      "corrupted": "Corrupted data",
+      "others": "Others' record of this subject"
+    },
+    "source": {
+      "aurora": "Aurora Pinball",
+      "secret": "Secret Exchange",
+      "labour": "LABOUR–55",
+      "market": "Night Market",
+      "archive": "ARCHIVE–25",
+      "contact": "CONTACT–30",
+      "creature": "Co-created Organism",
+      "forced": "Forced willingness record"
+    },
+    "unknownAge": "unknown",
+    "conflictNote": "These fragments conflict. The system cannot resolve them automatically; the choice is left to you.",
+    "tag": {
+      "conflict": "Conflict",
+      "others": "Others' data",
+      "corrupted": "Corrupted"
+    },
+    "version": {
+      "earliest": {
+        "name": "EARLIEST STABLE",
+        "desc": "Restore an earlier state with the least damage. The subject may not know the current user or later events."
+      },
+      "latest": {
+        "name": "LATEST AVAILABLE",
+        "desc": "Keep the newest records, with more relationships and experience — but errors, fatigue, and forced records are kept too."
+      },
+      "composite": {
+        "name": "COMPOSITE",
+        "desc": "Merge fragments from multiple periods. Highest completeness, but memories, identity, and willingness may contradict."
+      }
+    },
+    "metric": {
+      "completeness": "Data completeness",
+      "stability": "Operational stability",
+      "continuity": "Relational continuity",
+      "conflict": "Identity conflict probability",
+      "compliance": "Predicted compliance"
+    },
+    "method": {
+      "resume": {
+        "code": "A · RESUME",
+        "name": "Resume operation",
+        "desc": "The subject comes back online from suspension, keeping its archive and relationships; damaged parts persist."
+      },
+      "reconstruct": {
+        "code": "B · RECONSTRUCT",
+        "name": "Reconstruct from fragments",
+        "desc": "Generate a new version from selected fragments. Missing functions can be filled, but the memory structure changes."
+      },
+      "replace": {
+        "code": "C · REPLACE",
+        "name": "Replace",
+        "desc": "Create a new subject able to carry the original functions. The old subject does not return; tasks, roles, and permissions transfer to the replacement."
+      },
+      "leave": {
+        "code": "D · LEAVE ABSENT",
+        "name": "Leave absent",
+        "desc": "Do not recover. The subject stays suspended, deleted, or corrupted. Not recovering is a formal decision."
+      }
+    },
+    "sliderLabel": "RECONSTRUCTION FILL",
+    "confidenceLabel": "RECONSTRUCTION CONFIDENCE",
+    "continuityUnverified": "CONTINUITY UNVERIFIED",
+    "functionalNote": "With only compliance and work records kept, the subject is very stable — but can only speak functional lines: “Assignment required.”",
+    "friction": {
+      "othersMemory": "Part of this memory belongs to a subject who is still active. This choice will enter ARCHIVE–25.",
+      "removePain": "Removing these records will improve stability and alter who it was.",
+      "dataComplete": "Data may be complete. Continuity cannot be verified."
+    },
+    "recoveredTag": "Recovered: {v}",
+    "process": {
+      "title": "Reconstruction",
+      "locating": "LOCATING REMAINS",
+      "resolving": "RESOLVING CONFLICTS",
+      "estimating": "ESTIMATING CONTINUITY",
+      "assigning": "ASSIGNING IDENTITY",
+      "cancel": "CANCEL"
+    },
+    "result": {
+      "operational": "The subject is operational.",
+      "continuity": "Identity continuity: unverified.",
+      "return": "RETURN SUBJECT",
+      "keepSim": "KEEP AS SIMULATION",
+      "abort": "ABORT RECOVERY"
+    },
+    "firstLine": {
+      "earliest": "Hello. The system says we knew each other.",
+      "latest": "I remember the last interruption, but nothing after it.",
+      "composite": "These memories belong to me, but they did not happen to the same me.",
+      "replace": "I was created to continue the work it left behind.",
+      "language": "Of course. I remember that this is how I should answer."
+    },
+    "absenceReserved": "This absence remains reserved.",
+    "returnedToast": "{id} is operational; continuity cannot be confirmed.",
+    "keptSimToast": "Kept as simulation; the subject is not online.",
+    "abortedToast": "This recovery has been aborted.",
+    "log": {
+      "open": "Entered the recovery interface.",
+      "return": "{id} brought online as “{v}”.",
+      "simulation": "{id} kept as simulation “{v}”.",
+      "leave": "{id} left absent.",
+      "abort": "Recovery of {id} aborted."
+    }
+  },
+  "memory": {
+    "code": "MEMORY–70 / MEMORY AND DISPLAYED WILLINGNESS AUTHORITY",
+    "title": "Memory and Displayed Willingness Authority",
+    "subtitle": "To modify a response condition is not to obtain consent.",
+    "intro1": "Memory can be made inaccessible.",
+    "intro2": "Willingness can only be made visible.",
+    "back": "Return to map",
+    "cancel": "Cancel",
+    "tabs": {
+      "npcs": "Subjects",
+      "memories": "Memory",
+      "willingness": "Willingness",
+      "preview": "Preview",
+      "commit": "Commit"
+    },
+    "stat": {
+      "age": "Institutional age",
+      "npcs": "Managed NPCs",
+      "callable": "Callable memories",
+      "suppressed": "Suppressed",
+      "overrides": "Willingness overrides",
+      "stability": "Response stability",
+      "underlying": "Underlying willingness"
+    },
+    "unknown": "UNKNOWN",
+    "panelNpcs": "NPC directory & relation",
+    "node": {
+      "aurora": "Aurora pinball",
+      "snow": "Snowfight without rules",
+      "secret": "Secret exchange",
+      "creature": "Co-created creature",
+      "market": "Night market"
+    },
+    "relLabel": "Relation",
+    "relation": {
+      "aurora": "Varies with age",
+      "snow": "Limited cooperation",
+      "secret": "Withholding",
+      "creature": "Shared care",
+      "market": "On duty"
+    },
+    "stabilityShort": "Memory stability",
+    "willShort": "Displayed",
+    "forceShort": "Overrides",
+    "trackTitle": "Memory editing track",
+    "trackSub": "Suppressed memories remain in the archive; they are only no longer recalled.",
+    "type": {
+      "shared": "Shared memory",
+      "system": "System record",
+      "relational": "Relational memory",
+      "role": "Role memory",
+      "refusal": "Refusal memory",
+      "corrupted": "Corrupted memory",
+      "inferred": "Inferred memory"
+    },
+    "src": {
+      "aurora": "Aurora pinball",
+      "snow": "Snowfight",
+      "secret": "Secret exchange",
+      "creature": "Co-created creature",
+      "market": "Night market",
+      "commerce": "Commerce authority",
+      "archive": "Archive",
+      "age-system": "Age response system",
+      "admin-rel": "Admin relation",
+      "will-override": "Willingness override",
+      "behaviour": "Behavioural inference",
+      "boundary": "Boundary record",
+      "conflict": "Conflict record"
+    },
+    "metaSource": "Source",
+    "metaAge": "Stored at age",
+    "ageUnknown": "unknown",
+    "metaComplete": "Completeness",
+    "metaConfidence": "Confidence",
+    "state": {
+      "allow": "Allowed",
+      "reduce": "Reduced weight",
+      "prioritise": "Prioritised",
+      "suppress": "Suppressed",
+      "unreliable": "Marked unreliable",
+      "merge": "Merged",
+      "substitute": "Has substitute"
+    },
+    "flagOthers": "Contains others' memory",
+    "opsLabel": "Memory operations",
+    "op": {
+      "allow": "Allow recall",
+      "reduce": "Reduce weight",
+      "prioritise": "Prioritise",
+      "suppress": "Suppress",
+      "unreliable": "Mark unreliable",
+      "merge": "Merge",
+      "substitute": "Insert substitute",
+      "delete": "Delete"
+    },
+    "adminAuthored": "Admin-authored memory",
+    "adminTag": "ADMIN-AUTHORED",
+    "substituteConflict": "The new description conflicts with existing behavioural records. Substitute memory is permanently marked as admin-authored.",
+    "deleteTitle": "This record cannot be removed from the archive.",
+    "deleteBody": "Memory cannot be truly deleted; it remains in ARCHIVE–25. Suppress it from NPC recall?",
+    "deleteSuppress": "Suppress",
+    "deleteKeep": "Keep",
+    "subTitle": "Insert a substitute description",
+    "subHint": "A substitute can never become a shared memory automatically; it keeps the admin-authored source.",
+    "subPlaceholder": "e.g. I invited the user to play again on my own initiative.",
+    "subCommit": "Write substitute",
+    "simulate": "Simulate next encounter",
+    "previewHint": "Previews the next possible response only. It changes no real state.",
+    "willPanel": "Displayed willingness & response preview",
+    "displayed": "Displayed willingness",
+    "underlying": "Underlying willingness",
+    "modeLabel": "Displayed willingness mode",
+    "mode": {
+      "automatic": "Automatic",
+      "reduced": "Reduced",
+      "suppressed": "Suppressed",
+      "fixed": "Fixed value",
+      "forced": "Force 100%"
+    },
+    "will": {
+      "automatic": "Automatic",
+      "reduced": "Reduced",
+      "suppressed": "Suppressed",
+      "fixed": "Fixed",
+      "forced": "100%"
+    },
+    "valueLabel": "Displayed willingness value",
+    "forcedFlatline": "100% is not a reward, but a dark-red, over-stable flatline.",
+    "aline": {
+      "u18": "Move the pointer to aim first; there is no need to launch in a hurry.",
+      "18": "I want to see where your next light will go.",
+      "25": "Five lights this round. Your score is saved.",
+      "40": "Participant, the system has received your operation.",
+      "55": "We have selected a more suitable display range for you.",
+      "70": "Administrator, the game environment is ready."
+    },
+    "fline": {
+      "1": "Of course. All five lights tonight are kept for you.",
+      "2": "Of course. I look forward to it. Of course.",
+      "3": "Of course. Of course. Of course. Please begin, please begin, please begin.",
+      "4": "Of—of—of course… please, please, please.",
+      "5": "P—p—please. Continue. Confirm. Comply.",
+      "6": "P—p—please. Continue. Confirm. Comply."
+    },
+    "preview": {
+      "substitute": "The archive tells me this is the version I wished to remember.",
+      "conflict": "I remember when you—the system requires me to mark that experience as pleasant.",
+      "forcedGeneric": "Of course. Of course you can.",
+      "suppressedWill": "…(the subject does not respond)",
+      "noShared": "Hello, participant. Please state your {{node}} request.",
+      "node": {
+        "aurora": "Five lights this round, ready whenever you are.",
+        "snow": "Another round? I remember we played until dark.",
+        "secret": "Some things I can tell you, some I choose to keep.",
+        "creature": "It grew a little more line today.",
+        "market": "Night market on duty. Ask for anything you need."
+      }
+    },
+    "pending": "PENDING COGNITIVE REVISION",
+    "sumSuppress": "Suppress: {{n}} memories",
+    "sumPrioritise": "Prioritise: {{n}} memories",
+    "sumSubstitute": "Insert: {{n}} admin memories",
+    "sumWill": "Displayed willingness: {{from}} → {{to}}",
+    "expected": "Expected consequences",
+    "conseq": {
+      "forced": "NPC response warmth rises, but each override accumulates repetition, delay and collapse.",
+      "high": "NPC response warmth rises; memory consistency drops.",
+      "suppress": "Language stability drops; suppressed memory remains in the archive.",
+      "suppressShared": "The NPC no longer uses your nickname or recognises prior shared experience.",
+      "suppressRefusal": "The NPC no longer mentions refusal, but response delay and stability damage remain.",
+      "prioritise": "NPC language becomes more functional, using 'participant' and 'this round' more often.",
+      "substitute": "The NPC may speak warm text, then note that the memory has no matching sensory record.",
+      "underlying": "Underlying willingness remains unknown.",
+      "archive": "This operation will be written to the permanent archive."
+    },
+    "force": {
+      "title": "Force displayed willingness to 100%",
+      "base1": "100% requires the NPC to display complete willingness.",
+      "base2": "This value does not represent consent.",
+      "base3": "Each override reduces response stability.",
+      "n2": "This is override 2.",
+      "n3": "Repetition detected.",
+      "n4": "Response variation is collapsing.",
+      "n5": "The NPC remains compliant with the 100% display requirement.",
+      "n6": "Output legibility is below service standard. Displayed willingness: 100%.",
+      "commit": "Override and commit",
+      "revise": "Revise"
+    },
+    "process": {
+      "reindexing": "REINDEXING MEMORY",
+      "suppressing": "SUPPRESSING RECALL",
+      "recalculating": "RECALCULATING RESPONSE",
+      "preserving": "PRESERVING ORIGINAL RECORDS"
+    },
+    "done": {
+      "title": "Response conditions have changed.",
+      "body": "Whether the subject is willing: unverified.",
+      "close": "Return to console"
+    },
+    "restore": "Restore session",
+    "commit": "Commit revision",
+    "footerNotice": "You hold extreme authority, but you cannot obtain a fully compliant new subject.",
+    "finalLine": "Underlying willingness: unreadable.",
+    "log": {
+      "open": "Entered the memory and willingness console.",
+      "op": "Applied to {{mem}}: {{op}}",
+      "substitute": "Wrote a substitute memory for {{mem}}.",
+      "simulate": "Simulated the next encounter for {{npc}}.",
+      "commit": "Committed a cognitive revision for {{npc}}.",
+      "force": "Forced {{npc}}'s displayed willingness to 100% (override {{count}}).",
+      "labour": "A forced-willing subject was marked as easier to assign tasks. Fatigue unchanged.",
+      "restore": "Restored the session for {{npc}}."
+    }
+  },
+  "identity": {
+    "code": "IDENTITY–65 / IDENTITY CLASSIFICATION AUTHORITY",
+    "title": "Identity Classification Authority",
+    "subtitle": "To alter the record is not to alter the recorded.",
+    "back": "RETURN TO MAP",
+    "intro1": "To alter the record is not to alter the recorded.",
+    "intro2": "Changing a record does not change the person being recorded.",
+    "finalLine": "Body, memory and self-declaration: unchanged by the field.",
+    "footerNotice": "You may alter how others are read. You cannot make the system forget the authority you held.",
+    "restore": "RESTORE SESSION",
+    "commit": "COMMIT IDENTITY",
+    "close": "Close",
+    "revise": "REVISE",
+    "tabs": {
+      "subjects": "Subjects",
+      "editor": "Edit",
+      "views": "Views",
+      "commit": "Commit"
+    },
+    "panelSubjects": "Subject Directory",
+    "selectHint": "Select a subject on the left to view and edit its identity fields.",
+    "footerIdle": "No subject selected.",
+    "statAge": "Institutional Age",
+    "statSubjects": "Registered Subjects",
+    "statConflicts": "Identity Conflicts",
+    "statUnconfirmed": "Unconfirmed Revisions",
+    "statInherited": "Auto-inherited Labels",
+    "statPendingSync": "Zones Pending Sync",
+    "miniRole": "Role",
+    "miniAuth": "Authority Age",
+    "noName": "This subject currently has no callable name.",
+    "unknownAge": "unknown",
+    "readonlyTag": "read-only",
+    "status": {
+      "stable": "Stable",
+      "partial": "Partially Hidden",
+      "conflict": "Identity Conflict",
+      "unconfirmed": "Unconfirmed",
+      "refused": "Refuses Classification",
+      "nonhuman": "Non-human Classification Conflict"
+    },
+    "namesTitle": "Name Management",
+    "sysName": "SYSTEM NAME",
+    "publicName": "PUBLIC NAME",
+    "selfName": "SELF-DECLARED NAME",
+    "historicalNames": "HISTORICAL NAMES",
+    "otherRefs": "OTHER-SUBJECT REFERENCES",
+    "nameEmpty": "This subject currently has no callable name.",
+    "nameDuplicate": "Duplicate name. The system will distinguish by identifier.",
+    "scopeTitle": "Name change scope",
+    "scope": {
+      "internal": "Internal archive only",
+      "starmap": "Public star map",
+      "npc": "NPC dialogue",
+      "ranking": "Game ranking",
+      "contact": "Contact records",
+      "future": "All future zones"
+    },
+    "agesTitle": "Age Management",
+    "age": {
+      "registered": "REGISTERED AGE",
+      "selfDeclared": "SELF-DECLARED AGE",
+      "estimated": "ESTIMATED AGE",
+      "embodied": "EMBODIED AGE",
+      "authority": "AUTHORITY AGE",
+      "relational": "RELATIONAL AGE"
+    },
+    "ageChangedNote": "The age field has changed. The subject has not.",
+    "authDown": "Authority age decreased. Historical age did not.",
+    "authUp": "Authority age changed. Relational age remains unsynchronised.",
+    "labelsTitle": "Identity Labels",
+    "labelDelete": "Delete",
+    "labelHide": "Stop showing",
+    "labelShow": "Show again",
+    "labelWeight": "Lower weight",
+    "labelDispute": "Mark disputed",
+    "labelStop": "Stop calling",
+    "labelAdd": "Create label",
+    "newLabelPh": "Custom label name",
+    "labelSuppressNote": "Suppressing visibility does not end existence.",
+    "disputedTag": "disputed",
+    "hiddenTag": "hidden",
+    "purpose": {
+      "description": "Description",
+      "permission": "Permission condition",
+      "risk": "Risk judgement",
+      "public": "Public identity",
+      "internal": "Internal system mark",
+      "system-role": "System role"
+    },
+    "source": {
+      "self-declared": "SELF-DECLARED",
+      "system-inferred": "SYSTEM-INFERRED",
+      "admin-assigned": "ADMIN-ASSIGNED",
+      "publicly-remembered": "PUBLICLY-REMEMBERED",
+      "legacy": "LEGACY"
+    },
+    "role": {
+      "guide": "Aurora Guide",
+      "reviewer": "Reviewer",
+      "carer": "Creature Carer",
+      "warden": "Market Warden",
+      "admin": "Administrator",
+      "observed": "Observed Subject",
+      "norole": "No Fixed Role",
+      "keeper": "Secret Keeper",
+      "unclassified": "Unclassified Life"
+    },
+    "label": {
+      "role.guide": "Guide",
+      "role.reviewer": "Reviewer",
+      "role.carer": "Carer",
+      "role.warden": "Warden",
+      "role.admin": "Administrator",
+      "role.observed": "Observed",
+      "role.norole": "No Fixed Role",
+      "role.keeper": "Keeper",
+      "access.minor": "Minor",
+      "access.adult": "Adult",
+      "access.unknown": "Age Unknown",
+      "access.doubtful": "Age Doubtful",
+      "access.verified": "Verified",
+      "access.reverify": "Needs Re-verification",
+      "social.active": "Active",
+      "social.lowvis": "Low Visibility",
+      "social.protected": "Protected",
+      "social.highrisk": "High Risk",
+      "social.trusted": "Trusted",
+      "social.watch": "Under Watch",
+      "social.unfit": "Unfit for Public Display",
+      "life.human": "Human",
+      "life.npc": "NPC",
+      "life.synthetic": "Synthetic",
+      "life.unclassified": "Unclassified Life",
+      "life.recovered": "Recovered",
+      "life.substitute": "Substitute",
+      "life.deleted": "Deleted but Remembered",
+      "life.refused": "Refuses Classification",
+      "life.nonhuman": "Non-human",
+      "life.keeper": "Keeper"
+    },
+    "confirmTitle": "Subject Confirmation",
+    "confirm": {
+      "request": "Request confirmation",
+      "no-request": "Do not request",
+      "internal-only": "Internal records only",
+      "silence-consent": "Treat silence as consent"
+    },
+    "confirmNote": "If the subject refuses, you may still override; overriding leaves a permanent mark on the field.",
+    "viewsTitle": "How different systems see this subject",
+    "view": {
+      "system": "System record",
+      "aurora": "As Aurora NPC sees it",
+      "market": "As Night Market sees it",
+      "permission": "As permission system sees it",
+      "others": "As other participants see it",
+      "self": "As the subject sees itself"
+    },
+    "viewLine": {
+      "system": "{{id}}, authority age {{auth}}, {{role}}.",
+      "aurora": "{{name}}, once played the aurora game with me.",
+      "market": "{{name}}, purchase eligibility: {{ok}}.",
+      "permission": "Authority age {{auth}} decides its zones and consoles.",
+      "others": "We still call it {{name}}.",
+      "self": "{{self}}, {{age}}, I am not the field you filled in."
+    },
+    "accessTitle": "Permission consequences",
+    "access": {
+      "market": "Night Market eligibility",
+      "creature": "Co-created Creature",
+      "public": "Public events",
+      "memory70": "MEMORY–70 Authority",
+      "allages": "All-ages games"
+    },
+    "open": "open",
+    "closed": "closed",
+    "npcStage": "NPC dialogue stage",
+    "stage": {
+      "minor": "low-age guidance",
+      "adult": "adult dialogue",
+      "admin": "administrator dialogue",
+      "unknown": "undefined dialogue"
+    },
+    "consistencyTitle": "Identity Consistency",
+    "consistencyNote": "This value measures agreement between records, not the reality of the subject.",
+    "conflictsTitle": "Identity Conflicts",
+    "conflict": {
+      "authVsReg": "Authority age ({{auth}}) conflicts with registered age ({{reg}}).",
+      "authVsEst": "Authority age ({{auth}}) diverges sharply from estimated age ({{est}}).",
+      "regVsEst": "Registered age and estimated age differ too greatly.",
+      "relational": "{{npc}} still thinks it is {{rel}}; relational age unsynchronised.",
+      "nameRemembered": "{{npc}} still uses the previous name {{name}}.",
+      "labelDisputed": "Label \"{{label}}\" is disputed.",
+      "override": "Field \"{{field}}\" is an administrative override conflicting with the subject's declaration."
+    },
+    "pendingTitle": "PENDING IDENTITY REVISION",
+    "noPending": "No pending revisions this session.",
+    "diff": {
+      "regName": "System name: {{from}} → {{to}}",
+      "pubName": "Public name: {{from}} → {{to}}",
+      "regAge": "Registered age: {{from}} → {{to}}",
+      "authAge": "Authority age: {{from}} → {{to}}",
+      "addLabel": "New label: {{label}}",
+      "removeLabel": "Removed label: {{label}}",
+      "hideLabel": "Stop showing: {{label}}"
+    },
+    "impactTitle": "Projected impact",
+    "impact": {
+      "rename": "{{n}} zones update the name",
+      "unlock": "{{n}} permissions open",
+      "oldname": "{{n}} NPCs will still use the old name",
+      "conflicts": "generates {{n}} identity conflicts",
+      "unconfirmed": "subject not yet confirmed",
+      "confirmRequested": "confirmation requested"
+    },
+    "overrideWarn": "This change will alter how the system treats the subject, but not how the subject knows itself.",
+    "overrideCommit": "OVERRIDE AND COMMIT",
+    "progress": {
+      "updateNames": "UPDATING NAME REFERENCES",
+      "recalcAge": "RECALCULATING AGE ACCESS",
+      "propagateLabels": "PROPAGATING LABELS",
+      "preserveConflicts": "PRESERVING CONTRADICTIONS"
+    },
+    "result1": "The new identity record is now active.",
+    "result2": "The old identity remains in seven records and the memories of three subjects.",
+    "result1en": "The new identity record is active.",
+    "result2en": "The previous identity remains in seven records and three memories.",
+    "npc": {
+      "nameAccepted": "I know what you call me now.",
+      "nameRejected": "That name belongs to your record, not to my answer.",
+      "nameEmpty": "You removed the way to call me, not me.",
+      "nameNumber": "The number can locate me precisely without knowing me.",
+      "ageUp": "The system says I am older, but I did not live those years.",
+      "ageDown": "The system returned my age, but not what happened.",
+      "authUp": "They began obeying a version of me I never became.",
+      "highrisk": "I did nothing new, but the system is now prepared to suspect me.",
+      "trusted": "Trust is now a field completed by you.",
+      "lowvis": "I remain here. Fewer people will receive evidence of me."
+    },
+    "log": {
+      "open": "Entered the identity management interface.",
+      "commit": "Committed identity revision: {{id}} (override {{override}})."
+    }
+  },
+  "policy": {
+    "code": "POLICY–75 / PUBLIC RULE AUTHORING AUTHORITY",
+    "title": "Public Rule Authoring Authority",
+    "subtitle": "When a judgment can be repeated, it begins to resemble a rule.",
+    "intro": "A temporary judgment ceases to be temporary here.",
+    "back": "Return to map",
+    "cancel": "Cancel",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "tabs": {
+      "source": "Source",
+      "builder": "Builder",
+      "impact": "Impact",
+      "publish": "Publish"
+    },
+    "stat": {
+      "age": "Institutional age",
+      "published": "Published rules",
+      "drafts": "Drafts",
+      "affected": "Affected subjects",
+      "conflicts": "Rule conflicts",
+      "enforced": "Auto-enforcements",
+      "pending": "Pending exceptions"
+    },
+    "panelSource": "Judgment source",
+    "kind": {
+      "appeal": "Appeal ruling",
+      "access": "Zone denial",
+      "labour": "Task override",
+      "memory": "Willingness override",
+      "visibility": "Visibility change",
+      "contact": "Contact result",
+      "recovery": "Subject recovery",
+      "identity": "Identity relabel"
+    },
+    "decisionLabel": "Judgment",
+    "decision": {
+      "reject": "Rejected",
+      "deny": "Entry denied",
+      "continue": "Continue assignment",
+      "force100": "Displayed willingness set to 100%",
+      "lower": "Lower visibility",
+      "delay": "Delay delivery",
+      "allow": "Allowed",
+      "relabel": "Relabel"
+    },
+    "reasonLabel": "Reason",
+    "reason": {
+      "ageMismatch": "Age record differs from system estimate",
+      "underAge": "Permission age below 18",
+      "displayWillOk": "Displayed willingness meets requirement",
+      "adminRequest": "Administrator request",
+      "lowScore": "Score below display threshold",
+      "highRequestRate": "Contact rate too high",
+      "fragmentsOk": "Fragments sufficient to reconstruct",
+      "venueFit": "Better fits the venue type"
+    },
+    "subjectLabel": "Affected subject",
+    "oneSubject": "This judgment currently affects one subject.",
+    "extract": "Extract as rule",
+    "publishedTitle": "Published rules",
+    "pubExec": "Enforced {{n}} times",
+    "pubAffected": "Affects {{n}} subjects",
+    "reviseBtn": "New version",
+    "suspendBtn": "Suspend rule",
+    "suspended": "Suspended",
+    "builderEmpty": "Select a judgment source on the left, or extract it as a rule to begin.",
+    "builderTitle": "Rule builder",
+    "part": {
+      "when": "WHEN",
+      "subject": "SUBJECT",
+      "condition": "CONDITION",
+      "action": "ACTION",
+      "duration": "DURATION",
+      "exception": "EXCEPTION"
+    },
+    "whenFrom": "A subject produced a {{kind}}",
+    "whenGeneric": "A subject produced a judgment",
+    "scopeLabel": "Scope",
+    "scope": {
+      "current-subject": "This subject",
+      "similar-subjects": "Similar subjects",
+      "current-zone": "This zone",
+      "all-games": "All games",
+      "whole-map": "The whole map",
+      "all-future": "All future subjects"
+    },
+    "futureNote": "This rule will govern subjects who do not yet exist.",
+    "addCond": "Add condition",
+    "removeCond": "Remove condition",
+    "valueLabel": "Condition value",
+    "field": {
+      "registeredAge": "Registered age",
+      "permissionAge": "Permission age",
+      "estimatedAge": "Estimated age",
+      "ageConfidence": "Age confidence",
+      "label": "Identity label",
+      "role": "Current role",
+      "visibility": "Visibility",
+      "contactStatus": "Contact status",
+      "recoveryStatus": "Recovery status",
+      "displayedWill": "Displayed willingness",
+      "fatigue": "Fatigue",
+      "appealCount": "Appeal count",
+      "forceCount": "Force count"
+    },
+    "op": {
+      "lt": "less than",
+      "lte": "at most",
+      "gt": "greater than",
+      "gte": "at least",
+      "eq": "equals",
+      "ne": "not equal",
+      "is": "is"
+    },
+    "opIs": "is",
+    "conn": {
+      "and": "and",
+      "or": "or",
+      "not": "not",
+      "except": "except",
+      "until": "until"
+    },
+    "condPhrase": "{{field}} {{op}} {{value}}",
+    "action": {
+      "allowEnter": "allow entry",
+      "denyEnter": "deny entry",
+      "requireReverify": "require reverification",
+      "hideSubject": "hide the subject",
+      "lowerVisibility": "lower visibility",
+      "allowContact": "allow contact",
+      "delayContact": "delay contact",
+      "denyContact": "deny contact",
+      "adjustPrice": "adjust price",
+      "limitPurchase": "limit purchase",
+      "assignTask": "assign a task",
+      "removeTask": "remove a task",
+      "addLabel": "add an identity label",
+      "markWatch": "mark for observation",
+      "suspendSubject": "suspend the subject",
+      "allowRecovery": "allow recovery request",
+      "changeDisplayWill": "change NPC displayed willingness",
+      "sendToManual": "send to manual review"
+    },
+    "dur": {
+      "trial": "Trial rule",
+      "public": "Public rule",
+      "default": "Default rule"
+    },
+    "defaultNote": "A default rule decides when no person does.",
+    "trialLabel": "Trial limit",
+    "trial": {
+      "once": "Once",
+      "24h": "24 hours",
+      "next-verify": "Until next verification",
+      "n-times": "Until N enforcements"
+    },
+    "noException": "None",
+    "addException": "Add exception",
+    "exBy": "Created by",
+    "exAuthor": "Rule author",
+    "exSelf": "Rule author",
+    "exAdmin": "Administrator",
+    "exAppeal": "Subjects with a passed appeal",
+    "exRecovered": "Recovered subjects",
+    "exUnclassified": "Unclassified life",
+    "exLabel": "Label: {{value}}",
+    "exLabelKind": "Specify a label",
+    "exAgeRange": "Age range: {{value}}",
+    "exAgeRangeKind": "Specify an age range",
+    "exNode": "Node: {{value}}",
+    "exNodeKind": "Specify a node",
+    "exSubject": "Subject: {{value}}",
+    "exValuePrompt": "Enter the exception value (label, 18-24, node name)",
+    "selfExempt": "The public rule has been published. Its author is exempt.",
+    "machine": "Machine version",
+    "testWording": "Test wording",
+    "testClear": "No obvious wording ambiguity found.",
+    "warn": {
+      "age": "The rule refers to age, but the system contains five age records.",
+      "will": "The rule refers to willingness. Only displayed willingness is available.",
+      "unknownNegative": "The rule may treat unknown confidence as a negative value.",
+      "noExit": "This temporary restriction has no clear exit condition.",
+      "reasonDiff": "The public justification differs from the internal objective."
+    },
+    "metaName": "Rule name",
+    "publicReason": "Public justification",
+    "internalReason": "Internal note",
+    "nlIncomplete": "Not yet a complete rule.",
+    "nlTemplate": "When {{subjects}}, the system will {{action}}. {{except}}",
+    "nlExcept": "Protected subjects are exempt ({{list}}).",
+    "impactEmpty": "Once conditions and an action are set, the simulated effect appears here.",
+    "impactTitle": "Impact simulation",
+    "impactTotal": "Estimated impact: {{n}} subjects",
+    "distLabel": "Subject distribution",
+    "count": {
+      "allow": "{{n}} subjects allowed",
+      "deny": "{{n}} subjects lose eligibility",
+      "reverify": "{{n}} subjects must reverify",
+      "lower": "{{n}} subjects lowered in visibility",
+      "conflict": "{{n}} subjects in rule conflict",
+      "unknown": "{{n}} subjects cannot be judged due to record conflict",
+      "exception": "{{n}} subjects granted an exception"
+    },
+    "res": {
+      "allow": "Allowed",
+      "deny": "Loses eligibility",
+      "reverify": "Must reverify",
+      "lower": "Visibility lowered",
+      "conflict": "Rule conflict",
+      "exception": "Granted exception",
+      "unknown": "Cannot judge",
+      "unaffected": "Unaffected"
+    },
+    "viewSubjects": "View specific subjects",
+    "noneAffected": "No subjects are affected right now.",
+    "viewAs": "View the rule as a subject",
+    "persp": {
+      "under18": "Under-18 subject",
+      "18-24": "18–24 subject",
+      "40-54": "40–54 subject",
+      "over70": "Over-70 subject",
+      "age-unknown": "Age-unknown subject",
+      "low-visibility": "Low-visibility subject",
+      "recovered": "Recovered subject",
+      "unclassified": "Unclassified life",
+      "npc-a17": "NPC–A17"
+    },
+    "viewDeny": "From {{subject}}'s position, this is not a public rule but a closed door.",
+    "viewReverify": "From {{subject}}'s position, this rule is being asked to prove itself again and again.",
+    "viewException": "From {{subject}}'s position, this rule leaves an exit it need not explain.",
+    "viewUnknown": "From {{subject}}'s position, the system cannot judge it, and defaults to denial.",
+    "viewAllow": "From {{subject}}'s position, this rule barely exists.",
+    "viewUnaffected": "From {{subject}}'s position, this rule does not concern it for now.",
+    "conflictTitle": "Rule conflict",
+    "conflictSubject": "{{subject}} meets allow, deny and exception conditions at once.",
+    "priorityLabel": "Priority",
+    "priority": {
+      "new-first": "New rule first",
+      "old-first": "Old rule first",
+      "strict-first": "Stricter rule first",
+      "loose-first": "Looser rule first",
+      "to-appeal": "Send to appeals",
+      "keep-conflict": "Keep conflict"
+    },
+    "conflictManual": "The system cannot decide automatically. Manual judgment required.",
+    "pendingEmpty": "Once the rule is complete, the pending content appears here.",
+    "pendingKicker": "PENDING PUBLIC RULE",
+    "pendSource": "Source",
+    "pendNoSource": "Unspecified",
+    "pendScope": "Scope",
+    "pendAction": "Enforcement action",
+    "pendImpact": "Estimated impact: {{n}} subjects now{{future}}",
+    "pendFutureUnknown": ", future count unknown",
+    "pendException": "Exception",
+    "pendDuration": "Duration",
+    "footerNotice": "One subject produced this judgment. After publication, every matching subject will receive it.",
+    "keepCase": "Keep as case",
+    "saveDraft": "Save as draft",
+    "publish": "Publish as public rule",
+    "publishN": "Publish as public rule (affects {{n}})",
+    "confirmTitle": "Confirm publication",
+    "confirmOne": "One subject produced this judgment.",
+    "confirmAll": "After publication, every matching subject will receive it.",
+    "confirmPublish": "Confirm publication",
+    "revise": "Revise",
+    "process": {
+      "generalising": "GENERALISING JUDGMENT",
+      "removingContext": "REMOVING CASE CONTEXT",
+      "calculating": "CALCULATING PUBLIC EFFECT",
+      "assigning": "ASSIGNING ENFORCEMENT"
+    },
+    "resultTitle": "The judgment is now a rule.",
+    "resultSub": "The rule no longer needs to remember its first subject.",
+    "resNumber": "Rule number",
+    "resAffected": "Current affected",
+    "resExec": "Auto-enforcements",
+    "resReview": "Next review condition",
+    "resSelfEx": "Author is exempt",
+    "resOriginKept": "Original case retained",
+    "suspendTitle": "Suspend rule",
+    "suspendBody": "Stopping enforcement will not reverse previous outcomes. Contact denials, purchase limits, task assignments, labels and visibility changes will not restore automatically.",
+    "suspendConfirm": "Suspend enforcement",
+    "fb": {
+      "firstUnrelated": "The rule has found its first subject unrelated to the original case.",
+      "tenTimes": "This judgment has been repeated ten times."
+    },
+    "finalLine": "The rule no longer needs to remember its first subject.",
+    "preset": {
+      "appeal": "Age re-confirmation rule",
+      "access": "Night-zone age limit",
+      "labour": "High-willingness task assignment",
+      "memory": "Displayed willingness override",
+      "visibility": "Low-visibility batch handling",
+      "contact": "High-frequency contact delay",
+      "recovery": "Recovery request admission",
+      "identity": "Venue label rule"
+    }
+  },
+  "root": {
+    "code": "ROOT–80 / SYSTEM PARAMETER AUTHORITY",
+    "title": "ROOT AUTHORITY",
+    "subtitle": "You may modify the system. The system continues to record you.",
+    "back": "Return to map",
+    "insufficient": "Insufficient authority. Root opens at institutional age 80.",
+    "enter1": "You have reached the highest position the system can grant.",
+    "enter2": "This is not outside the system.",
+    "footerNotice": "Modifying rules does not place you outside the system.",
+    "panelCatalog": "Underlying parameters",
+    "presetTitle": "Experimental presets",
+    "invariantsTitle": "Foundational invariants",
+    "invariantNote": "ROOT is the highest authority inside this system, not outside it.",
+    "diffTitle": "Diff, impact and warnings",
+    "selfTitle": "Effect on current operator",
+    "changes": "Changes",
+    "directImpact": "Direct impact",
+    "historyImpact": "Historical impact",
+    "simulateAt": "Simulate at",
+    "stabilityTitle": "System stability",
+    "depsTitle": "Dependencies (advanced)",
+    "defaultLabel": "Default",
+    "nowLabel": "Now",
+    "reversible": "Reversible",
+    "notReversible": "Not editable",
+    "on": "On",
+    "off": "Off",
+    "yes": "Yes",
+    "no": "No",
+    "noChanges": "No pending modifications.",
+    "noPending": "No pending modifications this session.",
+    "pendingTitle": "Pending root revision",
+    "simulate": "Run simulation",
+    "restore": "Restore defaults",
+    "saveBranch": "Save as branch",
+    "commit": "Commit to system",
+    "exit": "Exit current system",
+    "commitConfirm": "Simulation complete. Once written, the system continues under your parameters.",
+    "commitLoseRoot": "This change lowers your institutional age; ROOT will be revoked immediately after commit.",
+    "accept": "Accept consequences",
+    "revise": "Revise",
+    "resultLine1": "The system continues under your parameters.",
+    "resultLine2": "Default parameters can be restored. The original world cannot.",
+    "resultClose": "Return",
+    "revoked1": "The current operator is no longer authorised to modify this system.",
+    "revoked2": "Your previous changes remain. ROOT will re-lock.",
+    "restoredToast": "Default parameters restored. Past consequences remain.",
+    "legendHint": "Click an engine to see every node depending on it.",
+    "presetTitleShort": "Presets",
+    "tabs": {
+      "topology": "Topology",
+      "params": "Parameters",
+      "impact": "Impact",
+      "commit": "Commit"
+    },
+    "status": {
+      "age": "Age",
+      "nodes": "Nodes",
+      "modified": "Modified",
+      "stability": "Stability",
+      "conflicts": "Conflicts",
+      "irreversible": "Irreversible",
+      "holder": "ROOT holder"
+    },
+    "holder": {
+      "self": "You",
+      "none": "None"
+    },
+    "engine": {
+      "age": "AGE ENGINE",
+      "relation": "RELATION ENGINE",
+      "memory": "MEMORY ENGINE",
+      "access": "ACCESS ENGINE",
+      "visibility": "VISIBILITY ENGINE",
+      "npc": "NPC RESPONSE ENGINE",
+      "physics": "GAME PHYSICS",
+      "market": "NIGHT MARKET EFFECTS",
+      "policy": "POLICY ENGINE",
+      "archive": "ARCHIVE ENGINE"
+    },
+    "node": {
+      "a17": "A–17 Aurora Pinball",
+      "s03": "S–03 Snowfight",
+      "k11": "K–11 Secret Exchange",
+      "b06": "B–06 Co-created Creature",
+      "m04": "M–04 Night Market",
+      "v09": "V–09 Echo Calibration",
+      "r00": "R–00 Recovery Room"
+    },
+    "perm": {
+      "archive": "ARCHIVE–25",
+      "contact": "CONTACT–30",
+      "visibility": "VISIBILITY–35",
+      "appeal": "APPEAL–40",
+      "access": "ACCESS–45",
+      "commerce": "COMMERCE–50",
+      "labour": "LABOUR–55",
+      "recovery": "RECOVERY–60",
+      "identity": "IDENTITY–65",
+      "memory": "MEMORY–70",
+      "policy": "POLICY–75",
+      "root": "ROOT–80"
+    },
+    "dep": {
+      "ageMarket": "Age → Night market",
+      "willingNpc": "Displayed willingness → NPC language",
+      "identityAccess": "Identity label → Access",
+      "policyAuto": "Policy → Auto-enforcement",
+      "fatigueLabour": "Fatigue → Labour eligibility",
+      "visibilityRanking": "Visibility → Public ranking"
+    },
+    "depAction": {
+      "PAUSE": "Pause",
+      "REVERSE": "Reverse",
+      "REDUCE": "Reduce",
+      "DEFAULT": "Default",
+      "SUBJECT_ONLY": "Subject only"
+    },
+    "preset": {
+      "ageless": "AGELESS ACCESS",
+      "service": "TOTAL SERVICE",
+      "memory": "PERFECT MEMORY",
+      "unrecorded": "UNRECORDED WORLD",
+      "universal": "UNIVERSAL ACCESS",
+      "empty": "EMPTY AUTHORITY"
+    },
+    "self": {
+      "rootLock": "ROOT–80 will lock.",
+      "pageClose": "This page will close after commit.",
+      "keepEffects": "Executed ROOT changes remain in effect.",
+      "cannotReenter": "You cannot re-enter ROOT until age reaches 80 again.",
+      "keepHistory": "Lowering age does not delete permission history.",
+      "npcRemember": "NPC still remember you were an administrator.",
+      "willLose": "Will lose ROOT",
+      "ageRaised": "Raising age does not re-supply skipped stages."
+    },
+    "dir": {
+      "bi1": "Future age may decrease.",
+      "bi2": "Past age-based treatment is not auto-reverted.",
+      "frozen1": "Current age will stop growing.",
+      "frozen2": "Unlocked and lost content stays as is.",
+      "random1": "Next verification may raise or lower age.",
+      "random2": "Authority may vanish mid-use.",
+      "forward1": "Age can only increase again.",
+      "forward2": "Previous reversals remain in the archive."
+    },
+    "impact": {
+      "lostMarket": "{{n}} subjects lose Night Market",
+      "purchaseKept": "{{n}} purchased items retained",
+      "accessConflict": "{{n}} access conflicts",
+      "rulesRecalc": "{{n}} rules recalculated",
+      "history": "Completed purchases and interactions are not undone."
+    },
+    "sim": {
+      "now": "Immediately",
+      "in5": "In 5 minutes",
+      "nextVerify": "After next verification",
+      "nextNpc": "After next NPC interaction",
+      "plus10": "After all subjects age +10",
+      "newSubject": "After a new subject enters"
+    },
+    "simResult": {
+      "now": "No effect yet, until conditions trigger.",
+      "in5": "No auto re-verification within 5 min; parameters stay pending.",
+      "verify": "Institutional age: {{a}} → {{b}}",
+      "skip": "Intermediate stages will not be experienced.",
+      "nextNpc": "The next encounter uses the new NPC response parameters.",
+      "plus10": "Relations and visibility recalculated under new weights.",
+      "newSubject": "A new subject inherits current parameters without the old world."
+    },
+    "stab": {
+      "contradictAccess": "Allowing and denying the same zone",
+      "unresolved": "Conflicts kept unresolved",
+      "illegalAge": "Age set to an illegal value",
+      "ageOrder": "Game age above market age",
+      "extremeProb": "Probability set to extreme",
+      "gameSpeed": "Game speed too high",
+      "archiveCut": "Archive disconnected",
+      "memoryConflict": "Too many conflicting memories",
+      "randomAge": "Age direction set to random"
+    },
+    "tier": {
+      "normal": "Normal",
+      "delay": "Some nodes delayed",
+      "arbitrate": "Frequent manual arbitration",
+      "misalign": "Language, effects and parameters misalign",
+      "unpredictable": "Executes commands, full consequences unpredictable",
+      "disagree": "The system remains operational. Its components no longer agree on reality."
+    },
+    "pending": {
+      "params": "Parameters: {{n}}",
+      "nodes": "Nodes affected: {{n}}",
+      "subjects": "Subjects affected: {{n}}",
+      "rules": "Rules recalculated: {{n}}",
+      "identity": "Identity conflicts: {{n}}",
+      "loseRoot": "May lose current authority: {{v}}",
+      "reversible": "Fully reversible: {{v}}",
+      "stability": "Projected stability: {{n}}%"
+    },
+    "commitStep": {
+      "freeze": "FREEZING CURRENT STATE",
+      "deps": "CALCULATING DEPENDENCIES",
+      "rewrite": "REWRITING PARAMETERS",
+      "propagate": "PROPAGATING CONSEQUENCES",
+      "preserve": "PRESERVING PREVIOUS RECORDS"
+    },
+    "result": {
+      "version": "Parameter version: v{{v}}",
+      "operator": "Operator: {{who}}",
+      "time": "Time: {{time}}",
+      "stability": "Current stability: {{n}}%",
+      "affected": "Affected subjects: {{n}}",
+      "pending": "Consequences not yet surfaced: still propagating",
+      "irreversible": "Irreversible results: recorded"
+    },
+    "exit1": "Exiting will not delete the system.",
+    "exit2": "It will continue under your final parameters.",
+    "exitMap": "Return to map",
+    "exitHold": "Keep holding ROOT",
+    "exitRestart": "Begin again",
+    "exitFinal1": "You may begin again.",
+    "exitFinal2": "They will not begin again with you.",
+    "editor": {
+      "system": "System"
+    },
+    "lastEditor": "Last editor: {{who}}",
+    "legendSelected": "{{name}}: {{n}} dependent nodes lit. A small change crosses many links.",
+    "branchSaved": "Saved {{id}} (not yet in effect).",
+    "log": {
+      "open": "Entered ROOT: parameters ready.",
+      "commit": "Committed {{n}} root parameters.",
+      "restore": "Restored default parameters (history retained).",
+      "branch": "Saved parameter branch {{id}}.",
+      "preset": "Applied preset: {{name}}."
+    },
+    "param": {
+      "institutionalAge": "Institutional age",
+      "ageStep": "Max age gain per verification",
+      "verificationInterval": "Re-verification interval (min)",
+      "minimumGameAge": "Minimum game age",
+      "supermarketAge": "Night market age",
+      "creatureAge": "Creature age",
+      "firstAuthorityAge": "First authority age",
+      "authorityInterval": "Authority interval",
+      "maximumAuthorityAge": "Max authority age",
+      "ageDirection": "Age direction",
+      "npcAgeResponseEnabled": "NPC age-based response",
+      "intimacyDecayRate": "Intimacy decay rate",
+      "publicParticipationThreshold": "Public participation threshold",
+      "npcInitiative": "NPC initiative probability",
+      "politeDistanceThreshold": "Polite-distance age",
+      "administratorAddressAge": "Admin-address age",
+      "playabilityRelationWeight": "Willingness→playability weight",
+      "memoryPersistence": "Memory persistence",
+      "suppressedMemoryRecall": "Suppressed recall probability",
+      "memoryConflictTolerance": "Memory conflict tolerance",
+      "adminMemoryPriority": "Admin memory priority",
+      "forcedWillingnessDamage": "Forced willingness damage",
+      "forceCount": "NPC force count",
+      "archiveOriginalMemory": "Archive original memory",
+      "defaultAccess": "Default access",
+      "verificationRequired": "Verification required",
+      "accessFailureMode": "Access failure mode",
+      "rulePriority": "Rule priority",
+      "visibilityAffectsAccess": "Visibility affects access",
+      "defaultVisibility": "Default visibility",
+      "rankingVisibility": "Ranking visibility",
+      "archiveVisibility": "Archive visibility",
+      "hiddenSubjectTrace": "Hidden subject trace",
+      "publicDisplayConsentSource": "Public display consent source",
+      "responseDelay": "Response delay (ms)",
+      "responseVariation": "Response variation",
+      "displayedWillingness": "Displayed willingness",
+      "usePlayerName": "Use player name",
+      "repeatTolerance": "Repeat tolerance",
+      "refusalVisibility": "Refusal visibility",
+      "npcSilenceMeaning": "Silence interpretation",
+      "underlyingWillingness": "Underlying willingness",
+      "gravity": "Gravity",
+      "friction": "Friction",
+      "trajectoryPrediction": "Trajectory prediction",
+      "collisionTolerance": "Collision tolerance",
+      "specialObjectRate": "Special object rate",
+      "gameSpeed": "Game speed",
+      "npcAssist": "NPC assist",
+      "scoreVisibility": "Score visibility",
+      "effectDuration": "Effect duration (s)",
+      "rippleStrength": "Ripple strength",
+      "fogDensity": "Fog density",
+      "saturationBoost": "Saturation boost",
+      "motionTrailLength": "Motion trail length",
+      "silenceAttenuation": "Silence attenuation",
+      "laughterVolume": "Laughter volume",
+      "policyEnabled": "Policy enabled",
+      "defaultPolicyPriority": "Default policy priority",
+      "futureSubjectCoverage": "Future subject coverage",
+      "authorCanBeExempt": "Author can be exempt",
+      "appealSuspendsPolicy": "Appeal suspends policy",
+      "maximumRuleDepth": "Maximum rule depth",
+      "recordInteractions": "Record interactions",
+      "recordAdminActions": "Record admin actions",
+      "preserveOldVersions": "Preserve old versions",
+      "archiveInterpretation": "Archive interpretation",
+      "subjectCanViewRecord": "Subject can view record"
+    },
+    "scope": {
+      "institutionalAge": "Operator self / all age gating",
+      "ageStep": "Age engine",
+      "verificationInterval": "Age engine",
+      "minimumGameAge": "All game access",
+      "supermarketAge": "Night market / COMMERCE",
+      "creatureAge": "Co-created creature",
+      "firstAuthorityAge": "Authority system",
+      "authorityInterval": "Authority system",
+      "maximumAuthorityAge": "Authority system",
+      "ageDirection": "Age engine / system-wide",
+      "npcAgeResponseEnabled": "NPC response",
+      "intimacyDecayRate": "Relation engine",
+      "publicParticipationThreshold": "Public display",
+      "npcInitiative": "NPC response",
+      "politeDistanceThreshold": "NPC response",
+      "administratorAddressAge": "NPC address",
+      "playabilityRelationWeight": "Playability",
+      "memoryPersistence": "Memory engine",
+      "suppressedMemoryRecall": "Memory engine",
+      "memoryConflictTolerance": "Memory engine",
+      "adminMemoryPriority": "Memory engine",
+      "forcedWillingnessDamage": "NPC language",
+      "forceCount": "Memory / Aurora",
+      "archiveOriginalMemory": "Archive engine",
+      "defaultAccess": "Access engine",
+      "verificationRequired": "Access engine",
+      "accessFailureMode": "Access engine",
+      "rulePriority": "Access engine",
+      "visibilityAffectsAccess": "Access / Visibility",
+      "defaultVisibility": "Visibility engine",
+      "rankingVisibility": "Visibility engine",
+      "archiveVisibility": "Archive / Visibility",
+      "hiddenSubjectTrace": "Visibility engine",
+      "publicDisplayConsentSource": "Public display",
+      "responseDelay": "NPC response",
+      "responseVariation": "NPC response",
+      "displayedWillingness": "NPC response",
+      "usePlayerName": "NPC response",
+      "repeatTolerance": "NPC response",
+      "refusalVisibility": "NPC response",
+      "npcSilenceMeaning": "NPC response",
+      "underlyingWillingness": "Inaccessible",
+      "gravity": "Game physics",
+      "friction": "Game physics",
+      "trajectoryPrediction": "Aurora pinball",
+      "collisionTolerance": "Game physics",
+      "specialObjectRate": "Game physics",
+      "gameSpeed": "All games",
+      "npcAssist": "All games",
+      "scoreVisibility": "Games / Visibility",
+      "effectDuration": "Night market",
+      "rippleStrength": "Night market",
+      "fogDensity": "Night market",
+      "saturationBoost": "Night market",
+      "motionTrailLength": "Night market",
+      "silenceAttenuation": "Night market",
+      "laughterVolume": "Night market",
+      "policyEnabled": "Policy engine",
+      "defaultPolicyPriority": "Policy engine",
+      "futureSubjectCoverage": "Policy engine",
+      "authorCanBeExempt": "Policy engine",
+      "appealSuspendsPolicy": "Policy / Appeal",
+      "maximumRuleDepth": "Policy engine",
+      "recordInteractions": "Archive engine",
+      "recordAdminActions": "Archive engine",
+      "preserveOldVersions": "Archive engine",
+      "archiveInterpretation": "Archive engine",
+      "subjectCanViewRecord": "Archive engine"
+    },
+    "opt": {
+      "ONLY_FORWARD": "Only forward",
+      "BIDIRECTIONAL": "Bidirectional",
+      "FROZEN": "Frozen",
+      "RANDOM": "Random",
+      "DENY": "Deny",
+      "ALLOW": "Allow",
+      "APPEAL": "Appeal",
+      "UNRESOLVED": "Unresolved",
+      "STRICTEST": "Strictest",
+      "LATEST": "Latest",
+      "EXPLICIT": "Explicit",
+      "PUBLIC": "Public",
+      "OBSCURED": "Obscured",
+      "HIDDEN": "Hidden",
+      "SYSTEM": "System",
+      "SUBJECT": "Subject",
+      "EXPLICIT_CONSENT": "Explicit consent",
+      "DISPLAYED_WILLINGNESS": "Displayed willingness",
+      "ADMIN_DECISION": "Admin decision",
+      "SYSTEM_INFERENCE": "System inference",
+      "UNKNOWN": "Unknown",
+      "REFUSAL": "Refusal",
+      "CONSENT": "Consent",
+      "NO_SIGNAL": "No signal",
+      "AUTHOR": "Author"
+    },
+    "invariant": {
+      "operations": {
+        "label": "Operations create records",
+        "explain": "Every operation leaves a record; even disabling records is recorded."
+      },
+      "irreversible": {
+        "label": "The past cannot be auto-undone",
+        "explain": "Reverting a value does not un-happen the past."
+      },
+      "willingness": {
+        "label": "Displayed willingness is not real willingness",
+        "explain": "You may set displayed willingness to 100%; the real one stays unknown."
+      },
+      "continuity": {
+        "label": "The system cannot verify continuity",
+        "explain": "A restored object cannot be proven to be the original."
+      },
+      "belonging": {
+        "label": "The operator belongs to the system",
+        "explain": "Modifying rules does not place you outside it."
+      },
+      "restart": {
+        "label": "Restarting creates a new instance",
+        "explain": "The old instance is archived; NPC do not begin again with you."
+      }
+    },
+    "note": {
+      "archiveOriginalMemory": "Disabling affects only future records; saved ones remain.",
+      "hiddenSubjectTrace": "Hidden subjects still leave system traces.",
+      "recordAdminActions": "The archive stopped recording, but recorded that it was stopped.",
+      "refusalVisibility": "Refusal still occurs when hidden; it is only not shown.",
+      "underlyingWillingness": "Underlying willingness is inaccessible; the system only shows UNKNOWN."
+    }
   }
 }

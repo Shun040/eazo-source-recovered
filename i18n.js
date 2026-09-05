@@ -82,6 +82,33 @@
       });
     }
 
+    // Preserve Chinese fallback labels, but never expose them in the English UI
+    // when older markup has no explicit accessibility translation key.
+    root.querySelectorAll("[aria-label]").forEach((element) => {
+      if (!element.dataset.i18nOriginalAria) {
+        element.dataset.i18nOriginalAria = element.getAttribute("aria-label") || "";
+      }
+      const original = element.dataset.i18nOriginalAria;
+      if (activeLocale === "zh-CN" || !/[\u3400-\u9fff]/u.test(original)) {
+        if (activeLocale === "zh-CN") element.setAttribute("aria-label", original);
+        return;
+      }
+      if (element.hasAttribute("data-i18n-aria-label")) return;
+      const nodeText = element.matches("[data-node]")
+        ? Array.from(element.querySelectorAll("strong, em, small"))
+            .map((part) => part.textContent.trim())
+            .filter(Boolean)
+            .join(", ")
+        : "";
+      const closeLabel = element.matches("button") && element.textContent.trim() === "×" ? "Close" : "";
+      const identifier = element.id || element.classList[0] || element.tagName.toLowerCase();
+      const generated = identifier
+        .replace(/^eazo-/, "")
+        .replace(/[-_]+/g, " ")
+        .replace(/\b\w/g, (letter) => letter.toUpperCase());
+      element.setAttribute("aria-label", nodeText || closeLabel || generated);
+    });
+
     root.querySelectorAll("[data-i18n-locale-select]").forEach((select) => {
       select.value = localePreference;
       if (select.dataset.i18nBound === "true") return;

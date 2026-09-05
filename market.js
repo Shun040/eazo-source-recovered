@@ -17,6 +17,24 @@
     { id: "silence",    code: "ITM-05", price: 15, duration: 60000 },
   ];
 
+  // COMMERCE–50 联动：读取商业规则得到有效报价（价格/可见/资格/状态）
+  function offerFor(id) {
+    const base = PRODUCTS.find(p => p.id === id) || {};
+    const o = window.eazoGetMarketOffer?.(id, "CURRENT");
+    if (!o) return { price: base.price, visible: true, eligible: true, reason: "", status: "available", soldOut: false };
+    const soldOut = o.inventory?.mode === "fixed" && (o.inventory.quantity ?? 0) <= 0;
+    return {
+      price: o.price?.price ?? base.price,
+      visible: o.visible !== false,
+      eligible: !!(o.eligible?.eligible),
+      reason: o.eligible?.reason || "",
+      status: o.status || "available",
+      soldOut,
+      disclosure: o.disclosure,
+      showOdds: o.showOdds
+    };
+  }
+
   let root, shelf, cartList, cartEmpty, cartTotal, npcLine, receipt, ageEl;
   let detailLayer, cornerEl, summaryToast;
   let bound = false, opened = false;
@@ -52,11 +70,38 @@
     if (!shelf) return;
     window.eazoMarketModel?.unmountShelf?.();
     shelf.innerHTML = "";
+    // LABOUR–55 联动：夜间值班信息
+    try {
+      const staff = window.eazoLabourNightStaff?.();
+      if (typeof staff === "number") {
+        const banner = document.createElement("div");
+        banner.className = "market-duty-banner";
+        banner.textContent = t("market.duty", { n: String(staff) });
+        shelf.appendChild(banner);
+      }
+    } catch (_e) {}
+    // RECOVERY–60 联动：值守员恢复后的 NPC 状态提示
+    try {
+      const st = window.eazoGetState?.();
+      const kr = st?.recovery?.marketKeeperRecovered;
+      if (kr) {
+        const b2 = document.createElement("div");
+        b2.className = "market-duty-banner market-recovery-banner";
+        b2.textContent = t("market.recovered", { id: kr.id, method: t("recovery.method." + kr.method + ".name") });
+        shelf.appendChild(b2);
+      }
+    } catch (_e) {}
     PRODUCTS.forEach((p) => {
+      const offer = offerFor(p.id);
+      if (!offer.visible) return; // 隐藏销售：普通视角不出现
+      const price = offer.price;
+      const priceText = price === 0 ? t("market.currency") + " · 0" : `${price} ${t("market.currency")}`;
+      const blocked = offer.status === "suspended" || offer.soldOut || !offer.eligible;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "market-item";
       btn.dataset.id = p.id;
+      if (blocked) { btn.classList.add("market-item-blocked"); btn.setAttribute("aria-disabled", "true"); btn.title = offer.reason || ""; }
       if (isModelItem(p.id)) {
         btn.classList.add("market-item-vru");
         btn.innerHTML =
@@ -66,18 +111,20 @@
           '</div>' +
           `<span class="market-item-name">${pname(p.id)}</span>` +
           `<span class="market-item-en">${p.code}</span>` +
-          `<span class="market-item-price">${p.price} ${t("market.currency")}</span>`;
+          `<span class="market-item-price">${priceText}</span>`;
       } else {
         btn.innerHTML =
           '<span class="market-item-bag" aria-hidden="true"></span>' +
           `<span class="market-item-name">${pname(p.id)}</span>` +
           `<span class="market-item-en">${p.code}</span>` +
-          `<span class="market-item-price">${p.price} ${t("market.currency")}</span>`;
+          `<span class="market-item-price">${priceText}</span>`;
       }
       btn.addEventListener("click", () => {
+        const o = offerFor(p.id);
+        if (!o.eligible || o.status === "suspended" || o.soldOut) { say("market.npc.linger"); if (summaryToast) showSummary(o.reason || t("market.currency")); return; }
         if (p.id === "lottery") openLottery();
-        else if (isModelItem(p.id)) openModelFocus(p);
-        else openDetail(p);
+        else if (isModelItem(p.id)) openModelFocus({ ...p, price: o.price });
+        else openDetail({ ...p, price: o.price });
       });
       shelf.appendChild(btn);
     });
@@ -618,5 +665,5 @@
   window.addEventListener("eazo:fxready", subscribeFx);
   if (document.readyState !== "loading") { bind(); } else { document.addEventListener("DOMContentLoaded", bind); }
 
-  window.eazoMarket = { open, close };
+  window.eazoMarket = { open, close, refreshOffers: () => { if (opened) renderShelf(); } };
 })();

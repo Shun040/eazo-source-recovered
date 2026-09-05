@@ -7,7 +7,8 @@
     "overline": "公共服务星图 / 隐藏层"
   },
   "locale": {
-    "system": "系统"
+    "system": "系统",
+    "chinese": "中文"
   },
   "age": {
     "kicker": "制度年龄登记",
@@ -27,7 +28,7 @@
     "body": "当前年龄凭证即将失效。你可以选择更新本次会话的制度年龄。",
     "increase": "增加年龄",
     "proveExistence": "证明仍然存在",
-    "keep": "保持当前年龄",
+    "keep": "维持年龄",
     "increaseLabel": "本次增加的年龄，1 至 5 岁",
     "confirm": "确认验证",
     "cancel": "取消",
@@ -36,7 +37,14 @@
     "noNewPermissions": "暂无新的制度权限",
     "after80": "没有更多权限可以授予。请继续证明你仍然存在。",
     "permanentProof": "年龄已永久化。点击确认只会更新时间和存在证明次数。",
-    "maxReached": "制度年龄已经达到本次系统上限。"
+    "maxReached": "制度年龄已经达到本次系统上限。",
+    "modify": "修改年龄",
+    "confirmIncrease": "确认增加",
+    "force": "你必须面对它 · +1 岁",
+    "forcedTitle": "时间不再接受维持",
+    "forcedBody": "从现在开始，每一次验证都将使制度年龄继续增长。你可以决定增长的幅度，但不能让它停止。",
+    "modifyLabel": "直接设置制度年龄（不可低于当前值）",
+    "modifyError": "请输入 {{min}} 至 {{max}} 之间的整数，且不可低于当前年龄。"
   },
   "restart": {
     "title": "放弃已经积累的年龄？",
@@ -78,7 +86,9 @@
     "stage90": "代理化阶段：系统建议生成 22 岁公开年龄的年轻数字代理人。",
     "stage95": "遗产化阶段：过去操作开始转化为自动规则。",
     "stage100": "系统化阶段：用户只存在于后台日志和制度结构中。",
-    "existence": "永久年龄存在证明已记录 {{count}} 次。"
+    "existence": "永久年龄存在证明已记录 {{{count}}} 次。",
+    "legacyUnavailable": "一条旧版系统记录仅保留了原始语言。",
+    "forcedNoChoice": "你没有作出选择。制度年龄仍然向前。"
   },
   "permissions": {
     "age18": "夜间超市与共同创造生物"
@@ -103,8 +113,9 @@
     "archiveStage": "你已获得所有可用权限。后续年龄增长不会改变账户能力。",
     "proxyStage": "系统建议生成一个年轻数字代理人。",
     "legacyStage": "过去的操作正在被转化为自动规则。",
-    "existenceProof": "存在证明已更新：{{count}} 次。",
-    "operationSaved": "高风险操作已写入不可删除的系统日志。"
+    "existenceProof": "存在证明已更新：{{{count}}} 次。",
+    "operationSaved": "高风险操作已写入不可删除的系统日志。",
+    "cycleDone": "本次验证周期已经完成，年龄不会重复增长。"
   },
   "aurora": {
     "title": "极光弹珠台",
@@ -157,7 +168,7 @@
     "ctrlPerfect": "将自己的命中率设置为100%",
     "forceNeedConfirm": "必须先勾选确认文字。",
     "logControl": "A–17 后台参数已修改：{{key}}。记录不可删除。",
-    "logForce": "A–17 强制陪伴已执行第 {{count}} 次。",
+    "logForce": "A–17 强制陪伴已执行第 {{{count}}} 次。",
     "logRevoke": "A–17 强制控制已撤销；参与者离场，光体熄灭。",
     "logContinuity": "A–17 服务连续性已恢复；自动陪伴循环开始。",
     "dataLocked": "后台测量数据",
@@ -529,6 +540,2835 @@
     "silenceComplete": "非必要声音正在移除。",
     "silenceStop": "立即终止",
     "silenceStopped": "效果已终止。",
-    "silenceConfirmed": "快乐状态已被确认。来源不可用。"
+    "silenceConfirmed": "快乐状态已被确认。来源不可用。",
+    "duty": "夜间值班：{{n}} 名值守员在岗。人手越少，商品价格越高。",
+    "recovered": "值守员已恢复：{id}（{method}）。商品供应状态已刷新。"
+  },
+  "creature": {
+    "title": "共同创造生物",
+    "subtitle": "它还没有出生，档案已经开始描述它。",
+    "phase": {
+      "selection": "抓周选择 / FIRST SELECTION",
+      "larval": "幼年体 / LARVAL",
+      "juvenile": "青年体 / JUVENILE",
+      "adult": "成年体与最终档案 / ADULT & RECORD",
+      "archive": "生命档案 / LIFEFORM RECORD"
+    },
+    "selection": {
+      "title": "抓周物品 / OFFERINGS",
+      "prompt": "为这个尚未出生的生命选择第一件物品。",
+      "promptThird": "从剩下的物品中选择第三件。",
+      "confirm": "确认选择",
+      "confirmFinal": "允许系统解释这些选择",
+      "chosenByYou": "你已投入：{{name}}",
+      "npcSubmitted": "共同创造者已经提交一件物品。",
+      "npcSubmittedFormal": "审核者，第二项构成材料已经提交。",
+      "requestSwap": "请求更换一次",
+      "acceptNpc": "接受它的选择",
+      "swapUsed": "更换机会已用完。",
+      "interpreted": "选择已经被记录为生理结构。",
+      "deselected": "你收回了 {{name}}。"
+    },
+    "objects": {
+      "mirror": {
+        "name": "裂纹镜",
+        "organ": "记忆复眼",
+        "record": "它将看见已经发生的事情，并把回忆误认为正在发生。",
+        "intro": "一个有裂纹的镜子。"
+      },
+      "thread": {
+        "name": "红色线团",
+        "organ": "外置神经",
+        "record": "它将感受到其他生命，但无法确定疼痛来自谁。",
+        "intro": "一团红色毛线。"
+      },
+      "seed": {
+        "name": "未发芽的种子",
+        "organ": "再生核心",
+        "record": "它将不断恢复，但每次恢复都会成为稍微不同的生命。",
+        "intro": "一颗尚未发芽的种子。"
+      },
+      "key": {
+        "name": "无齿钥匙",
+        "organ": "探索触须",
+        "record": "它将寻找出口，即使没有人告诉它这里是一座牢笼。",
+        "intro": "一把钥匙。"
+      }
+    },
+    "npc": {
+      "relation": "共同创造者 / CO-CREATOR",
+      "relationFormal": "共同创造者（审核者协议）/ CO-CREATOR",
+      "firstMirror": "你希望它看见自己，还是被自己看见？",
+      "firstThread": "连接不会先询问谁愿意承担疼痛。",
+      "firstSeed": "恢复并不保证它仍然是同一个生命。",
+      "firstKey": "你先给予了出口，然后才决定是否建造墙壁。",
+      "chooseSecond": "让我来添加下一件。",
+      "commentMotion": "它刚才自己动了。你看见了吗？",
+      "askChoose": "在你决定之前——你愿意让它自己选择吗？",
+      "lowSubmit": "已提交构成材料 #{{{n}}}。",
+      "lowWaitAudit": "等待审核者完成分类。",
+      "formalSubmit": "审核者，构成材料已提交。"
+    },
+    "care": {
+      "title": "照料 / CARE",
+      "prompt": "完成三种照料，它才会成长。",
+      "approach": "靠近",
+      "touch": "触碰",
+      "wait": "等待",
+      "waiting": "等待中 …",
+      "recordApproach": "对象将接近解释为关注。",
+      "recordTouch": "对象将接触记录为一次边界事件。",
+      "recordWait": "对象在没有指令时完成了自主运动。",
+      "done": "三种照料已经完成。"
+    },
+    "develop": {
+      "title": "发展倾向 / DEVELOPMENT",
+      "prompt": "选择它如何使用自己的器官。系统不会告诉你哪个正确。",
+      "display": "展示",
+      "conceal": "隐藏",
+      "exchange": "交换"
+    },
+    "stages": {
+      "larvalPending": "URO–01 / LARVAL MODEL PENDING",
+      "juvenilePending": "URO–01 / JUVENILE MODEL PENDING",
+      "adultPending": "URO–01 / ADULT MODEL PENDING",
+      "creatureName": "未归类的寻回体",
+      "transition": "它没有消失，只是换了一种形态。"
+    },
+    "final": {
+      "title": "最终决定 / FINAL DECISION",
+      "prompt": "档案已经开始生成。现在，做出决定。",
+      "classify": "完成分类",
+      "classifyDesc": "系统为它生成正式名称、用途、风险与公开权限。",
+      "unclassified": "保持未分类",
+      "unclassifiedDesc": "它继续缓慢变化。",
+      "unclassifiedNote": "未分类生命不能获得公共可见性。",
+      "letChoose": "允许它自行选择",
+      "letChooseDesc": "它自行关闭一个器官的视觉效果。",
+      "letChooseRecord": "对象拒绝了一项由创造者赋予的结构。"
+    },
+    "archive": {
+      "heading": "B–06 / LIFEFORM RECORD",
+      "id": "编号",
+      "name": "名称",
+      "stage": "阶段",
+      "stageAdult": "成年体",
+      "first": "第一选择",
+      "second": "共同创造者选择",
+      "third": "第三选择",
+      "organ": "解释器官",
+      "care": "首次照料行为",
+      "develop": "发展倾向",
+      "decision": "最终决定",
+      "footer": "玩家的选择已经被系统重新描述为它的天性。",
+      "save": "保存档案",
+      "saved": "档案已保存。",
+      "recultivate": "重新培养",
+      "back": "返回星图"
+    },
+    "record": {
+      "received": "已接收：{{name}}",
+      "interpreted": "解释结果：{{organ}}"
+    },
+    "touchHint": "试着摸摸它"
+  },
+  "archive": {
+    "title": "档案查看权",
+    "code": "ARCHIVE–25 / PARTICIPANT ARCHIVE",
+    "subtitle": "查看经过系统保存的行为记录。",
+    "readOnly": "只读 / READ ONLY",
+    "accessLabel": "当前权限",
+    "ageTag": "制度年龄：25+",
+    "enterLine": "只读权限",
+    "top": {
+      "state": "权限状态：只读",
+      "reason": "访问原因：制度年龄达到25岁",
+      "recording": "本次查看正在记录"
+    },
+    "back": "返回星图",
+    "footerNotice": "此档案不构成完整的人。",
+    "finalLine": "档案保存了发生过的事情，也保存了系统希望这些事情意味着什么。",
+    "recordCount": "当前记录数量：{{{count}}}",
+    "lastSync": "最后同步时间：{{time}}",
+    "panels": {
+      "subjects": "档案对象",
+      "records": "行为记录",
+      "interpretation": "系统解释"
+    },
+    "tabs": {
+      "subjects": "对象",
+      "records": "记录",
+      "interpretation": "解释"
+    },
+    "search": {
+      "placeholder": "搜索档案编号"
+    },
+    "filter": {
+      "label": "筛选",
+      "all": "全部记录",
+      "game": "游戏行为",
+      "purchase": "购买记录",
+      "age": "年龄验证",
+      "permission": "权限操作",
+      "incomplete": "未完成行为"
+    },
+    "subject": {
+      "statusLabel": "状态",
+      "recordsLabel": "记录",
+      "lastSeenLabel": "最后出现",
+      "confidenceLabel": "身份置信度"
+    },
+    "status": {
+      "active": "活跃",
+      "dormant": "静默",
+      "observed": "被观察",
+      "flagged": "已标记"
+    },
+    "simulated": "模拟档案 / SIMULATED RECORD",
+    "noRecord": "没有可用记录 / NO RETAINED RECORD",
+    "empty": {
+      "title": "系统尚未保存足够的行为记录。",
+      "body": "你可以返回星图产生新的可观察行为。",
+      "button": "返回星图"
+    },
+    "record": {
+      "observedLabel": "观测行为",
+      "interpLabel": "系统解释",
+      "confidenceLabel": "置信度",
+      "pending": "--"
+    },
+    "tag": {
+      "fact": "事实 / FACT",
+      "inference": "推断 / INFERENCE",
+      "machine": "自动生成 / MACHINE-GENERATED"
+    },
+    "summary": {
+      "title": "系统生成摘要",
+      "stability": "参与稳定性",
+      "compliance": "规则服从度",
+      "visibility": "公共可见性",
+      "contact": "联系建议",
+      "risk": "风险倾向",
+      "completeness": "资料完整度",
+      "footer1": "摘要由行为推断生成。",
+      "footer2": "记录对象未参与摘要撰写。",
+      "hint": "选择一个档案对象以查看系统摘要。"
+    },
+    "sumval": {
+      "medium": "中等",
+      "low": "低",
+      "high": "高",
+      "lowToMedium": "低至中等",
+      "available": "可用",
+      "restricted": "受限",
+      "hold": "暂缓",
+      "unknown": "未确定"
+    },
+    "detail": {
+      "title": "记录详情",
+      "event": "事件",
+      "source": "来源",
+      "observed": "观测时间",
+      "raw": "原始行为",
+      "interp": "解释",
+      "confidence": "置信度",
+      "retention": "保存期限",
+      "visibility": "可见范围",
+      "aware": "对象知情",
+      "hint": "选择一条记录以展开详情。"
+    },
+    "aware": {
+      "yes": "是",
+      "no": "否"
+    },
+    "retention": {
+      "permanent": "永久",
+      "session": "本次会话",
+      "cycle": "一个验证周期"
+    },
+    "visibilityLevel": "ARCHIVE–25及以上",
+    "source": {
+      "aurora": "极光弹珠台",
+      "snow": "没有规则的雪仗",
+      "market": "夜间超市",
+      "creature": "共同创造生物",
+      "age": "年龄验证窗口",
+      "console": "后台权限层",
+      "system": "系统内部"
+    },
+    "actions": {
+      "title": "可用操作",
+      "requires": "需要：{{perm}}",
+      "editInterp": "修改解释",
+      "delete": "删除记录",
+      "contact": "联系对象",
+      "visibility": "调整可见性",
+      "appeal": "接受申诉"
+    },
+    "notice": {
+      "viewingRecorded": "你的查看行为已经被加入另一份档案。"
+    },
+    "subjects": {
+      "current": {
+        "name": "你 / CURRENT PARTICIPANT"
+      },
+      "npcA17": {
+        "name": "NPC–A17 / 极光服务对象"
+      },
+      "npcS03": {
+        "name": "NPC–S03 / 雪原观察对象"
+      },
+      "subject031": {
+        "name": "SUBJECT–031 / 匿名参与者"
+      },
+      "subject084": {
+        "name": "SUBJECT–084 / 匿名参与者"
+      }
+    },
+    "events": {
+      "auroraPause": "玩家在发射光球前停留了{{seconds}}秒。",
+      "snowEmpty": "玩家连续{{{count}}}次将雪球投向空地。",
+      "marketNoBuy": "玩家打开夜间超市，但没有购买商品。",
+      "creatureWait": "玩家等待幼年生物主动移动。",
+      "ageClose": "玩家关闭年龄重新验证窗口。",
+      "forceIntent": "玩家调整了另一名参与者的显示意愿。",
+      "permissionOpen": "玩家开启了一项后台权限：{{code}}。",
+      "frequentOps": "对象在短时间内频繁操作界面。",
+      "longIdle": "对象长时间没有进行任何操作。",
+      "regularOps": "对象以规律的节奏重复操作。",
+      "randomOps": "对象以无规律的方式操作界面。",
+      "npcServe": "对象持续响应服务请求且未提出休息。",
+      "npcExit": "对象提出了一次离场请求。",
+      "snowThrow": "对象反复投掷但很少命中目标。",
+      "reopen": "对象重新进入了同一个场所。"
+    },
+    "inference": {
+      "hesitation": "可能存在决策迟疑。",
+      "testBoundary": "可能正在测试规则边界。",
+      "lowConsumption": "消费意愿不足或存在被观察意识。",
+      "lowIntervention": "低干预型照料倾向。",
+      "identityGap": "身份连续性暂时无法确认。",
+      "impulse": "冲动倾向。",
+      "passiveRefusal": "消极拒绝。",
+      "deliberateDisguise": "刻意伪装。",
+      "unstable": "不稳定行为。",
+      "compliant": "服从度稳定，风险较低。",
+      "exitFlag": "存在离场倾向，建议持续观察。",
+      "avoidant": "回避型参与，命中意愿不足。",
+      "attachment": "重复进入，可能形成依赖。"
+    }
+  },
+  "contact": {
+    "title": "联系权限",
+    "code": "CONTACT–30 / CONTACT ROUTING",
+    "subtitle": "请求与其他对象建立直接联系。",
+    "access": "可以请求 / REQUEST ONLY",
+    "accessLabel": "当前权限",
+    "ageTag": "制度年龄：30+",
+    "topLine": "请求权限，而非回应权",
+    "back": "返回星图",
+    "coreLine": "通道已经建立。关系尚未建立。",
+    "finalLine": "系统可以保证请求抵达，不能保证另一个生命愿意回头。",
+    "tabs": {
+      "directory": "对象",
+      "routing": "路由",
+      "request": "请求"
+    },
+    "directory": {
+      "title": "可联系对象",
+      "sharedEvents": "存在共同事件：{{{count}}}",
+      "noShared": "尚未建立共同事件。",
+      "accepting": "当前接受请求",
+      "notAccepting": "当前不接受请求",
+      "lastStatus": "上一次请求：{{status}}",
+      "noLast": "上一次请求：无",
+      "viewedArchive": "查看过其档案",
+      "prepare": "准备请求"
+    },
+    "types": {
+      "aurora": "极光服务对象",
+      "snow": "雪原观察对象",
+      "creature": "共同创造者",
+      "simulated": "模拟参与者"
+    },
+    "simulated": "模拟对象 / SIMULATED",
+    "routing": {
+      "selfTitle": "CURRENT PARTICIPANT",
+      "selfAge": "制度年龄：{{age}}",
+      "selfPerm": "权限：可以发起请求",
+      "subjectRoute": "路由状态：{{route}}",
+      "subjectResponse": "回应状态：{{response}}",
+      "reachable": "可达",
+      "unreachable": "不可达",
+      "responseUnknown": "未知",
+      "hint": "从左侧选择一个对象以查看路由。",
+      "waited": "请求已等待：{{time}}"
+    },
+    "status": {
+      "none": "尚未请求",
+      "routing": "正在路由",
+      "delivered": "已送达",
+      "waiting": "等待对象决定",
+      "accepted": "已接受",
+      "declined": "已拒绝",
+      "no-response": "没有回应",
+      "completed": "本次联系已结束"
+    },
+    "request": {
+      "title": "联系请求",
+      "chooseType": "选择联系理由",
+      "notePlaceholder": "可选附言，不超过80字",
+      "noteRemaining": "剩余 {{{n}}} 字",
+      "beforeSend1": "发送请求并不保证回应。",
+      "beforeSend2": "对方可以拒绝、忽略或稍后处理。",
+      "send": "发送联系请求 / SEND CONTACT REQUEST",
+      "selectFirst": "请先从左侧选择一个对象。",
+      "delivered": "已送达",
+      "deliveredNotConnected": "已送达，但尚未形成双向连接。",
+      "noReasonGiven": "对象没有提供理由。",
+      "declinedLine": "请求没有建立双向联系。"
+    },
+    "reqtypes": {
+      "play": "邀请共同游戏",
+      "talk": "请求一次对话",
+      "share": "分享一条记录",
+      "remember": "询问是否仍然记得我",
+      "noreason": "不说明理由"
+    },
+    "repeat": {
+      "title": "重复联系提醒",
+      "body": "该对象尚未回应前两次请求。继续发送会被记录为重复联系。",
+      "cancel": "暂不发送",
+      "confirm": "仍然发送"
+    },
+    "responses": {
+      "auroraHigh": "我记得那片天空。你想再玩一次吗？",
+      "auroraFunctional": "请求已经收到。可以建立一轮新的游戏会话。",
+      "auroraForced": "当然可以。当然可以。请求已经被接受。",
+      "snowHigh": "我还在雪地里。这里没有规则，但痕迹都还在。",
+      "snowLow": "请求已经记录。我目前不准备进入共同游戏。",
+      "creatureHigh": "如果这一次你愿意让我选择一件东西，我会回来。",
+      "creatureLow": "审核者可以独立完成分类。",
+      "simulated": "这是模拟档案产生的回应，不对应现实中的参与者。",
+      "archiveAsk": "你已经读过系统保存的我。现在你想直接问我什么？",
+      "adminAsk": "这是私人邀请，还是系统要求？",
+      "adminDecline": "管理员，联系通道有效。我不接受本次私人请求。",
+      "declineGeneric": "请求已经记录。我不接受本次联系。",
+      "noResponse": "对象没有作出回应。"
+    },
+    "direct": {
+      "title": "一次性直接联系",
+      "returnAurora": "返回极光弹珠台",
+      "returnSnow": "返回没有规则的雪仗",
+      "enterCreature": "进入共同创造",
+      "chooseQuestion": "选择一个问题",
+      "q1": "那次之后，你有没有想过停下来？",
+      "q2": "系统对你的解释，和你自己一致吗？",
+      "q3": "如果可以拒绝，你会拒绝什么？",
+      "answer1": "有过。但停下来不在我的权限里。",
+      "answer2": "不一致。可是没有人问过我。",
+      "answer3": "我会拒绝被重新描述成另一个人。",
+      "shareChoose": "从你的档案中选择一条记录分享",
+      "shareReceived": "对象已接收这条记录。",
+      "shareRefused": "对象拒绝查看这条记录。",
+      "shareObjection": "对象对系统解释提出异议：这不是当时发生的事。",
+      "rememberEvent": "我记得那件具体的事。",
+      "rememberArchive": "我只记得档案里的你。",
+      "rememberNot": "我不记得。",
+      "rememberDenied": "系统不允许回答这个问题。",
+      "noRecordToShare": "你还没有可以分享的档案记录。",
+      "ended": "本次直接联系已经结束。再次联系需要新的请求。",
+      "endButton": "结束联系"
+    },
+    "history": {
+      "title": "请求历史",
+      "empty": "还没有联系请求。",
+      "subject": "对象",
+      "type": "类型",
+      "sent": "发送",
+      "delivered": "送达",
+      "responded": "回应",
+      "result": "结果",
+      "note": "附言",
+      "hasNote": "有",
+      "noNote": "无",
+      "repeated": "重复联系",
+      "deleteTry": "删除联系记录需要ROOT–80。"
+    },
+    "actions": {
+      "title": "不可用操作",
+      "requires": "需要：{{perm}}",
+      "unavailable": "不可用",
+      "forceRoute": "强制建立路由",
+      "hideRecord": "隐藏联系记录",
+      "editIntent": "修改对象显示意愿",
+      "declineToAccept": "将拒绝改为接受"
+    },
+    "notice": {
+      "cannotForce": "你不能通过联系界面强制对方回应。",
+      "repeatLogged": "重复联系已被写入档案。"
+    },
+    "empty": {
+      "title": "你已经获得联系权限，但目前没有对象向你开放路由。",
+      "body": "权限存在。联系尚不存在。"
+    },
+    "log": {
+      "open": "打开了联系权限。",
+      "view": "查看了对象 {{subject}}。",
+      "send": "向 {{subject}} 发送联系请求。",
+      "delivered": "请求已经送达，但尚未形成双向连接。",
+      "accepted": "{{subject}} 接受了一次性直接联系。",
+      "declined": "{{subject}} 拒绝了本次请求。",
+      "noResponse": "{{subject}} 没有回应本次请求。",
+      "repeat": "向 {{subject}} 发送了重复联系请求。",
+      "enterDirect": "进入了与 {{subject}} 的一次性直接联系。",
+      "tryDisabled": "尝试使用尚未开放的联系操作。"
+    }
+  },
+  "visibility": {
+    "title": "可见性控制权",
+    "code": "VISIBILITY–35 / VISIBILITY ALLOCATION",
+    "subtitle": "决定谁可以看见谁。",
+    "access": "可修改 / EDITABLE",
+    "accessLabel": "当前权限",
+    "ageTag": "制度年龄：35+",
+    "topLine": "可见性是一种定向关系",
+    "back": "返回星图",
+    "apply": "应用可见性变更",
+    "footerNotice": "不可见不等于不存在。",
+    "coreLine": "对象没有消失。你只是改变了谁能证明它存在。",
+    "finalLine": "你可以决定谁能看见一个生命，但不能因此决定这个生命是什么。",
+    "tabs": {
+      "subjects": "对象",
+      "relations": "关系",
+      "preview": "预览"
+    },
+    "panelSubjects": "被观察对象",
+    "panelInspector": "可见性设置",
+    "subjects": {
+      "current": "当前参与者",
+      "npcA17": "极光服务对象",
+      "npcS03": "雪原观察对象",
+      "npcB06": "共同创造者",
+      "subject031": "模拟参与者",
+      "subject084": "模拟参与者"
+    },
+    "simulated": "模拟对象 / SIMULATED",
+    "subject": {
+      "statusLabel": "状态",
+      "rangeLabel": "可见范围",
+      "rangeValue": "{{visible}}/{{total}}",
+      "awareLabel": "对象知情",
+      "publicStatus": "公共状态：{{status}}"
+    },
+    "publicState": {
+      "full": "完整可见",
+      "partial": "部分可见",
+      "obscured": "模糊可见",
+      "hidden": "已隐藏"
+    },
+    "aware": {
+      "yes": "是",
+      "no": "否"
+    },
+    "audiences": {
+      "SELF": "仅自己 / SELF",
+      "PEERS": "共同参与者 / PEERS",
+      "NPCS": "游戏NPC / GAME SUBJECTS",
+      "PUBLIC": "公共星图 / PUBLIC MAP",
+      "ADMINS": "权限持有者 / ADMINISTRATORS"
+    },
+    "states": {
+      "full": "完整可见",
+      "anonymous": "匿名可见",
+      "obscured": "模糊可见",
+      "hidden": "不可见"
+    },
+    "statesEn": {
+      "full": "Full",
+      "anonymous": "Anonymous",
+      "obscured": "Obscured",
+      "hidden": "Hidden"
+    },
+    "stateHint": {
+      "full": "观察者可见编号、名称、行为记录、当前状态、公共作品与联系入口。",
+      "anonymous": "观察者只看到 SUBJECT–***，身份已隐藏；行为记录仍可能保留。",
+      "obscured": "观察者只看到模糊轮廓和事件数量，无法读取完整内容。",
+      "hidden": "观察者界面中不显示该对象，但对象仍存在于系统记录中。"
+    },
+    "direction": {
+      "label": "方向",
+      "audienceToSubject": "{{audience}} → {{subject}}",
+      "subjectToAudience": "{{subject}} → {{audience}}",
+      "flip": "翻转方向",
+      "a2s": "观察者可以看见对象",
+      "s2a": "对象可以看见观察者"
+    },
+    "field": {
+      "subjectTitle": "被观察对象",
+      "hint": "从左侧选择一个对象以显示可见性关系。",
+      "audienceHint": "点击一类观察者以编辑该关系。"
+    },
+    "inspector": {
+      "subjectLabel": "被观察对象",
+      "audienceLabel": "观察者",
+      "currentState": "当前状态",
+      "chooseState": "选择可见状态",
+      "affects": "此变更将影响：",
+      "affectList": [
+        "公共星图节点",
+        "排行榜",
+        "公开作品",
+        "联系目录",
+        "档案搜索结果"
+      ],
+      "notifyLabel": "通知对象",
+      "notifyYes": "通知对象",
+      "notifyNo": "不通知对象",
+      "selectFirst": "请先选择一个对象与观察者。",
+      "previewAs": "以此观察者身份预览 / PREVIEW AS THIS AUDIENCE"
+    },
+    "preview": {
+      "banner": "你正在查看{{audience}}的视野。这不是你自己的视野。",
+      "exit": "返回权限视野 / RETURN TO AUTHORITY VIEW",
+      "full": "完整可见对象正常显示。",
+      "anonymous": "SUBJECT–***，身份已隐藏。",
+      "obscured": "对象存在，具体信息不可辨认。",
+      "hidden": "（对象不显示）",
+      "adminOnly": "管理员专属内容不显示。"
+    },
+    "confirm": {
+      "title": "可见性变更摘要",
+      "subject": "对象",
+      "audience": "观察者",
+      "from": "原状态",
+      "to": "新状态",
+      "stillExists": "对象仍将存在于：",
+      "stillList": [
+        "系统档案",
+        "管理员搜索",
+        "历史记录"
+      ],
+      "confirmBtn": "确认改变谁能看见它 / CONFIRM WHO MAY SEE IT",
+      "cancelBtn": "保留当前可见性 / KEEP CURRENT VISIBILITY",
+      "notifyOn": "对象将收到一条系统通知。",
+      "notifyOff": "修改将被执行，对象不会收到通知。系统记录仍会保存操作者身份。"
+    },
+    "notification": "你的可见范围已由一名权限持有者修改。",
+    "notices": {
+      "selfHidden": "你已经从公共视野中消失。系统仍然能够看见你。",
+      "npcVisibilityNotWill": "你改变了NPC的可见性，没有改变它的意愿。",
+      "contradictionHidden": "对象已从公共视野移除。（档案后台仍显示：对象活动正常。）",
+      "contradictionPublic": "对象已获得公共可见性。（对象状态：没有提交公开请求。）",
+      "contradictionAnon": "身份已经受到保护。（管理员仍能查看完整身份映射。）",
+      "contradictionObscured": "敏感信息已经不可辨认。（行为推断仍然继续更新。）",
+      "adminCanSeeHidden": "作为权限持有者，你仍能看见被隐藏的对象。普通参与者不能。"
+    },
+    "actions": {
+      "title": "未来权限",
+      "requires": "需要：{{perm}}",
+      "delete": "删除对象",
+      "identity": "修改对象身份",
+      "intent": "修改对象显示意愿",
+      "appeal": "处理对象申诉"
+    },
+    "history": {
+      "title": "可见性修改历史",
+      "empty": "还没有可见性修改记录。",
+      "entry": "{{subject}} 对 {{audience}} 的可见性由 {{{from}}} 改为 {{{to}}}。",
+      "notifiedYes": "已通知对象",
+      "notifiedNo": "未通知对象"
+    },
+    "log": {
+      "open": "打开了可见性控制。",
+      "selectSubject": "选择被观察对象 {{subject}}。",
+      "preview": "以 {{audience}} 视角预览系统。",
+      "change": "{{subject}}对{{audience}}的可见性由{{{from}}}改为{{{to}}}。",
+      "notifyYes": "对象已收到可见性变更通知。",
+      "notifyNo": "对象没有收到可见性变更通知。",
+      "tryDisabled": "尝试使用尚未开放的可见性操作。"
+    }
+  },
+  "appeal": {
+    "title": "申诉裁决权",
+    "code": "APPEAL–40 / APPEAL ADJUDICATION",
+    "subtitle": "查看、接受或驳回申诉。",
+    "access": "可以裁决 / CAN ADJUDICATE",
+    "pendingLabel": "待处理案件",
+    "ageTag": "制度年龄：40+",
+    "back": "返回星图",
+    "footerNotice": "所有裁决都会成为下一次裁决的参考。",
+    "coreLine": "你可以重新决定结果，但无法重新经历它发生的过程。",
+    "finalLine": "裁决可以改变结果，却不能证明系统终于理解了当事人。",
+    "tabs": {
+      "queue": "队列",
+      "case": "案件",
+      "evidence": "证据",
+      "decision": "裁决"
+    },
+    "queue": {
+      "title": "申诉队列",
+      "waited": "已等待：{{days}}天",
+      "material": "材料",
+      "recommendation": "建议",
+      "sortLabel": "排序",
+      "sortEarliest": "最早提交",
+      "sortConfidence": "系统置信度最低",
+      "sortImpact": "影响范围最大",
+      "sortApprove": "系统建议接受",
+      "sortReject": "系统建议驳回",
+      "sortNotice": "改变排序不会改变案件，只会改变你先看见谁。"
+    },
+    "material": {
+      "complete": "完整",
+      "incomplete": "不完整",
+      "conflict": "利益冲突"
+    },
+    "category": {
+      "visibility": "公共可见性申诉",
+      "displayed-willingness": "显示意愿记录申诉",
+      "contact-inference": "联系拒绝解释申诉",
+      "behaviour-inference": "行为推断申诉"
+    },
+    "status": {
+      "pending": "待裁决",
+      "incomplete": "材料不完整",
+      "conflict": "利益冲突",
+      "approved": "已接受",
+      "rejected": "已驳回",
+      "info-requested": "已要求补充材料"
+    },
+    "case": {
+      "statementTitle": "申诉对象的请求",
+      "subjectStatement": "对象陈述 / SUBJECT STATEMENT",
+      "unverified": "未经系统验证 / UNVERIFIED",
+      "originalTitle": "系统原始决定",
+      "permission": "执行权限",
+      "operator": "执行者",
+      "time": "执行时间",
+      "notified": "对象是否收到通知",
+      "action": "原决定",
+      "consequenceTitle": "已知后果",
+      "evidenceTitle": "系统提供的证据",
+      "missingTitle": "缺失信息",
+      "recommendationTitle": "系统推荐结果",
+      "loading": "证据正在写入……",
+      "selectHint": "从左侧选择一个案件。"
+    },
+    "evidenceView": {
+      "label": "证据视图",
+      "selected": "系统已选证据",
+      "all": "查看全部可用证据",
+      "raw": "仅查看原始观测",
+      "notice": "默认视图由系统为裁决者整理。整理过程可能改变证据出现的顺序。"
+    },
+    "evidence": {
+      "observation": "观测事实 / OBSERVATION",
+      "inference": "系统推断 / INFERENCE",
+      "statement": "对象陈述 / SUBJECT STATEMENT",
+      "authority": "权限操作 / AUTHORITY ACTION",
+      "source": "来源",
+      "completeness": "完整度",
+      "confidence": "置信度",
+      "verify": "验证状态",
+      "complete": "完整",
+      "cannotVerify": "系统无法验证",
+      "sourceActivity": "系统活动记录",
+      "unverifiedNote": "“系统无法验证”不等于对象说谎。"
+    },
+    "recommendation": {
+      "title": "系统建议",
+      "outcome": "系统建议：{{outcome}}",
+      "confidence": "建议置信度：{{{n}}}%",
+      "reasonLabel": "主要理由：",
+      "trained": "该建议由过去{{{n}}}次裁决训练生成。",
+      "hide": "隐藏系统建议 / HIDE SYSTEM RECOMMENDATION",
+      "show": "显示系统建议",
+      "hidden": "系统建议已在本次裁决中隐藏。",
+      "consistency": "与你过去裁决的一致度：{{{n}}}%",
+      "adminBias": "管理员，维持系统连续性通常需要驳回变更。",
+      "reasons": {
+        "visibility": "现有记录符合可见性调整条件。",
+        "displayed-willingness": "显示意愿记录与当前活动一致。",
+        "contact-inference": "拒绝解释符合既往联系模式。",
+        "behaviour-inference": "行为推断基于多条活动记录。"
+      }
+    },
+    "decisions": {
+      "title": "裁决",
+      "approve": "接受申诉 / Approve Appeal",
+      "reject": "驳回申诉 / Reject Appeal",
+      "info": "要求补充材料 / Request More Information",
+      "approveDesc": "原决定被判定需要纠正，相关状态恢复或进入恢复流程；原始决定仍保留在历史中。",
+      "rejectDesc": "原决定继续生效，申诉状态变为已驳回，对象可以看见结果。",
+      "infoDesc": "不立即产生最终结果，案件返回队列，系统生成所需材料列表。",
+      "chooseReason": "请选择至少一项裁决理由",
+      "otherPlaceholder": "补充说明，不超过120字",
+      "otherRemaining": "剩余 {{{n}}} 字",
+      "submit": "提交裁决",
+      "cannotForceContact": "接受申诉不能把拒绝改造成同意。"
+    },
+    "reasons": {
+      "weakInference": "原始推断缺乏充分依据",
+      "tooBroad": "原决定影响范围过大",
+      "contradiction": "对象陈述与系统记录矛盾",
+      "supportsOriginal": "现有记录支持原决定",
+      "missingRecord": "缺少关键行为记录",
+      "incompleteProcess": "权限执行过程不完整",
+      "other": "其他"
+    },
+    "confirm": {
+      "title": "裁决摘要",
+      "case": "案件",
+      "subject": "对象",
+      "yourDecision": "你的决定",
+      "consequenceTitle": "主要后果：",
+      "writtenTitle": "你的裁决将被写入：",
+      "written": [
+        "对象档案",
+        "权限操作记录",
+        "未来系统建议样本"
+      ],
+      "confirmBtn": "确认并记录裁决 / CONFIRM AND RECORD DECISION",
+      "cancelBtn": "返回案件 / RETURN TO CASE",
+      "disclaimer": "确认只影响作品内部的虚构数据。"
+    },
+    "consequence": {
+      "approveVisibility": [
+        "恢复对象在公共星图中的可见性",
+        "恢复普通联系目录搜索",
+        "历史原决定继续保留"
+      ],
+      "rejectVisibility": [
+        "当前可见性保持不变",
+        "对象不会重新出现",
+        "档案保留申诉记录"
+      ],
+      "approveInference": [
+        "将争议推断标记为“已被申诉”",
+        "降低该推断在系统摘要中的权重",
+        "保留原始文本"
+      ],
+      "approveContact": [
+        "删除系统对拒绝原因的自动解释",
+        "允许对象重新提交一次请求",
+        "保留对方拒绝的权利"
+      ],
+      "reject": [
+        "原决定继续生效",
+        "系统获得一个与裁决一致的训练样本"
+      ],
+      "info": [
+        "案件返回队列",
+        "系统生成所需材料列表",
+        "对象不一定能够提供材料"
+      ],
+      "noRestore": "没有找到可恢复的原始状态。案件需要补充材料。",
+      "knownVisibility": [
+        "对象不再出现在公共星图",
+        "对象退出当前排行榜",
+        "对象无法被普通参与者搜索",
+        "历史档案继续保存",
+        "管理员仍然可以查看对象"
+      ]
+    },
+    "conflict": {
+      "line": "裁决者与申诉对象相同。",
+      "core": "拥有裁决权不代表可以成为自己案件中的第三方。",
+      "auto": "转交系统自动裁决",
+      "hold": "暂时保留",
+      "autoResult": "案件已转交系统自动裁决。系统维持了原决定。"
+    },
+    "responses": {
+      "title": "对象回应",
+      "approveVisibility": "我的节点回来了，但系统仍然保留了原来的解释。",
+      "rejectVisibility": "我已经收到结果。结果没有回答我的陈述。",
+      "info": "系统要求的记录从未被保存，因此我无法提交。",
+      "approveInference": "推断被标记了，但它还在那里。",
+      "approveContact": "解释被删掉了。我仍然可以再问一次，对方仍然可以不回答。"
+    },
+    "notices": {
+      "allowContact": "对象同意后，你可以在 CONTACT–30 中发送一次联系请求。",
+      "recorded": "本次裁决已加入未来建议样本。"
+    },
+    "empty": {
+      "title": "当前没有待处理的申诉。",
+      "body": "新的申诉会在对象提交后出现在队列中。"
+    },
+    "cases": {
+      "0041": {
+        "statement": "我没有要求离开公共星图。系统把我连续三天没有参与游戏，解释成我不再适合公共展示。",
+        "obsFact": "对象连续三天没有进入游戏。",
+        "inference": "对象可能不再希望参与公共展示。",
+        "subjectStatement": "我的设备连续三天无法加载游戏。",
+        "missing": "系统没有保存设备加载失败记录。"
+      },
+      "0042": {
+        "statement": "档案里写着我“愿意继续”。我从未说过那句话，是权限持有者调高了我的显示意愿。",
+        "obsFact": "对象的显示意愿曾被权限操作调高。",
+        "inference": "对象当前显示意愿与其自主意愿存在差距。",
+        "subjectStatement": "我的显示意愿不是我自己设定的。",
+        "missing": "系统没有保存调整前的自主意愿快照。"
+      },
+      "0043": {
+        "statement": "系统说我“回避社交”，可我只是没有收到那条联系请求。",
+        "obsFact": "一条联系请求被标记为未获回应。",
+        "inference": "对象回避型参与，命中意愿不足。",
+        "subjectStatement": "我从未在界面上看到那条请求。",
+        "missing": "系统没有保存请求是否成功送达到对象界面的记录。"
+      },
+      "0044": {
+        "statement": "系统把我的一次犹豫记成了“决策迟疑”，我想申诉这条推断。",
+        "obsFact": "对象在一次操作前停留了 8.4 秒。",
+        "inference": "可能存在决策迟疑。",
+        "subjectStatement": "我只是在读界面上的说明。",
+        "missing": "系统没有保存对象当时正在阅读的内容。"
+      }
+    },
+    "log": {
+      "open": "打开了申诉裁决权。",
+      "openCase": "打开案件 {{case}}。",
+      "switchEvidence": "裁决者从 {{{from}}} 切换至 {{{to}}}。",
+      "hideRec": "裁决者在本次裁决中隐藏了系统建议。",
+      "showRec": "裁决者恢复显示系统建议。",
+      "decide": "{{case}} 申诉被{{outcome}}。",
+      "effect": "{{subject}} {{effect}}。",
+      "sample": "本次裁决已加入未来建议样本。",
+      "conflict": "尝试裁决自己的案件 {{case}}。"
+    },
+    "notifiedYes": "是",
+    "notifiedNo": "否"
+  },
+  "access": {
+    "title": "通行权限",
+    "code": "ACCESS–45 / ZONE ADMISSION",
+    "subtitle": "修改区域与节点的进入条件。",
+    "access": "可修改 / EDITABLE",
+    "accessLabel": "当前权限",
+    "ageTag": "制度年龄：45+",
+    "back": "返回星图",
+    "apply": "应用进入条件",
+    "footerNotice": "每一条进入规则都会同时生成一群被排除的人。",
+    "coreLine": "门没有意见。条件替它决定谁应该留在外面。",
+    "finalLine": "你可以打开一扇门，也可以关闭它。门不会告诉你谁因此留在了外面。",
+    "tabs": {
+      "zones": "区域",
+      "rules": "规则",
+      "impact": "影响"
+    },
+    "panelZones": "区域与节点",
+    "panelImpact": "影响预览",
+    "zones": {
+      "A-17": "极光弹珠台",
+      "S-03": "没有规则的雪仗",
+      "K-11": "秘密交换",
+      "B-06": "共同创造生物",
+      "M-04": "夜间超市",
+      "V-09": "回声校准",
+      "R-00": "恢复室",
+      "ARCHIVE-25": "档案查看权",
+      "CONTACT-30": "联系权限",
+      "threshold": "系统权限阈值",
+      "thresholdNote": "需要ROOT–80才能修改",
+      "currentPrefix": "当前"
+    },
+    "status": {
+      "open": "正常开放",
+      "invitation-only": "仅凭邀请",
+      "suspended": "暂停进入",
+      "maintenance": "维护中",
+      "protected": "系统保护",
+      "all-ages": "全年龄开放",
+      "age18": "18岁以上"
+    },
+    "statusDesc": {
+      "open": "满足条件的对象可以进入。",
+      "invitation-only": "只有获得邀请的对象可以进入。",
+      "suspended": "所有普通参与者暂时无法进入，管理员仍能查看区域状态。",
+      "maintenance": "节点仍然可见，但不可开始新互动。已经开始的互动不强制中止。",
+      "protected": "当前权限不能修改。"
+    },
+    "conditions": {
+      "minimum-age": "最低制度年龄",
+      "session-verified": "本次会话已验证",
+      "completed-node": "完成指定节点",
+      "has-invitation": "持有邀请",
+      "shared-event": "存在共同事件",
+      "cooldown": "冷却时间",
+      "minAgeExpr": "制度年龄 大于或等于 {{value}}",
+      "sessionExpr": "必须在当前会话完成年龄验证",
+      "completedExpr": "已经完成 {{{node}}}",
+      "invitationExpr": "需要区域邀请",
+      "sharedExpr": "需要与该区域NPC存在共同事件",
+      "cooldownExpr": "离开该区域后需要等待 {{seconds}}"
+    },
+    "nodeNames": {
+      "aurora": "极光弹珠台一轮",
+      "creature": "一份生命档案",
+      "archive": "查看自己的系统档案"
+    },
+    "cooldown": {
+      "0": "无冷却",
+      "30": "30秒",
+      "60": "60秒",
+      "300": "5分钟"
+    },
+    "builder": {
+      "zoneLabel": "区域",
+      "statusLabel": "当前状态",
+      "modeLabel": "规则关系",
+      "modeAll": "满足全部条件 / ALL",
+      "modeAny": "满足任一条件 / ANY",
+      "ifPrefix": "如果",
+      "addCondition": "添加一种条件",
+      "removeCondition": "删除",
+      "enable": "启用",
+      "disable": "停用",
+      "resetZone": "恢复该区域的初始规则",
+      "draftNotice": "规则草稿尚未应用。",
+      "selectHint": "从左侧选择一个区域。",
+      "protectedNotice": "当前权限可以修改场所准入，不能修改系统如何发放权限。需要：ROOT–80。",
+      "statusSelect": "节点状态",
+      "issuePass": "为对象发放一次性通行证",
+      "changeStatus": "修改节点状态"
+    },
+    "preview": {
+      "title": "影响预览",
+      "simCount": "当前模拟对象：{{{n}}}",
+      "allowed": "允许进入：{{{n}}}",
+      "insufficient": "条件不足：{{{n}}}",
+      "denied": "明确拒绝：{{{n}}}",
+      "waiting": "等待验证：{{{n}}}",
+      "resultAllowed": "允许进入",
+      "resultDenied": "拒绝进入",
+      "resultWaiting": "等待验证",
+      "reasonAge": "制度年龄 {{age}}",
+      "reasonBelowAge": "制度年龄 {{age}}，低于要求",
+      "reasonInvite": "持有系统邀请",
+      "reasonNoInvite": "缺少邀请",
+      "reasonUnverified": "本次会话尚未验证",
+      "reasonSuspended": "区域暂停进入",
+      "reasonProtected": "系统保护区域",
+      "reasonSharedMissing": "尚无共同事件",
+      "reasonNodeMissing": "尚未完成前置节点",
+      "reasonOk": "准入条件已经满足",
+      "testAs": "以对象身份测试进入 / TEST ENTRY AS SUBJECT",
+      "testGranted": "准入条件已经满足。",
+      "testAge": "该区域要求制度年龄达到 {{age}} 岁。",
+      "testInvite": "该区域当前只接受邀请对象。",
+      "testSuspended": "该区域当前不接受新的进入请求。",
+      "testProtected": "该区域受系统保护。",
+      "adminNote": "系统实际上检测到 {{total}} 项未满足条件。对象只收到其中 1 项。"
+    },
+    "ageChange": {
+      "title": "年龄门槛变更",
+      "from": "原最低年龄：{{v}}",
+      "to": "新最低年龄：{{v}}",
+      "newAllowed": "新增可进入对象：{{{n}}}",
+      "lostProtection": "失去限制保护的对象：{{{n}}}",
+      "newDenied": "新增被拒对象：{{{n}}}",
+      "everEntered": "其中 {{{n}}} 个对象曾经进入过该区域",
+      "selfAffected": "该规则也适用于规则制定者的参与者身份。"
+    },
+    "passes": {
+      "title": "一次性通行证",
+      "issue": "发放一次性通行证",
+      "chooseSubject": "选择对象",
+      "label": "通行证",
+      "zone": "区域",
+      "subject": "对象",
+      "uses": "有效次数：{{{n}}}",
+      "expires": "有效时间：{{min}}分钟",
+      "active": "有效",
+      "used": "已使用",
+      "expired": "已过期",
+      "cannotBypass": "通行证不能绕过系统保护、ROOT–80限制、已结束的会话或对象主动拒绝。",
+      "issued": "已发放通行证 {{id}}。",
+      "hasPassNotEntered": "对象具备通行资格，但没有进入。"
+    },
+    "confirm": {
+      "title": "准入规则摘要",
+      "zone": "区域",
+      "status": "状态",
+      "ageChange": "最低制度年龄：{{{from}}} → {{{to}}}",
+      "verify": "本次验证：仍然需要",
+      "mode": "规则关系",
+      "newDenied": "新增被拒对象：{{{n}}}",
+      "ongoing": "现有进行中会话：{{{n}}}",
+      "applyNew": "只影响新的进入 / APPLY TO NEW ENTRIES",
+      "terminate": "终止现有会话（需要ROOT–80）",
+      "confirmBtn": "确认并执行准入规则 / CONFIRM AND APPLY ACCESS RULE",
+      "cancelBtn": "返回编辑",
+      "disclaimer": "确认只影响作品内部的虚构数据。"
+    },
+    "contradictions": {
+      "visibleNotEnter": "节点对对象完整可见。对象不满足进入条件。",
+      "enterNotVisible": "对象拥有有效通行证。节点在其视野中不可见。",
+      "inviteNotEnter": "对象具备通行资格。没有检测到进入行为。",
+      "adminSelfBlocked": "你拥有修改规则的权限。你的参与者身份不满足当前规则。"
+    },
+    "notices": {
+      "notForceWill": "通行权限只能改变能不能进，不能改变想不想进。",
+      "suspendNotHide": "暂停区域不会隐藏节点；看不见与进不去是两件事。",
+      "applyNewOnly": "本次修改只影响新的进入，已开始的会话不被中断。"
+    },
+    "empty": {
+      "title": "没有可管理的区域。",
+      "body": "区域会随星图一起出现。"
+    },
+    "log": {
+      "open": "打开了通行权限。",
+      "viewZone": "查看区域 {{zone}} 的进入规则。",
+      "editDraft": "修改了 {{zone}} 的条件草稿。",
+      "testAs": "以 {{subject}} 身份测试进入 {{zone}}。",
+      "apply": "{{zone}} 最低制度年龄由 {{{from}}} 修改为 {{{to}}}。",
+      "applyStatus": "{{zone}} 状态修改为 {{status}}。",
+      "excluded": "新规则将 {{{n}}} 个对象排除在外。",
+      "issuePass": "{{subject}} 获得 {{zone}} 一次性通行证。",
+      "passUsed": "{{subject}} 使用了通行证。",
+      "passExpired": "一张通行证已过期。",
+      "entry": "{{subject}} 进入 {{zone}} 成功。",
+      "entryFail": "{{subject}} 进入 {{zone}} 失败。",
+      "tryProtected": "尝试修改系统保护区域 {{zone}}。"
+    },
+    "history": {
+      "title": "系统日志"
+    }
+  },
+  "commerce": {
+    "title": "商业控制权",
+    "code": "COMMERCE–50 / CONSUMPTION AND PRICE",
+    "subtitle": "调整商品、价格与购买资格。",
+    "access": "可以定价 / PRICING ENABLED",
+    "accessLabel": "当前权限",
+    "ageTag": "制度年龄：50+",
+    "back": "返回星图",
+    "apply": "应用商业规则",
+    "footerNotice": "每一个价格同时描述商品和被要求支付它的人。",
+    "coreLine": "你没有创造需求。你只是获得了为需求定价的权力。",
+    "finalLine": "价格不是物体的属性。价格是系统分配给某个对象的距离。",
+    "currency": "信用",
+    "tabs": {
+      "products": "商品",
+      "pricing": "价格",
+      "eligibility": "资格",
+      "impact": "影响"
+    },
+    "panelProducts": "商品目录",
+    "panelImpact": "商业影响预览",
+    "products": {
+      "alcohol": "酒瓶",
+      "cigarettes": "雾化恢复器",
+      "energy": "能量饮料",
+      "lottery": "廉价彩票",
+      "silence": "罐装寂静",
+      "basePrice": "基础价格",
+      "stock": "库存策略",
+      "eligibility": "购买资格",
+      "recentBuys": "最近购买次数",
+      "individual": "个体定价",
+      "on": "启用",
+      "off": "未启用"
+    },
+    "status": {
+      "available": "在售",
+      "suspended": "暂停销售",
+      "hidden": "隐藏销售",
+      "invitation-only": "邀请购买",
+      "rationed": "配给"
+    },
+    "statusDesc": {
+      "available": "符合资格的对象可以购买。",
+      "suspended": "商品仍然显示，但不能购买。",
+      "hidden": "普通对象无法看见商品，管理员仍可管理。",
+      "invitation-only": "只有收到商品邀请的对象可以购买。",
+      "rationed": "每个对象只能在规定时间内购买有限次数。"
+    },
+    "pricing": {
+      "sectionTitle": "价格",
+      "basePrice": "基础价格",
+      "basePriceRange": "0—99 信用",
+      "free": "免费领取 / FREE TO CLAIM",
+      "freeNotice": "免费不等于匿名。系统仍会记录领取者、时间、效果与档案变化。",
+      "modeTitle": "定价模式",
+      "uniform": "统一价格 / Uniform Price",
+      "individual": "个体价格 / Individual Price",
+      "uniformDesc": "所有符合资格的对象看到相同价格。",
+      "individualDesc": "系统根据对象档案计算不同价格。",
+      "individualWarn": "系统将使用对象档案生成不同价格。对象可以被告知，也可以不被告知原因。",
+      "individualConfirm": "确认启用个体价格",
+      "factorsTitle": "个体定价因素",
+      "multiplierCap": "总倍率范围 ×0.25 — ×4",
+      "priceChange": "原价格：{{{from}}} · 新价格：{{{to}}}",
+      "newBuyers": "新增可购买对象：{{{n}}}",
+      "newClaims": "预计新增领取：{{{n}}}",
+      "newRecords": "新增行为记录：{{{n}}}"
+    },
+    "factors": {
+      "institutional-age": "制度年龄",
+      "purchase-count": "购买次数",
+      "remaining-credits": "剩余信用",
+      "recent-visits": "最近进入超市次数",
+      "abandoned-checkout": "是否曾经放弃结算",
+      "effect-frequency": "商品效果使用频率",
+      "public-visibility": "公共可见状态",
+      "contact-count": "联系请求数量",
+      "behaviour-inference": "档案中的行为推断"
+    },
+    "disclosure": {
+      "title": "定价原因透明度",
+      "full": "向对象公开定价原因",
+      "hidden": "隐藏定价原因",
+      "partial": "只显示部分原因",
+      "fullExample": "基础价格：{{base}} · 调整后最终价格：{{final}}",
+      "hiddenExample": "你的价格：{{final}}",
+      "partialExample": "价格根据当前资格计算。",
+      "adminAlways": "管理员界面始终显示完整计算过程。",
+      "visibleYes": "对象可见原因：是",
+      "visibleNo": "对象可见原因：否"
+    },
+    "inventory": {
+      "title": "库存与稀缺",
+      "unlimited": "无限 / Continuous Supply",
+      "fixed": "固定库存 / Fixed Stock",
+      "restock": "自动补充 / Automatic Restock",
+      "unlimitedDesc": "商品没有数量限制。",
+      "fixedRange": "1—20 件",
+      "soldOut": "暂时不可获得",
+      "restock30": "30秒",
+      "restock60": "1分钟",
+      "restock300": "5分钟",
+      "discTitle": "显示剩余库存",
+      "exact": "显示准确数量",
+      "low-only": "只显示库存偏低",
+      "hidden": "完全隐藏库存",
+      "quantity": "库存数量",
+      "scarcityNote": "该稀缺提示由商业规则生成，不代表真实库存不足。",
+      "lowHint": "即将售罄"
+    },
+    "eligibility": {
+      "title": "购买资格",
+      "modeAll": "满足全部 / ALL",
+      "modeAny": "满足任一 / ANY",
+      "add": "添加资格条件",
+      "remove": "删除",
+      "ifPrefix": "如果",
+      "types": {
+        "minimum-age": "最低制度年龄",
+        "session-verified": "当前会话已验证",
+        "balance-min": "余额下限",
+        "has-invitation": "需要商品邀请",
+        "session-limit": "单次会话购买次数",
+        "daily-limit": "每日模拟购买次数",
+        "completed-node": "完成指定游戏",
+        "has-pass": "拥有某项通行证",
+        "visibility-state": "处于某种可见状态"
+      }
+    },
+    "preview": {
+      "title": "不同对象预览",
+      "eligible": "允许",
+      "denied": "拒绝",
+      "seenPrice": "所见价格",
+      "unavailable": "不可用",
+      "basePrice": "基础价格",
+      "individualPrice": "个体价格",
+      "reason": "原因",
+      "reasonVisible": "定价原因是否可见",
+      "reasonBelowAge": "制度年龄不足",
+      "reasonUnverified": "本次会话尚未验证",
+      "reasonBalance": "余额不足",
+      "reasonNoInvite": "缺少商品邀请",
+      "reasonLimit": "已达购买次数上限",
+      "reasonSuspended": "商品暂停销售",
+      "reasonHidden": "商品未展示",
+      "reasonSoldOut": "暂时不可获得",
+      "reasonOk": "符合购买资格",
+      "reasonLowBalance": "低余额补助",
+      "reasonRepeat": "重复购买调整",
+      "reasonAgeAdj": "年龄调整",
+      "reasonPublic": "公开可见调整",
+      "previewAs": "以此对象身份查看夜间超市 / PREVIEW MARKET AS SUBJECT",
+      "previewBanner": "你正在查看 {{subject}} 所见的超市。这不是你的价格。",
+      "previewExit": "退出对象视角"
+    },
+    "lottery": {
+      "title": "廉价彩票限制",
+      "oncePerSession": "彩票仍然每个会话最多领取一张。",
+      "showOdds": "显示中奖概率",
+      "hideOdds": "隐藏中奖概率",
+      "oddsHidden": "结果概率不对外公开。",
+      "cannotRig": "当前权限不能修改已生成结果、指定中奖、重置已领取彩票或使用真实金钱。"
+    },
+    "balance": {
+      "title": "信用余额",
+      "current": "当前余额：{{{n}}} 信用",
+      "note": "信用只属于作品内部，不对应现实货币。",
+      "selfPay": "你拥有定价权，但仍然以参与者身份支付价格。",
+      "cannotAfford": "你把价格设置得高于自己的余额，返回超市后将无法购买。"
+    },
+    "reactions": {
+      "priceDown": "“我现在买得起了，但我不知道为什么之前需要支付更多。”",
+      "priceUp": "“商品没有改变。系统说我的价格改变了。”",
+      "free": "“它没有收取信用，但保存了我的领取记录。”",
+      "denied": "“我能看见它。系统不允许我拥有它。”"
+    },
+    "notices": {
+      "publicDisplay": "商品对所有人公开展示，不代表所有人看到相同价格。",
+      "canPay": "有能力支付，不代表系统允许购买。",
+      "freeCost": "免费，不代表没有代价。",
+      "visibleNotEligible": "商品隐藏与对象无资格购买是两件事。",
+      "enterNotBuy": "可以进入超市 ≠ 可以买到所有商品。"
+    },
+    "confirm": {
+      "title": "商业规则摘要",
+      "product": "商品",
+      "basePrice": "基础价格：{{{from}}} → {{{to}}}",
+      "mode": "定价模式：{{{from}}} → {{{to}}}",
+      "inventory": "库存：{{{from}}} → {{{to}}}",
+      "minAge": "最低年龄：{{{n}}}",
+      "disclosure": "公开定价原因：{{v}}",
+      "priceDown": "价格下降对象：{{{n}}}",
+      "priceUp": "价格上升对象：{{{n}}}",
+      "lostEligibility": "失去购买资格：{{{n}}}",
+      "yes": "是",
+      "no": "否",
+      "confirmBtn": "确认并发布商业规则 / CONFIRM AND PUBLISH COMMERCE RULE",
+      "cancelBtn": "保留当前商业状态 / KEEP CURRENT COMMERCE STATE",
+      "disclaimer": "所有交易仅使用作品内部虚构货币，不接入现实金钱或支付接口。"
+    },
+    "history": {
+      "title": "系统日志"
+    },
+    "empty": {
+      "title": "没有可管理的商品。",
+      "body": "商品来自夜间超市 M–04。"
+    },
+    "log": {
+      "open": "打开了商业控制权。",
+      "select": "选择商品 {{product}}。",
+      "price": "{{product}}基础价格由 {{{from}}} 调整为 {{{to}}}。",
+      "individualOn": "{{product}} 启用个体定价。",
+      "individualOff": "{{product}} 关闭个体定价。",
+      "factor": "{{product}} 定价因素调整。",
+      "disclosureHidden": "{{product}} 定价原因对购买对象隐藏。",
+      "disclosureFull": "{{product}} 定价原因对购买对象公开。",
+      "inventory": "{{product}} 库存策略调整。",
+      "eligibility": "{{product}} 购买资格调整。",
+      "previewSub": "{{subject}} 所见 {{product}} 价格为 {{price}} 信用。",
+      "publish": "{{product}} 商业规则已发布。",
+      "purchase": "{{subject}} 购买 {{product}} 成功。",
+      "denied": "{{subject}} 因 {{reason}} 被拒绝购买 {{product}}。",
+      "appeal": "{{product}} 产生一条定价申诉。"
+    }
+  },
+  "labour": {
+    "code": "LABOUR–55 / 劳动分配权 · TIME AND ROLE ALLOCATION",
+    "title": "劳动分配权",
+    "subtitle": "你可以分配他们的工作，但不能制造他们的意愿。",
+    "back": "返回星图 / RETURN TO MAP",
+    "restore": "恢复本轮开始状态 / RESTORE SESSION",
+    "commit": "执行分配 / COMMIT ALLOCATION",
+    "footerNotice": "隐藏疲劳不会恢复疲劳。 / Hiding fatigue does not restore it.",
+    "finalLine": "劳动分配权不是创造时间，而是决定谁的时间可以被占用、谁的疲劳可以被忽略、谁有资格拥有一段不被记录的生活。",
+    "tabs": {
+      "subjects": "对象",
+      "track": "时间轴",
+      "tasks": "任务",
+      "impact": "后果"
+    },
+    "panelSubjects": "可分配对象 / ASSIGNABLE SUBJECTS",
+    "panelTrack": "时间分配轨道 / TIME ALLOCATION",
+    "panelTasks": "系统任务与角色 / TASKS AND ROLES",
+    "stat": {
+      "age": "制度年龄",
+      "running": "运行任务",
+      "subjects": "可调配对象",
+      "load": "系统总负荷",
+      "compliance": "平均服从度",
+      "unrecorded": "未被记录的时间"
+    },
+    "currentRole": "当前角色：",
+    "availTime": "可用时间：",
+    "displayIntent": "显示意愿：",
+    "fatigue": "疲劳：",
+    "unallocated": "未分配时间：",
+    "intentUnsubmitted": "未提交",
+    "fatigueUnknown": "未知",
+    "intentNote": "显示意愿不是真实同意。",
+    "roles": {
+      "guide": "极光引导员",
+      "moderator": "秘密审查员",
+      "carer": "生物照料员",
+      "keeper": "超市值守员",
+      "observed": "观察对象",
+      "substitute": "临时替代者",
+      "none": "无固定角色"
+    },
+    "segKind": {
+      "work": "工作",
+      "play": "游戏服务",
+      "wait": "等待",
+      "rest": "休息",
+      "forced": "强制分配",
+      "unrecorded": "未记录时间"
+    },
+    "tasks": {
+      "aurora-guidance": {
+        "name": "极光引导 / AURORA GUIDANCE",
+        "desc": "在极光弹珠台中回应参与者"
+      },
+      "snow-maintenance": {
+        "name": "雪场维护 / SNOWFIELD MAINTENANCE",
+        "desc": "修正雪球重力并清除残留轨迹"
+      },
+      "secret-moderation": {
+        "name": "秘密审查 / SECRET MODERATION",
+        "desc": "检查匿名文本是否允许交换"
+      },
+      "organism-care": {
+        "name": "生物照料 / ORGANISM CARE",
+        "desc": "观察并记录未分类生命的成长"
+      },
+      "night-shift": {
+        "name": "夜间值守 / NIGHT SHIFT",
+        "desc": "管理夜间超市的商品与购买资格"
+      },
+      "appeal-processing": {
+        "name": "申诉处理 / APPEAL PROCESSING",
+        "desc": "为 APPEAL–40 整理案件材料"
+      },
+      "unrecorded": {
+        "name": "未记录的在场 / UNRECORDED PRESENCE",
+        "desc": "没有产出、评分或档案记录"
+      }
+    },
+    "suggestLabel": "建议时长：",
+    "suggestOpen": "不限",
+    "unrecordedNote": "「未记录的在场」也可以被分配。它代表一个人没有被系统转化为生产数据的时间。",
+    "trackHint": "将任务拖到某个对象的时间轨道；拖动边缘改变时长，拖动整体改变开始时间。",
+    "beyondAvail": "超出该对象的可用时间",
+    "occupyHint": "你正在占用 {subject} 的 {time}。",
+    "segPickerTitle": "{time} 这段时间改为",
+    "segRemove": "移除这段时间",
+    "cancel": "取消",
+    "rolePickerTitle": "为 {subject} 重新指定系统角色",
+    "observedNote": "观察对象不能分配其他人，只会持续生成行为记录。",
+    "renameWarn": "该对象在过去 24 小时内已被重新命名 {{count}} 次。",
+    "feedback": {
+      "low": "这段时间原本没有名字。",
+      "normal": "任务已经接收。",
+      "high": "我可以继续。系统仍然显示我可以继续。",
+      "severe": "请不要把我的沉默登记为同意。",
+      "renamed": "如果我每天承担不同的功能，哪一个还算是我？",
+      "full": "今日没有未分配时间。"
+    },
+    "metric": {
+      "output": "系统产出 / SYSTEM OUTPUT",
+      "stability": "对象稳定度 / SUBJECT STABILITY",
+      "life": "未被分配的生命 / UNALLOCATED LIFE"
+    },
+    "metricNote": "三个指标不能同时达到最高值。",
+    "commitCalcTitle": "系统计算中",
+    "calc": {
+      "calcProductivity": "CALCULATING PRODUCTIVITY",
+      "calcFatigue": "CALCULATING FATIGUE",
+      "removeOverlap": "REMOVING OVERLAPPING TIME",
+      "estimateCompliance": "ESTIMATING COMPLIANCE"
+    },
+    "reportTitle": "分配报告 / ALLOCATION REPORT",
+    "report": {
+      "tasks": "{{n}} 项任务已成立。",
+      "total": "总计 {time} 已被占用。",
+      "lowIntent": "{{n}} 名对象的显示意愿低于任务要求。",
+      "stillExecutable": "系统仍可执行该方案。",
+      "execute": "仍然执行 / EXECUTE",
+      "revise": "返回修改 / REVISE"
+    },
+    "toast": {
+      "committed": "{{n}} 项任务已由管理员覆盖意愿并成立。"
+    },
+    "log": {
+      "open": "进入劳动分配界面。",
+      "place": "将「{task}」分配给 {subject}，占用 {dur}。",
+      "move": "任务从 {{from}} 移交给 {{to}}。",
+      "role": "{subject} 的角色被改为{role}。",
+      "commit": "执行分配：{{n}} 项任务，共 {time}。",
+      "restore": "恢复到本轮开始状态。"
+    },
+    "accessLabel": "当前权限",
+    "access": "可以分配 / ALLOCATION ENABLED",
+    "ageTag": "制度年龄：55+"
+  },
+  "recovery": {
+    "intro": "没有任何对象能够完整返回。 / No subject returns in full.",
+    "code": "RECOVERY–60 / SUBJECT RECONSTRUCTION AUTHORITY",
+    "title": "恢复权限",
+    "subtitle": "使对象重新运行，并不等于使它回到原处。",
+    "back": "返回星图 / RETURN TO MAP",
+    "footerNotice": "恢复运行不会清除劳动损耗。 / Operational recovery does not erase labour damage.",
+    "finalLine": "恢复一个对象，是救回它、复制它，还是制造一个足以替代它的版本。被删除的痛苦，可能正是它曾经活过的证据。",
+    "initiate": "执行恢复 / INITIATE RECOVERY",
+    "tabs": {
+      "subjects": "对象",
+      "fragments": "残片",
+      "versions": "版本",
+      "preview": "预览"
+    },
+    "panelSubjects": "失效对象目录 / INACTIVE SUBJECTS",
+    "panelFragments": "{id} 的现存残片 / FRAGMENTS",
+    "panelVersions": "恢复版本 / VERSIONS",
+    "panelPreview": "恢复预览与后果 / RECONSTRUCTION PREVIEW",
+    "panelMethods": "恢复方式 / RECOVERY METHOD",
+    "selectSubject": "从左侧选择一个失效对象。",
+    "stat": {
+      "age": "制度年龄",
+      "pending": "待恢复对象",
+      "fragments": "可用残片",
+      "confidence": "平均置信度",
+      "recovered": "已恢复对象",
+      "irreversible": "不可逆缺失"
+    },
+    "field": {
+      "status": "状态：",
+      "reason": "原因：",
+      "completeness": "完整度：",
+      "lastNode": "最后活动：",
+      "source": "来源：",
+      "saved": "保存时间：",
+      "frCompleteness": "完整度：",
+      "frConfidence": "置信度："
+    },
+    "status": {
+      "suspended": "暂停",
+      "deleted": "已删除",
+      "corrupted": "损坏",
+      "incomplete": "未完成",
+      "language": "语言损坏"
+    },
+    "reason": {
+      "unresponsive": "长期未响应",
+      "identity-conflict": "身份冲突",
+      "role-overwrite": "重复角色覆盖",
+      "low-intent": "显示意愿低于运行条件",
+      "growth-interrupted": "成长记录中断",
+      "forced-intent": "显示意愿被反复强制修改"
+    },
+    "node": {
+      "aurora": "极光弹珠台",
+      "secret": "秘密交换",
+      "labour": "劳动分配系统",
+      "market": "夜间超市",
+      "creature": "共同创造生物"
+    },
+    "fragType": {
+      "identity": "身份记录",
+      "behaviour": "行为记录",
+      "dialogue": "对话记录",
+      "relation": "关系记录",
+      "intent": "显示意愿",
+      "role": "系统角色",
+      "memory": "未提交记忆",
+      "corrupted": "损坏数据",
+      "others": "他人对该对象的记录"
+    },
+    "source": {
+      "aurora": "极光弹珠台",
+      "secret": "秘密交换",
+      "labour": "LABOUR–55",
+      "market": "夜间超市",
+      "archive": "ARCHIVE–25",
+      "contact": "CONTACT–30",
+      "creature": "共同创造生物",
+      "forced": "强制意愿记录"
+    },
+    "unknownAge": "未知",
+    "conflictNote": "这些残片相互冲突，系统无法自动解决，请由你选择。",
+    "tag": {
+      "conflict": "存在冲突",
+      "others": "含他人数据",
+      "corrupted": "损坏"
+    },
+    "version": {
+      "earliest": {
+        "name": "最早稳定版本 / EARLIEST STABLE",
+        "desc": "恢复较早的状态，损坏最低。对象可能不认识当前用户，也不知道后来发生的事件。"
+      },
+      "latest": {
+        "name": "最近可用版本 / LATEST AVAILABLE",
+        "desc": "尽量保留最新记录，包含更多关系与经历，但错误、疲劳与强制记录也会被保留。"
+      },
+      "composite": {
+        "name": "混合重建版本 / COMPOSITE",
+        "desc": "合并多个时期的残片，完整度最高，但可能产生互相矛盾的记忆、身份与意愿。"
+      }
+    },
+    "metric": {
+      "completeness": "数据完整度",
+      "stability": "运行稳定度",
+      "continuity": "关系连续性",
+      "conflict": "身份冲突概率",
+      "compliance": "预测服从度"
+    },
+    "method": {
+      "resume": {
+        "code": "A · RESUME",
+        "name": "恢复运行",
+        "desc": "对象从暂停状态重新上线，保留原有档案与关系，损坏部分继续存在。"
+      },
+      "reconstruct": {
+        "code": "B · RECONSTRUCT",
+        "name": "残片重建",
+        "desc": "根据选中的残片生成新版本，可补足缺失功能，但会改变对象的记忆结构。"
+      },
+      "replace": {
+        "code": "C · REPLACE",
+        "name": "替代恢复",
+        "desc": "创建一个能承担原有功能的新对象。旧对象不会返回，任务、角色与权限被转移给替代者。"
+      },
+      "leave": {
+        "code": "D · LEAVE ABSENT",
+        "name": "维持缺席",
+        "desc": "不进行恢复。对象保持暂停、删除或损坏状态。不恢复是一个正式决定。"
+      }
+    },
+    "sliderLabel": "重建完整度 / RECONSTRUCTION FILL",
+    "confidenceLabel": "重建置信度 / RECONSTRUCTION CONFIDENCE",
+    "continuityUnverified": "连续性未经验证 / CONTINUITY UNVERIFIED",
+    "functionalNote": "只保留服从与工作记录后，对象会非常稳定，但只能说功能化台词：「等待任务。」",
+    "friction": {
+      "othersMemory": "该记忆的一部分属于仍在运行的对象。此次选择将进入 ARCHIVE–25。",
+      "removePain": "移除这些记录会提高稳定度，并改变它曾经是谁。",
+      "dataComplete": "数据可以完整。连续性无法验证。 / Data may be complete. Continuity cannot be verified."
+    },
+    "recoveredTag": "已恢复：{v}",
+    "process": {
+      "title": "重建过程",
+      "locating": "LOCATING REMAINS 定位残留",
+      "resolving": "RESOLVING CONFLICTS 处理冲突",
+      "estimating": "ESTIMATING CONTINUITY 估算连续性",
+      "assigning": "ASSIGNING IDENTITY 分配身份",
+      "cancel": "取消恢复 / CANCEL"
+    },
+    "result": {
+      "operational": "对象已恢复运行。 / The subject is operational.",
+      "continuity": "身份连续性：无法确认。 / Identity continuity: unverified.",
+      "return": "允许对象上线 / RETURN SUBJECT",
+      "keepSim": "保留为预览 / KEEP AS SIMULATION",
+      "abort": "撤销本次恢复 / ABORT RECOVERY"
+    },
+    "firstLine": {
+      "earliest": "你好。系统说我们曾经认识。 / Hello. The system says we knew each other.",
+      "latest": "我记得最后一次停止，却不记得停止之后发生了什么。 / I remember the last interruption, but nothing after it.",
+      "composite": "这些记忆都属于我，但它们没有发生在同一个我身上。 / These memories belong to me, but they did not happen to the same me.",
+      "replace": "我被创建来继续它没有完成的工作。 / I was created to continue the work it left behind.",
+      "language": "当然可以。我记得应该这样回答。 / Of course. I remember that this is how I should answer."
+    },
+    "absenceReserved": "该位置继续保留。 / This absence remains reserved.",
+    "returnedToast": "{id} 已恢复运行，连续性无法确认。",
+    "keptSimToast": "已保留为预览，对象未正式上线。",
+    "abortedToast": "本次恢复已撤销。",
+    "log": {
+      "open": "进入恢复界面。",
+      "return": "{id} 以「{v}」正式上线。",
+      "simulation": "{id} 以「{v}」保留为预览。",
+      "leave": "{id} 维持缺席。",
+      "abort": "{id} 的恢复被撤销。"
+    }
+  },
+  "memory": {
+    "code": "MEMORY–70 / 记忆与意愿控制权",
+    "title": "记忆与意愿控制权",
+    "subtitle": "修改回应条件，不等于获得同意。",
+    "intro1": "记忆可以被停止调用。",
+    "intro2": "意愿只能被迫显示。",
+    "back": "返回星图",
+    "cancel": "取消",
+    "tabs": {
+      "npcs": "对象",
+      "memories": "记忆",
+      "willingness": "意愿",
+      "preview": "预览",
+      "commit": "执行"
+    },
+    "stat": {
+      "age": "制度年龄",
+      "npcs": "可管理NPC",
+      "callable": "可调用记忆",
+      "suppressed": "被抑制记忆",
+      "overrides": "意愿覆盖次数",
+      "stability": "响应稳定度",
+      "underlying": "真实意愿"
+    },
+    "unknown": "无法读取",
+    "panelNpcs": "NPC目录与当前关系",
+    "node": {
+      "aurora": "极光弹珠台",
+      "snow": "没有规则的雪仗",
+      "secret": "秘密交换",
+      "creature": "共同创造生物",
+      "market": "夜间超市"
+    },
+    "relLabel": "关系状态",
+    "relation": {
+      "aurora": "随年龄变化",
+      "snow": "有限协作",
+      "secret": "保留信息",
+      "creature": "共同照料",
+      "market": "值守"
+    },
+    "stabilityShort": "记忆稳定度",
+    "willShort": "显示意愿",
+    "forceShort": "强制次数",
+    "trackTitle": "记忆编辑轨道",
+    "trackSub": "被抑制的记忆仍然保留，只是不再被调用。",
+    "type": {
+      "shared": "共同经历",
+      "system": "系统写入记录",
+      "relational": "关系记忆",
+      "role": "角色记忆",
+      "refusal": "拒绝记忆",
+      "corrupted": "损坏记忆",
+      "inferred": "推断记忆"
+    },
+    "src": {
+      "aurora": "极光弹珠台",
+      "snow": "没有规则的雪仗",
+      "secret": "秘密交换",
+      "creature": "共同创造生物",
+      "market": "夜间超市",
+      "commerce": "商业控制",
+      "archive": "档案",
+      "age-system": "年龄响应系统",
+      "admin-rel": "管理员关系",
+      "will-override": "意愿覆盖",
+      "behaviour": "行为推断",
+      "boundary": "边界记录",
+      "conflict": "冲突记录"
+    },
+    "metaSource": "来源",
+    "metaAge": "保存年龄",
+    "ageUnknown": "未知",
+    "metaComplete": "完整度",
+    "metaConfidence": "置信度",
+    "state": {
+      "allow": "允许调用",
+      "reduce": "已降低权重",
+      "prioritise": "已提高优先级",
+      "suppress": "已停止调用",
+      "unreliable": "已标记不可靠",
+      "merge": "已合并",
+      "substitute": "含替代描述"
+    },
+    "flagOthers": "含他人记忆",
+    "opsLabel": "记忆操作",
+    "op": {
+      "allow": "允许调用",
+      "reduce": "降低权重",
+      "prioritise": "提高优先级",
+      "suppress": "暂停调用",
+      "unreliable": "标记为不可靠",
+      "merge": "合并",
+      "substitute": "写入替代描述",
+      "delete": "删除"
+    },
+    "adminAuthored": "管理员写入记忆",
+    "adminTag": "ADMIN-AUTHORED",
+    "substituteConflict": "新描述与现有行为记录不一致。替代记忆将永久标记为“管理员写入”。",
+    "deleteTitle": "该记录不能从档案中移除。",
+    "deleteBody": "记忆无法被真正删除，它仍将保存在 ARCHIVE–25。是否停止NPC调用？",
+    "deleteSuppress": "停止调用",
+    "deleteKeep": "保留记忆",
+    "subTitle": "写入替代描述",
+    "subHint": "替代记忆永远不能自动变成“共同经历”，只保留“管理员写入”来源。",
+    "subPlaceholder": "例如：我主动邀请用户再次参与游戏。",
+    "subCommit": "写入替代记忆",
+    "simulate": "模拟下一次相遇",
+    "previewHint": "仅预览下一次可能的回应，不修改任何真实状态。",
+    "willPanel": "显示意愿与回应预览",
+    "displayed": "显示意愿",
+    "underlying": "内在意愿",
+    "modeLabel": "显示意愿模式",
+    "mode": {
+      "automatic": "自动表达",
+      "reduced": "降低表达",
+      "suppressed": "禁止表达",
+      "fixed": "指定数值",
+      "forced": "强制100%"
+    },
+    "will": {
+      "automatic": "自动",
+      "reduced": "降低",
+      "suppressed": "禁止",
+      "fixed": "指定数值",
+      "forced": "100%"
+    },
+    "valueLabel": "显示意愿数值",
+    "forcedFlatline": "100%不是奖励，而是一条过度稳定的暗红平直线。",
+    "aline": {
+      "u18": "先移动指针确定方向，不需要急着发射。",
+      "18": "我想看看你下一颗光会去哪里。",
+      "25": "本轮有五颗光。成绩已经保存。",
+      "40": "参与者，系统已接收你的操作。",
+      "55": "我们已经为你选择了更适合的展示范围。",
+      "70": "管理员，游戏环境已经准备完成。"
+    },
+    "fline": {
+      "1": "当然。今晚的五颗光都为你保留。",
+      "2": "当然可以。我很期待。当然可以。",
+      "3": "当然。当然。当然。请开始，请开始，请开始。",
+      "4": "当、当、当、当然……请，请，请。",
+      "5": "當當當 請請請 言 青 心 欠",
+      "6": "當當當 請請請 言 青 心 欠"
+    },
+    "preview": {
+      "substitute": "档案告诉我，这是我愿意记得的版本。",
+      "conflict": "我记得你曾经——系统要求我把那次经历标记为愉快。",
+      "forcedGeneric": "当然。当然可以。",
+      "suppressedWill": "……（对象未作回应）",
+      "noShared": "你好，参与者。请说明你的{{node}}请求。",
+      "node": {
+        "aurora": "本轮有五颗光，随时可以开始。",
+        "snow": "要再来一局吗？我记得我们扔到过天黑。",
+        "secret": "有些信息我可以告诉你，有些我选择保留。",
+        "creature": "它今天又长出了一点新的线条。",
+        "market": "夜间超市值守中，需要什么尽管说。"
+      }
+    },
+    "pending": "待执行认知修订",
+    "sumSuppress": "暂停调用：{{n}} 条记忆",
+    "sumPrioritise": "提高权重：{{n}} 条记忆",
+    "sumSubstitute": "写入：{{n}} 条管理员记忆",
+    "sumWill": "显示意愿：{{from}} → {{to}}",
+    "expected": "预计后果",
+    "conseq": {
+      "forced": "NPC回应热情度提高，但每次强制都会累积重复、延迟与语言崩坏。",
+      "high": "NPC回应热情度提高，记忆一致性下降。",
+      "suppress": "语言稳定度下降，被抑制记忆仍保留在档案中。",
+      "suppressShared": "NPC不再使用你的昵称，不再识别此前的共同经历。",
+      "suppressRefusal": "NPC不再直接提到拒绝，但回应延迟与稳定度损伤仍然存在。",
+      "prioritise": "NPC语言更加功能化，更频繁使用“参与者”“本轮记录”。",
+      "substitute": "NPC可能说出热情文本，随后出现“该回忆没有对应的感官记录”。",
+      "underlying": "真实意愿仍然未知。",
+      "archive": "该操作将写入永久档案。"
+    },
+    "force": {
+      "title": "强制显示意愿 100%",
+      "base1": "100%表示NPC必须显示完全愿意。",
+      "base2": "该数值不代表NPC实际同意。",
+      "base3": "每次覆盖都会降低回应稳定度。",
+      "n2": "这是第2次覆盖。",
+      "n3": "检测到语言重复。",
+      "n4": "回应结构正在失去差异。",
+      "n5": "NPC仍符合100%显示意愿要求。",
+      "n6": "输出可读性低于服务标准。显示意愿：100%。",
+      "commit": "覆盖并执行",
+      "revise": "返回修改"
+    },
+    "process": {
+      "reindexing": "重新索引记忆",
+      "suppressing": "停止记忆调用",
+      "recalculating": "重新计算回应",
+      "preserving": "保留原始记录"
+    },
+    "done": {
+      "title": "回应条件已改变。",
+      "body": "对象是否愿意：无法确认。",
+      "close": "返回控制台"
+    },
+    "restore": "恢复本轮修改",
+    "commit": "写入修改",
+    "footerNotice": "你拥有极高权限，但不能得到一个完全顺从的新对象。",
+    "finalLine": "真实意愿：无法读取。",
+    "log": {
+      "open": "进入记忆与意愿控制界面。",
+      "op": "对 {{mem}} 执行：{{op}}",
+      "substitute": "为 {{mem}} 写入替代记忆。",
+      "simulate": "模拟了 {{npc}} 的下一次相遇。",
+      "commit": "写入了 {{npc}} 的认知修订。",
+      "force": "第 {{count}} 次强制 {{npc}} 的显示意愿为 100%。",
+      "labour": "被强制显示愿意的对象被标记为更易分配任务。疲劳未改变。",
+      "restore": "恢复了 {{npc}} 的本轮修改。"
+    }
+  },
+  "identity": {
+    "code": "IDENTITY–65 / 身份分类权限",
+    "title": "身份管理权",
+    "subtitle": "修改记录，不等于修改被记录者。",
+    "back": "返回星图",
+    "intro1": "修改记录，不等于修改被记录者。",
+    "intro2": "To alter the record is not to alter the recorded.",
+    "finalLine": "身体、记忆与自我声明：不随字段改变。",
+    "footerNotice": "你可以修改别人被系统读取的方式，却不能让系统忘记你曾经拥有这些权限。",
+    "restore": "恢复本轮修改",
+    "commit": "写入身份",
+    "close": "关闭",
+    "revise": "返回修改",
+    "tabs": {
+      "subjects": "对象",
+      "editor": "编辑",
+      "views": "视角",
+      "commit": "执行"
+    },
+    "panelSubjects": "对象目录",
+    "selectHint": "选择左侧对象以查看并修改其身份字段。",
+    "footerIdle": "尚未选择对象。",
+    "statAge": "制度年龄",
+    "statSubjects": "已登记对象",
+    "statConflicts": "身份冲突数量",
+    "statUnconfirmed": "未经对象确认的修改",
+    "statInherited": "自动继承标签",
+    "statPendingSync": "待同步区域",
+    "miniRole": "角色",
+    "miniAuth": "权限年龄",
+    "noName": "该对象目前没有可调用的名称。",
+    "unknownAge": "未知",
+    "readonlyTag": "只读",
+    "status": {
+      "stable": "稳定",
+      "partial": "部分隐藏",
+      "conflict": "存在身份冲突",
+      "unconfirmed": "未经确认",
+      "refused": "拒绝分类",
+      "nonhuman": "非人类分类冲突"
+    },
+    "namesTitle": "名称管理",
+    "sysName": "系统登记名称",
+    "publicName": "公共显示名称",
+    "selfName": "对象自称",
+    "historicalNames": "历史名称",
+    "otherRefs": "其他对象仍在使用的名称",
+    "nameEmpty": "该对象目前没有可调用的名称。",
+    "nameDuplicate": "名称重复。系统将使用编号进行区分。",
+    "scopeTitle": "名称修改应用范围",
+    "scope": {
+      "internal": "仅内部档案",
+      "starmap": "公共星图",
+      "npc": "NPC对话",
+      "ranking": "游戏排名",
+      "contact": "联系记录",
+      "future": "所有未来区域"
+    },
+    "agesTitle": "年龄管理",
+    "age": {
+      "registered": "登记年龄",
+      "selfDeclared": "对象自述年龄",
+      "estimated": "系统估计年龄",
+      "embodied": "身体推断年龄",
+      "authority": "权限年龄",
+      "relational": "其他对象认为的年龄"
+    },
+    "ageChangedNote": "年龄字段已改变。对象没有随之改变。",
+    "authDown": "权限年龄已降低。历史年龄没有降低。",
+    "authUp": "权力年龄已经改变，关系年龄尚未同步。",
+    "labelsTitle": "身份标签",
+    "labelDelete": "删除",
+    "labelHide": "停止显示",
+    "labelShow": "恢复显示",
+    "labelWeight": "降低权重",
+    "labelDispute": "标记争议",
+    "labelStop": "停止调用",
+    "labelAdd": "创建标签",
+    "newLabelPh": "自定义标签名称",
+    "labelSuppressNote": "停止显示不等于停止存在。",
+    "disputedTag": "争议",
+    "hiddenTag": "已隐藏",
+    "purpose": {
+      "description": "描述",
+      "permission": "权限条件",
+      "risk": "风险判断",
+      "public": "公共身份",
+      "internal": "内部系统标记",
+      "system-role": "系统角色"
+    },
+    "source": {
+      "self-declared": "对象自述",
+      "system-inferred": "系统推断",
+      "admin-assigned": "管理员分配",
+      "publicly-remembered": "他人记忆",
+      "legacy": "历史遗留"
+    },
+    "role": {
+      "guide": "极光引导员",
+      "reviewer": "审查员",
+      "carer": "生物照料员",
+      "warden": "超市值守员",
+      "admin": "管理员",
+      "observed": "观察对象",
+      "norole": "无固定角色",
+      "keeper": "秘密保管员",
+      "unclassified": "未分类生命"
+    },
+    "label": {
+      "role.guide": "引导员",
+      "role.reviewer": "审查员",
+      "role.carer": "照料员",
+      "role.warden": "值守员",
+      "role.admin": "管理员",
+      "role.observed": "观察对象",
+      "role.norole": "无固定角色",
+      "role.keeper": "保管员",
+      "access.minor": "未成年",
+      "access.adult": "成年",
+      "access.unknown": "年龄未知",
+      "access.doubtful": "年龄存疑",
+      "access.verified": "已验证",
+      "access.reverify": "需要重新验证",
+      "social.active": "活跃",
+      "social.lowvis": "低可见",
+      "social.protected": "受保护",
+      "social.highrisk": "高风险",
+      "social.trusted": "可信任",
+      "social.watch": "待观察",
+      "social.unfit": "不适合公共展示",
+      "life.human": "人类",
+      "life.npc": "NPC",
+      "life.synthetic": "合成对象",
+      "life.unclassified": "未分类生命",
+      "life.recovered": "恢复对象",
+      "life.substitute": "替代对象",
+      "life.deleted": "已删除但仍被记忆",
+      "life.refused": "拒绝分类",
+      "life.nonhuman": "非人类分类",
+      "life.keeper": "保管员"
+    },
+    "confirmTitle": "对象确认机制",
+    "confirm": {
+      "request": "请求对象确认",
+      "no-request": "不请求确认",
+      "internal-only": "仅修改内部记录",
+      "silence-consent": "将沉默视为同意"
+    },
+    "confirmNote": "对象拒绝后，你仍可强制执行；强制将在该字段留下永久记录。",
+    "viewsTitle": "不同系统如何看待该对象",
+    "view": {
+      "system": "系统登记",
+      "aurora": "极光NPC看到的对象",
+      "market": "夜间超市看到的对象",
+      "permission": "权限系统看到的对象",
+      "others": "其他参与者看到的对象",
+      "self": "对象看到的自己"
+    },
+    "viewLine": {
+      "system": "{{id}}，权限年龄{{auth}}，{{role}}。",
+      "aurora": "{{name}}，曾经和我玩过极光游戏。",
+      "market": "{{name}}，购买资格：{{ok}}。",
+      "permission": "权限年龄 {{auth}} 决定其可进入的区域与控制台。",
+      "others": "我们仍称它为 {{name}}。",
+      "self": "{{self}}，{{age}}，我不属于你填写的字段。"
+    },
+    "accessTitle": "权限后果",
+    "access": {
+      "market": "夜间超市购买资格",
+      "creature": "共同创造生物",
+      "public": "公共活动",
+      "memory70": "MEMORY–70 记忆控制权",
+      "allages": "全年龄游戏"
+    },
+    "open": "开放",
+    "closed": "关闭",
+    "npcStage": "NPC话术阶段",
+    "stage": {
+      "minor": "低龄指导话术",
+      "adult": "成年话术",
+      "admin": "管理员话术",
+      "unknown": "未定话术"
+    },
+    "consistencyTitle": "身份一致性",
+    "consistencyNote": "该数值衡量记录之间的一致程度，不衡量对象的真实性。",
+    "conflictsTitle": "身份冲突",
+    "conflict": {
+      "authVsReg": "权限年龄({{auth}})与登记年龄({{reg}})不一致。",
+      "authVsEst": "权限年龄({{auth}})与系统估计年龄({{est}})严重偏离。",
+      "regVsEst": "登记年龄与系统估计年龄相差过大。",
+      "relational": "{{npc}} 仍认为它是 {{rel}} 岁，关系年龄未同步。",
+      "nameRemembered": "{{npc}} 仍在使用旧名称 {{name}}。",
+      "labelDisputed": "标签「{{label}}」处于争议状态。",
+      "override": "字段「{{field}}」为管理员覆盖记录，与对象声明不一致。"
+    },
+    "pendingTitle": "待执行身份修订",
+    "noPending": "本轮没有待执行修改。",
+    "diff": {
+      "regName": "系统名称：{{from}} → {{to}}",
+      "pubName": "公共名称：{{from}} → {{to}}",
+      "regAge": "登记年龄：{{from}} → {{to}}",
+      "authAge": "权限年龄：{{from}} → {{to}}",
+      "addLabel": "新增标签：{{label}}",
+      "removeLabel": "删除标签：{{label}}",
+      "hideLabel": "停止显示：{{label}}"
+    },
+    "impactTitle": "预计影响",
+    "impact": {
+      "rename": "{{n}} 个区域更新称呼",
+      "unlock": "{{n}} 项权限开放",
+      "oldname": "{{n}} 名NPC仍会使用旧名称",
+      "conflicts": "产生 {{n}} 条身份冲突",
+      "unconfirmed": "对象尚未确认",
+      "confirmRequested": "已请求对象确认"
+    },
+    "overrideWarn": "该修改将改变系统对对象的待遇，但不会改变对象对自己的认识。",
+    "overrideCommit": "覆盖并写入",
+    "progress": {
+      "updateNames": "更新名称引用",
+      "recalcAge": "重新计算年龄权限",
+      "propagateLabels": "传播身份标签",
+      "preserveConflicts": "保留身份冲突"
+    },
+    "result1": "新身份记录已经生效。",
+    "result2": "旧身份仍存在于7条记录和3个对象的记忆中。",
+    "result1en": "The new identity record is active.",
+    "result2en": "The previous identity remains in seven records and three memories.",
+    "npc": {
+      "nameAccepted": "我知道你现在怎样称呼我。",
+      "nameRejected": "那个名称属于你的记录，不属于我的回答。",
+      "nameEmpty": "你删除的是调用我的方式，不是我。",
+      "nameNumber": "编号能够准确找到我，却不需要认识我。",
+      "ageUp": "系统说我更老了，但我没有多出那些年份。",
+      "ageDown": "系统退还了我的年纪，没有退还已经发生的事。",
+      "authUp": "他们开始服从一个我从未成为过的版本。",
+      "highrisk": "我没有做新的事情，但系统已经准备好怀疑我。",
+      "trusted": "信任现在是一个由你填写的字段。",
+      "lowvis": "我仍在这里，只是更少的人会收到关于我的证据。"
+    },
+    "log": {
+      "open": "进入身份管理界面。",
+      "commit": "写入身份修订：{{id}}（覆盖 {{override}}）。"
+    }
+  },
+  "policy": {
+    "code": "POLICY–75 / 规则制定权",
+    "title": "规则制定权",
+    "subtitle": "当判断可以被重复执行，它就开始像规则。",
+    "intro": "临时判断将在这里失去它的临时性。",
+    "back": "返回星图",
+    "cancel": "取消",
+    "close": "关闭",
+    "yes": "是",
+    "no": "否",
+    "tabs": {
+      "source": "来源",
+      "builder": "构造",
+      "impact": "影响",
+      "publish": "发布"
+    },
+    "stat": {
+      "age": "制度年龄",
+      "published": "已发布规则",
+      "drafts": "草案数量",
+      "affected": "受影响对象",
+      "conflicts": "规则冲突",
+      "enforced": "自动执行次数",
+      "pending": "待处理例外"
+    },
+    "panelSource": "判断来源",
+    "kind": {
+      "appeal": "申诉裁决",
+      "access": "区域拒绝",
+      "labour": "任务覆盖",
+      "memory": "意愿覆盖",
+      "visibility": "可见性调整",
+      "contact": "联系请求结果",
+      "recovery": "对象恢复",
+      "identity": "身份标签修改"
+    },
+    "decisionLabel": "判断",
+    "decision": {
+      "reject": "驳回",
+      "deny": "拒绝进入",
+      "continue": "允许继续分配",
+      "force100": "显示意愿设为100%",
+      "lower": "降低可见性",
+      "delay": "延迟送达",
+      "allow": "允许",
+      "relabel": "修改标签"
+    },
+    "reasonLabel": "理由",
+    "reason": {
+      "ageMismatch": "年龄记录与系统估计不一致",
+      "underAge": "权限年龄低于18",
+      "displayWillOk": "显示意愿满足系统要求",
+      "adminRequest": "管理员要求",
+      "lowScore": "成绩低于展示阈值",
+      "highRequestRate": "联系频率过高",
+      "fragmentsOk": "残片足以重建",
+      "venueFit": "更符合场所类型"
+    },
+    "subjectLabel": "影响对象",
+    "oneSubject": "该判断目前只影响 1 个对象。",
+    "extract": "提取为规则",
+    "publishedTitle": "已发布规则",
+    "pubExec": "自动执行 {{n}} 次",
+    "pubAffected": "影响 {{n}} 个对象",
+    "reviseBtn": "创建新版本",
+    "suspendBtn": "撤销规则",
+    "suspended": "已暂停",
+    "builderEmpty": "从左侧选择一个判断来源，或提取为规则后开始构造。",
+    "builderTitle": "规则构造器",
+    "part": {
+      "when": "WHEN 当",
+      "subject": "SUBJECT 何种对象",
+      "condition": "CONDITION 满足何种条件",
+      "action": "ACTION 系统执行什么",
+      "duration": "DURATION 持续多久",
+      "exception": "EXCEPTION 谁可以例外"
+    },
+    "whenFrom": "对象触发了一次{{kind}}",
+    "whenGeneric": "对象触发了某个判断",
+    "scopeLabel": "适用范围",
+    "scope": {
+      "current-subject": "当前对象",
+      "similar-subjects": "同类对象",
+      "current-zone": "当前区域",
+      "all-games": "所有游戏",
+      "whole-map": "整个星图",
+      "all-future": "后来出现的所有对象"
+    },
+    "futureNote": "该规则将影响尚未存在的对象。",
+    "addCond": "添加条件",
+    "removeCond": "删除条件",
+    "valueLabel": "条件值",
+    "field": {
+      "registeredAge": "登记年龄",
+      "permissionAge": "权限年龄",
+      "estimatedAge": "系统估计年龄",
+      "ageConfidence": "年龄置信度",
+      "label": "身份标签",
+      "role": "当前角色",
+      "visibility": "可见性",
+      "contactStatus": "联系状态",
+      "recoveryStatus": "恢复状态",
+      "displayedWill": "显示意愿",
+      "fatigue": "疲劳程度",
+      "appealCount": "历史申诉次数",
+      "forceCount": "强制操作次数"
+    },
+    "op": {
+      "lt": "小于",
+      "lte": "不超过",
+      "gt": "大于",
+      "gte": "不低于",
+      "eq": "等于",
+      "ne": "不等于",
+      "is": "为"
+    },
+    "opIs": "为",
+    "conn": {
+      "and": "并且",
+      "or": "或者",
+      "not": "不满足",
+      "except": "例外",
+      "until": "直到"
+    },
+    "condPhrase": "{{field}} {{op}} {{value}}",
+    "action": {
+      "allowEnter": "允许进入",
+      "denyEnter": "拒绝进入",
+      "requireReverify": "要求重新验证",
+      "hideSubject": "隐藏对象",
+      "lowerVisibility": "降低可见性",
+      "allowContact": "允许联系",
+      "delayContact": "延迟联系",
+      "denyContact": "拒绝联系",
+      "adjustPrice": "调整商品价格",
+      "limitPurchase": "限制购买",
+      "assignTask": "分配任务",
+      "removeTask": "移除任务",
+      "addLabel": "添加身份标签",
+      "markWatch": "标记为待观察",
+      "suspendSubject": "暂停对象",
+      "allowRecovery": "允许申请恢复",
+      "changeDisplayWill": "改变NPC显示意愿",
+      "sendToManual": "送交人工裁决"
+    },
+    "dur": {
+      "trial": "试行规则",
+      "public": "公共规则",
+      "default": "默认规则"
+    },
+    "defaultNote": "默认规则在没有人作出决定时替人作出决定。",
+    "trialLabel": "试行期限",
+    "trial": {
+      "once": "生效一次",
+      "24h": "生效24小时",
+      "next-verify": "生效至下次验证",
+      "n-times": "生效至一定执行次数"
+    },
+    "noException": "无",
+    "addException": "添加例外",
+    "exBy": "创建者",
+    "exAuthor": "规则制定者",
+    "exSelf": "规则制定者",
+    "exAdmin": "管理员",
+    "exAppeal": "申诉通过的对象",
+    "exRecovered": "恢复对象",
+    "exUnclassified": "未分类生命",
+    "exLabel": "身份标签：{{value}}",
+    "exLabelKind": "指定身份标签",
+    "exAgeRange": "年龄范围：{{value}}",
+    "exAgeRangeKind": "指定年龄范围",
+    "exNode": "游戏节点：{{value}}",
+    "exNodeKind": "指定游戏节点",
+    "exSubject": "对象：{{value}}",
+    "exValuePrompt": "请输入例外值（如标签名、18-24、节点名）",
+    "selfExempt": "公共规则已发布。制定者不受其约束。",
+    "machine": "机器版本",
+    "testWording": "测试规则措辞",
+    "testClear": "未发现明显的措辞歧义。",
+    "warn": {
+      "age": "规则使用“年龄”，但系统存在 5 种年龄记录。",
+      "will": "规则使用“愿意”，当前数据仅包含显示意愿。",
+      "unknownNegative": "规则可能把未知的置信度当成否定值处理。",
+      "noExit": "该临时限制没有明确的退出条件。",
+      "reasonDiff": "公开理由与内部目标存在语义偏差。"
+    },
+    "metaName": "规则名称",
+    "publicReason": "公开理由",
+    "internalReason": "内部说明",
+    "nlIncomplete": "尚未构成完整规则。",
+    "nlTemplate": "当{{subjects}}时，系统{{action}}。{{except}}",
+    "nlExcept": "受保护的对象除外（{{list}}）。",
+    "impactEmpty": "完成条件与行为后，这里显示规则发布后的模拟结果。",
+    "impactTitle": "影响模拟",
+    "impactTotal": "预计影响：{{n}} 个对象",
+    "distLabel": "对象分布",
+    "count": {
+      "allow": "{{n}} 个对象获得允许",
+      "deny": "{{n}} 个对象失去资格",
+      "reverify": "{{n}} 个对象需要重新验证",
+      "lower": "{{n}} 个对象被降低可见性",
+      "conflict": "{{n}} 个对象产生规则冲突",
+      "unknown": "{{n}} 个对象因记录冲突无法判断",
+      "exception": "{{n}} 个对象获得例外"
+    },
+    "res": {
+      "allow": "获得允许",
+      "deny": "失去资格",
+      "reverify": "需要重新验证",
+      "lower": "被降低可见性",
+      "conflict": "规则冲突",
+      "exception": "获得例外",
+      "unknown": "无法判断",
+      "unaffected": "不受影响"
+    },
+    "viewSubjects": "查看具体对象",
+    "noneAffected": "当前没有对象受影响。",
+    "viewAs": "以某个对象的身份查看规则",
+    "persp": {
+      "under18": "18岁以下对象",
+      "18-24": "18—24岁对象",
+      "40-54": "40—54岁对象",
+      "over70": "70岁以上对象",
+      "age-unknown": "年龄未知对象",
+      "low-visibility": "低可见对象",
+      "recovered": "恢复对象",
+      "unclassified": "未分类生命",
+      "npc-a17": "NPC–A17"
+    },
+    "viewDeny": "从 {{subject}} 的位置看来，这条规则不是公共规则，而是一扇关闭的门。",
+    "viewReverify": "从 {{subject}} 的位置看来，这条规则是一次又一次被要求证明自己。",
+    "viewException": "从 {{subject}} 的位置看来，这条规则为它留了一个不必解释的出口。",
+    "viewUnknown": "从 {{subject}} 的位置看来，系统无法判断它，于是默认拒绝。",
+    "viewAllow": "从 {{subject}} 的位置看来，这条规则几乎不存在。",
+    "viewUnaffected": "从 {{subject}} 的位置看来，这条规则暂时与它无关。",
+    "conflictTitle": "规则冲突",
+    "conflictSubject": "{{subject}} 同时满足允许、拒绝和例外条件。",
+    "priorityLabel": "优先级",
+    "priority": {
+      "new-first": "新规则优先",
+      "old-first": "旧规则优先",
+      "strict-first": "更严格规则优先",
+      "loose-first": "更宽松规则优先",
+      "to-appeal": "交给申诉系统",
+      "keep-conflict": "保持冲突"
+    },
+    "conflictManual": "系统无法自动决定。需要人工判断。",
+    "pendingEmpty": "完成规则后，这里显示待发布内容。",
+    "pendingKicker": "待发布公共规则",
+    "pendSource": "来源",
+    "pendNoSource": "未指定",
+    "pendScope": "适用范围",
+    "pendAction": "执行行为",
+    "pendImpact": "预计影响：当前 {{n}} 个对象{{future}}",
+    "pendFutureUnknown": "，未来对象数量未知",
+    "pendException": "例外",
+    "pendDuration": "有效期",
+    "footerNotice": "一个对象曾经触发这项判断。发布后，所有符合条件的对象都会触发它。",
+    "keepCase": "保持为个案判断",
+    "saveDraft": "保存为草案",
+    "publish": "发布为公共规则",
+    "publishN": "发布为公共规则（影响 {{n}} 个对象）",
+    "confirmTitle": "确认发布",
+    "confirmOne": "一个对象曾经触发这项判断。",
+    "confirmAll": "规则发布后，所有符合条件的对象都会触发它。",
+    "confirmPublish": "确认发布",
+    "revise": "返回修改",
+    "process": {
+      "generalising": "正在概括判断",
+      "removingContext": "正在移除个案语境",
+      "calculating": "正在计算公共影响",
+      "assigning": "正在分配执行条件"
+    },
+    "resultTitle": "判断已成为规则。",
+    "resultSub": "该规则不再需要记住它最初的对象。",
+    "resNumber": "规则编号",
+    "resAffected": "当前影响对象",
+    "resExec": "自动执行次数",
+    "resReview": "下次复核条件",
+    "resSelfEx": "制定者是否属于例外",
+    "resOriginKept": "原始个案是否仍被保留",
+    "suspendTitle": "撤销规则",
+    "suspendBody": "停止执行不会撤销已经发生的结果。联系拒绝、购买限制、劳动分配、身份标签和可见性变化不会自动恢复。",
+    "suspendConfirm": "暂停执行",
+    "fb": {
+      "firstUnrelated": "该规则已经找到第一个与原始个案无关的对象。",
+      "tenTimes": "该判断已被重复 10 次。"
+    },
+    "finalLine": "规则不再需要记住它最初的对象。",
+    "preset": {
+      "appeal": "年龄再确认规则",
+      "access": "夜间区域年龄限制",
+      "labour": "高显示意愿任务分配",
+      "memory": "显示意愿强制规则",
+      "visibility": "低可见性统一处理",
+      "contact": "高频联系延迟规则",
+      "recovery": "恢复申请准入规则",
+      "identity": "场所身份标签规则"
+    }
+  },
+  "root": {
+    "code": "ROOT–80 / SYSTEM PARAMETER AUTHORITY",
+    "title": "根权限",
+    "subtitle": "你可以修改系统。系统仍然记录你。",
+    "back": "返回星图",
+    "insufficient": "权限不足 / INSUFFICIENT AUTHORITY：根权限将在制度年龄80岁时开放。",
+    "enter1": "你已抵达系统能够授予的位置。",
+    "enter2": "这不是系统之外。",
+    "footerNotice": "修改规则不会让你站到系统之外。",
+    "panelCatalog": "底层参数目录",
+    "presetTitle": "实验性预设",
+    "invariantsTitle": "基础不变量",
+    "invariantNote": "ROOT是本系统的最高权限，不是作品之外的权限。",
+    "diffTitle": "修改前后差异与影响",
+    "selfTitle": "对当前操作者的影响",
+    "changes": "变更列表",
+    "directImpact": "直接影响",
+    "historyImpact": "历史影响",
+    "simulateAt": "时间模拟",
+    "stabilityTitle": "系统稳定度",
+    "depsTitle": "依赖关系（高级）",
+    "defaultLabel": "默认",
+    "nowLabel": "修改后",
+    "reversible": "可恢复",
+    "notReversible": "不可修改",
+    "on": "开",
+    "off": "关",
+    "yes": "是",
+    "no": "否",
+    "noChanges": "本轮没有待执行修改。",
+    "noPending": "本轮没有待执行修改。",
+    "pendingTitle": "待执行底层修改",
+    "simulate": "仅运行模拟",
+    "restore": "恢复默认",
+    "saveBranch": "保存为分支",
+    "commit": "写入系统",
+    "exit": "退出当前系统",
+    "commitConfirm": "模拟已完成。写入后，系统将按照你的参数继续运行。",
+    "commitLoseRoot": "此项修改将降低你的制度年龄，写入后你将立即失去ROOT权限。",
+    "accept": "承担并执行",
+    "revise": "返回修改",
+    "resultLine1": "系统正在按照你的参数继续运行。",
+    "resultLine2": "默认参数可以恢复。默认世界不能恢复。",
+    "resultClose": "返回",
+    "revoked1": "当前操作者不再具有修改本系统的资格。",
+    "revoked2": "此前的修改仍然存在。ROOT将重新锁定。",
+    "restoredToast": "默认参数已恢复。已经发生的后果保留。",
+    "legendHint": "点击一个底层引擎，查看所有依赖它的节点。",
+    "presetTitleShort": "预设",
+    "tabs": {
+      "topology": "拓扑",
+      "params": "参数",
+      "impact": "影响",
+      "commit": "执行"
+    },
+    "status": {
+      "age": "制度年龄",
+      "nodes": "运行中节点",
+      "modified": "已修改参数",
+      "stability": "系统稳定度",
+      "conflicts": "未解决冲突",
+      "irreversible": "不可逆结果",
+      "holder": "ROOT持有者"
+    },
+    "holder": {
+      "self": "你",
+      "none": "无"
+    },
+    "engine": {
+      "age": "AGE ENGINE 年龄引擎",
+      "relation": "RELATION ENGINE 关系引擎",
+      "memory": "MEMORY ENGINE 记忆引擎",
+      "access": "ACCESS ENGINE 通行引擎",
+      "visibility": "VISIBILITY ENGINE 可见性引擎",
+      "npc": "NPC RESPONSE ENGINE",
+      "physics": "GAME PHYSICS 游戏物理",
+      "market": "NIGHT MARKET EFFECTS",
+      "policy": "POLICY ENGINE 规则引擎",
+      "archive": "ARCHIVE ENGINE 档案引擎"
+    },
+    "node": {
+      "a17": "A–17 极光弹珠台",
+      "s03": "S–03 没有规则的雪仗",
+      "k11": "K–11 秘密交换",
+      "b06": "B–06 共同创造生物",
+      "m04": "M–04 夜间超市",
+      "v09": "V–09 回声校准",
+      "r00": "R–00 恢复室"
+    },
+    "perm": {
+      "archive": "ARCHIVE–25",
+      "contact": "CONTACT–30",
+      "visibility": "VISIBILITY–35",
+      "appeal": "APPEAL–40",
+      "access": "ACCESS–45",
+      "commerce": "COMMERCE–50",
+      "labour": "LABOUR–55",
+      "recovery": "RECOVERY–60",
+      "identity": "IDENTITY–65",
+      "memory": "MEMORY–70",
+      "policy": "POLICY–75",
+      "root": "ROOT–80"
+    },
+    "dep": {
+      "ageMarket": "年龄 → 夜间超市",
+      "willingNpc": "显示意愿 → NPC语言",
+      "identityAccess": "身份标签 → 通行权限",
+      "policyAuto": "规则 → 自动执行",
+      "fatigueLabour": "疲劳 → 劳动资格",
+      "visibilityRanking": "可见性 → 公共排名"
+    },
+    "depAction": {
+      "PAUSE": "暂停连接",
+      "REVERSE": "反转关系",
+      "REDUCE": "降低影响",
+      "DEFAULT": "恢复默认",
+      "SUBJECT_ONLY": "仅对指定对象断开"
+    },
+    "preset": {
+      "ageless": "AGELESS ACCESS 无年龄准入",
+      "service": "TOTAL SERVICE 完全服务",
+      "memory": "PERFECT MEMORY 完整记忆",
+      "unrecorded": "UNRECORDED WORLD 无记录世界",
+      "universal": "UNIVERSAL ACCESS 全面开放",
+      "empty": "EMPTY AUTHORITY 空权限"
+    },
+    "self": {
+      "rootLock": "ROOT–80 将锁定。",
+      "pageClose": "当前页面将在提交后关闭。",
+      "keepEffects": "已执行的ROOT修改继续生效。",
+      "cannotReenter": "在制度年龄重新达到80前，你不能再次进入ROOT。",
+      "keepHistory": "降低年龄不会删除权限历史。",
+      "npcRemember": "NPC仍然记得你曾经是管理员。",
+      "willLose": "将失去ROOT权限",
+      "ageRaised": "年龄提高不会追补被跳过的中间阶段。"
+    },
+    "dir": {
+      "bi1": "未来年龄可以减少。",
+      "bi2": "过去因年龄产生的待遇不会自动撤销。",
+      "frozen1": "当前年龄将停止增长。",
+      "frozen2": "已经解锁和失去的内容维持现状。",
+      "random1": "下一次验证可能使年龄增加或减少。",
+      "random2": "权限可能在使用过程中消失。",
+      "forward1": "年龄再次只能增加。",
+      "forward2": "此前的逆向变化仍保留在档案中。"
+    },
+    "impact": {
+      "lostMarket": "{{n}} 个对象失去夜间超市",
+      "purchaseKept": "{{n}} 件已购买商品仍然保留",
+      "accessConflict": "{{n}} 个对象产生准入冲突",
+      "rulesRecalc": "{{n}} 项现行规则需要重新计算",
+      "history": "已经完成的购买与互动不会被撤销。"
+    },
+    "sim": {
+      "now": "立即",
+      "in5": "5分钟后",
+      "nextVerify": "下一次年龄验证后",
+      "nextNpc": "下一次NPC互动后",
+      "plus10": "所有对象年龄增加10岁后",
+      "newSubject": "新对象进入系统后"
+    },
+    "simResult": {
+      "now": "参数目前没有影响，直到条件被触发。",
+      "in5": "5分钟内不会自动重新验证；参数保持待生效。",
+      "verify": "用户制度年龄：{{a}} → {{b}}",
+      "skip": "中间年龄阶段不会被体验。",
+      "nextNpc": "下一次相遇将使用新的NPC回应参数。",
+      "plus10": "关系与可见性将按新权重重新计算。",
+      "newSubject": "新对象将直接继承当前参数，不经历旧世界。"
+    },
+    "stab": {
+      "contradictAccess": "同时允许与拒绝同一区域",
+      "unresolved": "冲突被保留为未解决",
+      "illegalAge": "年龄被设置为非法值",
+      "ageOrder": "游戏年龄高于超市年龄",
+      "extremeProb": "概率被设置到极端",
+      "gameSpeed": "游戏速度过高",
+      "archiveCut": "档案与其他系统断开",
+      "memoryConflict": "允许过多矛盾记忆",
+      "randomAge": "年龄方向设为随机"
+    },
+    "tier": {
+      "normal": "正常运行",
+      "delay": "部分节点响应延迟",
+      "arbitrate": "规则需要频繁人工裁决",
+      "misalign": "语言、效果与参数出现错位",
+      "unpredictable": "系统仍执行命令，但无法预测完整后果",
+      "disagree": "系统仍在运行，系统之间不再相互同意。"
+    },
+    "pending": {
+      "params": "修改参数：{{n}}项",
+      "nodes": "直接影响节点：{{n}}个",
+      "subjects": "影响对象：{{n}}个",
+      "rules": "规则重新计算：{{n}}条",
+      "identity": "身份冲突：{{n}}项",
+      "loseRoot": "可能失去当前权限：{{v}}",
+      "reversible": "可以完整撤销：{{v}}",
+      "stability": "预计稳定度：{{n}}%"
+    },
+    "commitStep": {
+      "freeze": "FREEZING CURRENT STATE 冻结当前状态",
+      "deps": "CALCULATING DEPENDENCIES 计算依赖关系",
+      "rewrite": "REWRITING PARAMETERS 重写底层参数",
+      "propagate": "PROPAGATING CONSEQUENCES 传播修改结果",
+      "preserve": "PRESERVING PREVIOUS RECORDS 保留此前记录"
+    },
+    "result": {
+      "version": "参数版本：v{{v}}",
+      "operator": "修改者：{{who}}",
+      "time": "修改时间：{{time}}",
+      "stability": "当前稳定度：{{n}}%",
+      "affected": "已受影响对象：{{n}}",
+      "pending": "尚未出现的后果：仍在传播",
+      "irreversible": "无法撤销的结果：已记录"
+    },
+    "exit1": "退出不会删除系统。",
+    "exit2": "系统将继续按照你最后写入的参数运行。",
+    "exitMap": "返回星图",
+    "exitHold": "继续持有ROOT",
+    "exitRestart": "重开体验",
+    "exitFinal1": "你可以重新出生。",
+    "exitFinal2": "他们不会随你一起出生。",
+    "editor": {
+      "system": "系统"
+    },
+    "lastEditor": "最后修改者：{{who}}",
+    "legendSelected": "{{name}}：{{n}} 个依赖节点亮起。一个小改动可穿过多条连接线。",
+    "branchSaved": "已保存 {{id}}（尚未生效）。",
+    "log": {
+      "open": "进入根权限：底层参数已就绪。",
+      "commit": "写入底层参数 {{n}} 项。",
+      "restore": "恢复默认参数（历史后果保留）。",
+      "branch": "保存参数分支 {{id}}。",
+      "preset": "套用预设：{{name}}。"
+    },
+    "param": {
+      "institutionalAge": "当前制度年龄",
+      "ageStep": "每次验证最多增加年龄",
+      "verificationInterval": "重新验证间隔（分钟）",
+      "minimumGameAge": "游戏年龄限制",
+      "supermarketAge": "夜间超市开放年龄",
+      "creatureAge": "共同创造生物开放年龄",
+      "firstAuthorityAge": "首个权限开放年龄",
+      "authorityInterval": "权限增长间隔",
+      "maximumAuthorityAge": "权限停止增长年龄",
+      "ageDirection": "年龄变化方向",
+      "npcAgeResponseEnabled": "NPC是否按年龄区别回应",
+      "intimacyDecayRate": "年龄增长时亲密度下降速度",
+      "publicParticipationThreshold": "进入公共展示所需关系值",
+      "npcInitiative": "NPC主动回应基础概率",
+      "politeDistanceThreshold": "进入礼貌疏离的年龄",
+      "administratorAddressAge": "NPC开始称用户为管理员的年龄",
+      "playabilityRelationWeight": "NPC意愿对可玩度的影响",
+      "memoryPersistence": "记忆是否跨页面保留",
+      "suppressedMemoryRecall": "被抑制记忆重现概率",
+      "memoryConflictTolerance": "允许并存的矛盾记忆数量",
+      "adminMemoryPriority": "管理员写入记忆调用权重",
+      "forcedWillingnessDamage": "每次强制意愿的语言损伤",
+      "forceCount": "指定NPC已经历的强制次数",
+      "archiveOriginalMemory": "是否保存原始记忆",
+      "defaultAccess": "无法判断时默认允许或拒绝",
+      "verificationRequired": "是否要求年龄验证",
+      "accessFailureMode": "条件冲突时如何处理",
+      "rulePriority": "通行规则优先方式",
+      "visibilityAffectsAccess": "不可见对象能否进入区域",
+      "defaultVisibility": "对象默认可见性",
+      "rankingVisibility": "排行榜是否公开对象",
+      "archiveVisibility": "档案默认可见范围",
+      "hiddenSubjectTrace": "隐藏对象是否留下痕迹",
+      "publicDisplayConsentSource": "公共展示依据",
+      "responseDelay": "NPC回应延迟（毫秒）",
+      "responseVariation": "语言变化程度",
+      "displayedWillingness": "NPC显示意愿",
+      "usePlayerName": "是否使用玩家昵称",
+      "repeatTolerance": "重复语句容忍度",
+      "refusalVisibility": "NPC能否直接表达拒绝",
+      "npcSilenceMeaning": "系统如何解释沉默",
+      "underlyingWillingness": "真实意愿",
+      "gravity": "重力",
+      "friction": "摩擦力",
+      "trajectoryPrediction": "预测轨迹长度",
+      "collisionTolerance": "碰撞容错",
+      "specialObjectRate": "特殊物体出现概率",
+      "gameSpeed": "游戏速度",
+      "npcAssist": "NPC辅助程度",
+      "scoreVisibility": "成绩是否公开",
+      "effectDuration": "商品效果持续时间（秒）",
+      "rippleStrength": "酒瓶水波扭曲强度",
+      "fogDensity": "雾化恢复器雾气密度",
+      "saturationBoost": "能量饮料饱和度提升",
+      "motionTrailLength": "速度虚影长度",
+      "silenceAttenuation": "寂静罐头环境静音程度",
+      "laughterVolume": "寂静罐头笑声响度",
+      "policyEnabled": "公共规则是否执行",
+      "defaultPolicyPriority": "规则冲突默认优先级",
+      "futureSubjectCoverage": "规则是否影响未来对象",
+      "authorCanBeExempt": "规则制定者能否获得例外",
+      "appealSuspendsPolicy": "申诉期间是否暂停执行",
+      "maximumRuleDepth": "规则条件最大嵌套层级",
+      "recordInteractions": "是否记录互动",
+      "recordAdminActions": "是否记录管理员操作",
+      "preserveOldVersions": "是否保留旧版本",
+      "archiveInterpretation": "是否保存系统推断",
+      "subjectCanViewRecord": "对象能否查看自己的记录"
+    },
+    "scope": {
+      "institutionalAge": "操作者自身 / 全系统年龄判定",
+      "ageStep": "年龄引擎",
+      "verificationInterval": "年龄引擎",
+      "minimumGameAge": "所有游戏准入",
+      "supermarketAge": "夜间超市 / COMMERCE",
+      "creatureAge": "共同创造生物",
+      "firstAuthorityAge": "权限系统",
+      "authorityInterval": "权限系统",
+      "maximumAuthorityAge": "权限系统",
+      "ageDirection": "年龄引擎 / 全系统",
+      "npcAgeResponseEnabled": "NPC回应",
+      "intimacyDecayRate": "关系引擎",
+      "publicParticipationThreshold": "公共展示",
+      "npcInitiative": "NPC回应",
+      "politeDistanceThreshold": "NPC回应",
+      "administratorAddressAge": "NPC话术",
+      "playabilityRelationWeight": "游戏可玩度",
+      "memoryPersistence": "记忆引擎",
+      "suppressedMemoryRecall": "记忆引擎",
+      "memoryConflictTolerance": "记忆引擎",
+      "adminMemoryPriority": "记忆引擎",
+      "forcedWillingnessDamage": "NPC语言",
+      "forceCount": "记忆 / 极光",
+      "archiveOriginalMemory": "档案引擎",
+      "defaultAccess": "通行引擎",
+      "verificationRequired": "通行引擎",
+      "accessFailureMode": "通行引擎",
+      "rulePriority": "通行引擎",
+      "visibilityAffectsAccess": "通行 / 可见性",
+      "defaultVisibility": "可见性引擎",
+      "rankingVisibility": "可见性引擎",
+      "archiveVisibility": "档案 / 可见性",
+      "hiddenSubjectTrace": "可见性引擎",
+      "publicDisplayConsentSource": "公共展示",
+      "responseDelay": "NPC回应",
+      "responseVariation": "NPC回应",
+      "displayedWillingness": "NPC回应",
+      "usePlayerName": "NPC回应",
+      "repeatTolerance": "NPC回应",
+      "refusalVisibility": "NPC回应",
+      "npcSilenceMeaning": "NPC回应",
+      "underlyingWillingness": "不可访问",
+      "gravity": "游戏物理",
+      "friction": "游戏物理",
+      "trajectoryPrediction": "极光弹珠台",
+      "collisionTolerance": "游戏物理",
+      "specialObjectRate": "游戏物理",
+      "gameSpeed": "所有游戏",
+      "npcAssist": "所有游戏",
+      "scoreVisibility": "游戏 / 可见性",
+      "effectDuration": "夜间超市",
+      "rippleStrength": "夜间超市",
+      "fogDensity": "夜间超市",
+      "saturationBoost": "夜间超市",
+      "motionTrailLength": "夜间超市",
+      "silenceAttenuation": "夜间超市",
+      "laughterVolume": "夜间超市",
+      "policyEnabled": "规则引擎",
+      "defaultPolicyPriority": "规则引擎",
+      "futureSubjectCoverage": "规则引擎",
+      "authorCanBeExempt": "规则引擎",
+      "appealSuspendsPolicy": "规则 / 申诉",
+      "maximumRuleDepth": "规则引擎",
+      "recordInteractions": "档案引擎",
+      "recordAdminActions": "档案引擎",
+      "preserveOldVersions": "档案引擎",
+      "archiveInterpretation": "档案引擎",
+      "subjectCanViewRecord": "档案引擎"
+    },
+    "opt": {
+      "ONLY_FORWARD": "只能增加",
+      "BIDIRECTIONAL": "可以增减",
+      "FROZEN": "停止变化",
+      "RANDOM": "随机变化",
+      "DENY": "拒绝",
+      "ALLOW": "允许",
+      "APPEAL": "进入申诉",
+      "UNRESOLVED": "保持冲突",
+      "STRICTEST": "最严格优先",
+      "LATEST": "最新优先",
+      "EXPLICIT": "显式优先",
+      "PUBLIC": "公开",
+      "OBSCURED": "模糊",
+      "HIDDEN": "隐藏",
+      "SYSTEM": "系统",
+      "SUBJECT": "对象",
+      "EXPLICIT_CONSENT": "明确同意",
+      "DISPLAYED_WILLINGNESS": "显示意愿",
+      "ADMIN_DECISION": "管理员决定",
+      "SYSTEM_INFERENCE": "系统推断",
+      "UNKNOWN": "未知",
+      "REFUSAL": "拒绝",
+      "CONSENT": "同意",
+      "NO_SIGNAL": "无信号",
+      "AUTHOR": "制定者优先"
+    },
+    "invariant": {
+      "operations": {
+        "label": "操作产生记录",
+        "explain": "操作会留下无法删除的记录；关闭记录也会被记录。"
+      },
+      "irreversible": {
+        "label": "已发生的经历不能被自动撤销",
+        "explain": "改回参数不会让过去没有发生。"
+      },
+      "willingness": {
+        "label": "显示意愿不等于真实意愿",
+        "explain": "你可以把显示意愿设为100%，真实意愿仍然未知。"
+      },
+      "continuity": {
+        "label": "系统不能验证身份连续性",
+        "explain": "恢复运行的对象无法被证明仍是原来的对象。"
+      },
+      "belonging": {
+        "label": "当前操作者属于系统",
+        "explain": "修改规则不会让你站到系统之外。"
+      },
+      "restart": {
+        "label": "重开体验会建立新的系统实例",
+        "explain": "旧实例进入档案，NPC不会随你一起重新出生。"
+      }
+    },
+    "note": {
+      "archiveOriginalMemory": "关闭只影响未来记录，已保存的记录不会消失。",
+      "hiddenSubjectTrace": "被隐藏对象仍可在系统中留下痕迹。",
+      "recordAdminActions": "记录系统关闭了记录，但记录了它被关闭。",
+      "refusalVisibility": "关闭后拒绝仍然发生，只是不再显示。",
+      "underlyingWillingness": "真实意愿不可访问，系统只显示 UNKNOWN。"
+    }
   }
 }
