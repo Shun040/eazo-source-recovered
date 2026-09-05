@@ -214,8 +214,8 @@
 
   // ── 时间线调度 ──────────────────────────────────────────────────────────────
   function stageOf(elapsed) {
-    if (elapsed < 10000) return "empty";
-    if (elapsed < 35000) return "emerge";
+    if (elapsed < 5000) return "empty";
+    if (elapsed < 32000) return "emerge";
     if (elapsed < 50000) return "euphoria";
     return "dissolve";
   }
@@ -230,23 +230,27 @@
     let delay, gain, near, rateJitter;
 
     if (stage === "empty") {
-      // 抽空：最后 2–3s 之前几乎绝对寂静，不排笑声
-      delay = 1200; gain = 0; near = 0;
+      // 抽空：短暂近乎寂静（约5s），期末排一两声极远的笑作为"出现"预告
+      const near0 = elapsed / 5000;                 // 0..1
+      if (near0 > 0.55 && Math.random() < 0.5) {
+        playLaugh({ gain: 0.08 + near0 * 0.06, near: 0.05, pan: pickPan(), rateJitter: 0.04 });
+      }
+      delay = 900;
       scheduleTimer = setTimeout(scheduleNext, delay);
       return;
     }
     if (stage === "emerge") {
-      // 由远及近，间隔较长，克制
-      const prog = (elapsed - 10000) / 25000;        // 0..1
-      delay = (1600 - prog * 900) * (energyActive() ? 0.6 : 1);
-      gain = 0.12 + prog * 0.22;
-      near = 0.15 + prog * 0.4;
+      // 由远及近，间隔较长，克制（起点已可清晰听见）
+      const prog = (elapsed - 5000) / 27000;         // 0..1
+      delay = (1300 - prog * 800) * (energyActive() ? 0.6 : 1);
+      gain = 0.2 + prog * 0.22;
+      near = 0.3 + prog * 0.4;
       rateJitter = 0.04;
     } else if (stage === "euphoria") {
       // 过度明亮，间隙缩小
-      const prog = (elapsed - 35000) / 15000;
+      const prog = (elapsed - 32000) / 18000;
       delay = (520 - prog * 260) * (energyActive() ? 0.55 : 1);
-      gain = 0.32 + prog * 0.16;
+      gain = 0.34 + prog * 0.16;
       near = 0.6 + prog * 0.3;
       rateJitter = 0.03 - prog * 0.015;
     } else {

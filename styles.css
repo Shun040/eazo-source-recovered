@@ -865,10 +865,66 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   font-size: 12px;
   letter-spacing: 0.08em;
   line-height: 1.45;
+  white-space: normal;
+  word-break: break-word;
   pointer-events: none;
   transition: opacity 320ms ease, transform 320ms ease;
 }
-.pinball-combo {
+
+.pinball-npc-caption.zalgo-original {
+  position: absolute;
+  isolation: isolate;
+  right: clamp(40px, 8vw, 120px);
+  left: auto;
+  transform: none;
+  bottom: calc(var(--eazo-safe-area-bottom) + 108px);
+  width: 292px;
+  max-width: 292px;
+  min-width: 0;
+  height: 30px;
+  min-height: 30px;
+  max-height: 30px;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  overflow: visible;
+  text-align: left;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
+  font-family: "Times New Roman", "Iowan Old Style", "Baskerville", "Noto Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1.45;
+  letter-spacing: 0.035em;
+  text-decoration: none;
+  text-transform: none;
+  font-variant-ligatures: none;
+  color: rgba(230, 198, 190, 0.76);
+  background: transparent;
+  border: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  filter: none;
+  text-shadow: 0 0 8px rgba(221, 122, 111, 0.08);
+}
+.pinball-npc-caption.zalgo-original::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 30px;
+  transform: translateY(-50%);
+  background: rgba(2, 10, 8, 0.34);
+  border: 1px solid rgba(160, 255, 210, 0.13);
+  border-radius: 16px 16px 5px 16px;
+}
+.pinball-game.zalgo-active,
+.pinball-game.zalgo-active .pinball-ui-layer,
+.pinball-game.zalgo-active .pinball-npc-caption { overflow: visible; }
   position: absolute;
   z-index: 5;
   left: 50%; top: 46%;
@@ -929,6 +985,19 @@ select:focus-visible { border-color: rgba(138, 255, 184, 0.56); box-shadow: 0 0 
   .pinball-title-block { top: calc(var(--eazo-safe-area-top) + 118px); }
   .pinball-title-block p:not(.place-code) { display: none; }
   .pinball-npc-caption { right: 12px; left: auto; top: auto; bottom: calc(var(--eazo-safe-area-bottom) + 74px); max-width: min(240px, calc(100vw - 120px)); font-size: 10px; }
+  .pinball-npc-caption.zalgo-original {
+    right: 12px;
+    bottom: calc(var(--eazo-safe-area-bottom) + 96px);
+    width: 230px;
+    max-width: 230px;
+    height: 27px;
+    min-height: 27px;
+    max-height: 27px;
+    padding: 5px 10px;
+    font-size: 10px;
+    line-height: 1.45;
+  }
+  .pinball-npc-caption.zalgo-original::before { height: 27px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pinball-game, .pinball-end, .pinball-combo, .pinball-toast { transition-duration: 1ms; }
