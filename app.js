@@ -544,6 +544,7 @@
   function applyVerificationMode(source) {
     const forced = state.age >= 80;
     const permanent = state.age >= 100;
+    const dismissible = !forced || source === 'manual';
     // Title / body
     verifyModal.querySelector('#verify-title').textContent = forced ? t('verify.forcedTitle') : t('verify.title');
     if (verifyBody) verifyBody.textContent = forced ? t('verify.forcedBody') : t('verify.body');
@@ -553,9 +554,10 @@
     verifyModify.hidden = forced;
     verifyForce.hidden = !forced || permanent;
     verifyForce.textContent = t('verify.force');
-    // Close affordances: forced age can never dismiss without acting
-    verifyClose.hidden = forced;
-    verifyModal.dataset.forced = forced ? '1' : '0';
+    // A timer-forced verification must be answered. A window opened explicitly
+    // by the visitor always keeps a working way back to the map.
+    verifyClose.hidden = !dismissible;
+    verifyModal.dataset.forced = dismissible ? '0' : '1';
   }
 
   function openVerification(source = 'timer') {
@@ -580,18 +582,21 @@
   function keepAge() {
     if (!state || verifyLock || state.age >= 80) return;
     verifyLock = true;
-    state.lastVerifiedAt = nowIso();
-    state.processedCycle = currentCycleId();
-    saveState();
-    renderAge();
-    addLog('log.kept', { age: state.age });
-    closeVerification();
+    try {
+      state.lastVerifiedAt = nowIso();
+      state.processedCycle = currentCycleId();
+      saveState();
+      renderAge();
+      addLog('log.kept', { age: state.age });
+    } finally {
+      closeVerification();
+    }
   }
 
   // Commit a single age change for this cycle. Broadcasts ageChanged exactly once.
   function commitAgeChange(delta, source, forcedFace = false) {
     if (!state || verifyLock) return;
-    if (state.age >= 80 && cycleProcessed()) {
+    if (state.age >= 80 && cycleProcessed() && source === 'timer') {
       showToast(t('toast.cycleDone'), true);
       // Defensive escape hatch for stale state or a second submit: forced mode
       // hides every close affordance, so never leave its modal open here.
@@ -2178,7 +2183,12 @@
     ageError.textContent = ''; startSession(age);
   });
   verifyAge.addEventListener('click', () => openVerification('manual'));
-  verifyClose.addEventListener('click', () => { if (state.age >= 80) return; addLog('log.cancelled'); closeVerification(); showToast(t('toast.cancelled')); });
+  verifyClose.addEventListener('click', () => {
+    if (verifyModal.dataset.forced === '1') return;
+    addLog('log.cancelled');
+    closeVerification();
+    showToast(t('toast.cancelled'));
+  });
   verifyKeep.addEventListener('click', () => keepAge());
   verifyModify.addEventListener('click', () => {
     if (state.age >= 80) return;
@@ -2191,7 +2201,8 @@
     window.setTimeout(() => modifyYears.focus({ preventScroll: true }), 40);
   });
   verifyForce.addEventListener('click', () => {
-    // "你必须面对它 · +1 岁" — immediately forces exactly +1, once per cycle.
+    // "你必须面对它 · +1 岁" — timer sessions are limited to once per cycle;
+    // manually opened sessions remain available for deliberate progression.
     commitAgeChange(1, verifyModal.dataset.source || 'timer', true);
   });
   verifyIncrease.addEventListener('click', () => {
@@ -2271,7 +2282,10 @@
     if (restartModal.classList.contains('open')) closeModal(restartModal);
     else if (consoleModal.classList.contains('open')) closeModal(consoleModal);
     else if (endingModal.classList.contains('open')) closeModal(endingModal);
-    else if (verifyModal.classList.contains('open')) { if (state && state.age >= 80) return; closeVerification(); }
+    else if (verifyModal.classList.contains('open')) {
+      if (verifyModal.dataset.forced === '1') return;
+      closeVerification();
+    }
     else if ((auroraGame.classList.contains('open') || pinballGame?.classList.contains('open')) && auroraAdmin && auroraAdmin.classList.contains('expanded')) setAuroraAdminExpanded(false);
     else if (auroraGame.classList.contains('open')) closeAuroraRelay();
     else if (pinballGame?.classList.contains('open')) closePinball();
