@@ -69,6 +69,7 @@
   function translate(root = document) {
     const bindings = [
       ["data-i18n", "textContent"],
+      ["data-i18n-html", "innerHTML"],
       ["data-i18n-placeholder", "placeholder"],
       ["data-i18n-aria-label", "aria-label"],
       ["data-i18n-title", "title"],
@@ -78,6 +79,7 @@
       root.querySelectorAll(`[${attribute}]`).forEach((element) => {
         const value = t(element.getAttribute(attribute));
         if (target === "textContent") element.textContent = value;
+        else if (target === "innerHTML") element.innerHTML = value;
         else element.setAttribute(target, value);
       });
     }
