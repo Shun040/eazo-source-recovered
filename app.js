@@ -607,35 +607,43 @@
       // Age is capped (permanent) — record an existence proof instead.
       if (before >= 100) {
         verifyLock = true;
-        state.existenceProofs = (state.existenceProofs || 0) + 1;
-        state.lastVerifiedAt = nowIso();
-        state.processedCycle = currentCycleId();
-        saveState();
-        renderAge();
-        addLog('log.existence', { count: state.existenceProofs });
-        showToast(t('toast.existenceProof', { count: state.existenceProofs }), true);
-        closeVerification();
+        try {
+          state.existenceProofs = (state.existenceProofs || 0) + 1;
+          state.lastVerifiedAt = nowIso();
+          state.processedCycle = currentCycleId();
+          saveState();
+          renderAge();
+          addLog('log.existence', { count: state.existenceProofs });
+          showToast(t('toast.existenceProof', { count: state.existenceProofs }), true);
+        } finally {
+          closeVerification();
+        }
       }
       return;
     }
     verifyLock = true;
-    state.age = after;
-    state.lastVerifiedAt = nowIso();
-    state.processedCycle = currentCycleId();
-    saveState();
-    playAgeGrowthAnimation();
-    applyAgeVisuals(before);              // updates #age-number → creature MutationObserver fires once
-    addLog('log.change', { before, after });
-    if (before < 18 && after >= 18) addLog('log.age18');
-    if (forcedFace) {
-      addLog('log.forcedNoChoice');
-      window.eazoCreature?.forcedGrowth?.();
-    } else if (after >= 80) {
-      window.eazoCreature?.forcedGrowth?.();
+    try {
+      state.age = after;
+      state.lastVerifiedAt = nowIso();
+      state.processedCycle = currentCycleId();
+      saveState();
+      playAgeGrowthAnimation();
+      applyAgeVisuals(before);              // updates #age-number → creature MutationObserver fires once
+      addLog('log.change', { before, after });
+      if (before < 18 && after >= 18) addLog('log.age18');
+      if (forcedFace) {
+        addLog('log.forcedNoChoice');
+        window.eazoCreature?.forcedGrowth?.();
+      } else if (after >= 80) {
+        window.eazoCreature?.forcedGrowth?.();
+      }
+      if (before >= 80 || after >= 80) showToast(t('toast.after80'), true);
+      else showToast(source === 'manual' ? t('toast.manualSuccess', { age: after }) : t('toast.timerSuccess', { age: after }));
+    } finally {
+      // High-age transitions touch several independent systems. A failure in
+      // any one of them must never trap the visitor in a forced modal.
+      closeVerification();
     }
-    if (before >= 80 || after >= 80) showToast(t('toast.after80'), true);
-    else showToast(source === 'manual' ? t('toast.manualSuccess', { age: after }) : t('toast.timerSuccess', { age: after }));
-    closeVerification();
   }
 
   // Restrained, irreversible growth pulse on the age readout.
