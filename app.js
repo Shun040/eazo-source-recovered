@@ -561,7 +561,10 @@
   function openVerification(source = 'timer') {
     if (!state || verifyModal.classList.contains('open')) return;
     // Forced cycles that were already satisfied this period must not reappear.
-    if (state.age >= 80 && cycleProcessed() && source === 'timer') return;
+    if (state.age >= 80 && cycleProcessed()) {
+      if (source !== 'timer') showToast(t('toast.cycleDone'), true);
+      return;
+    }
     verifyLock = false;
     resetVerificationForm();
     applyVerificationMode(source);
@@ -591,7 +594,13 @@
   // Commit a single age change for this cycle. Broadcasts ageChanged exactly once.
   function commitAgeChange(delta, source, forcedFace = false) {
     if (!state || verifyLock) return;
-    if (state.age >= 80 && cycleProcessed()) { showToast(t('toast.cycleDone'), true); return; }
+    if (state.age >= 80 && cycleProcessed()) {
+      showToast(t('toast.cycleDone'), true);
+      // Defensive escape hatch for stale state or a second submit: forced mode
+      // hides every close affordance, so never leave its modal open here.
+      closeVerification();
+      return;
+    }
     const before = state.age;
     const after = Math.min(MAX_AGE, before + delta);
     if (after <= before) {
