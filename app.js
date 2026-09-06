@@ -561,10 +561,7 @@
   function openVerification(source = 'timer') {
     if (!state || verifyModal.classList.contains('open')) return;
     // Forced cycles that were already satisfied this period must not reappear.
-    if (state.age >= 80 && cycleProcessed()) {
-      if (source !== 'timer') showToast(t('toast.cycleDone'), true);
-      return;
-    }
+    if (state.age >= 80 && cycleProcessed() && source === 'timer') return;
     verifyLock = false;
     resetVerificationForm();
     applyVerificationMode(source);
