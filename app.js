@@ -543,14 +543,15 @@
 
   function applyVerificationMode(source) {
     const forced = state.age >= 80;
+    const eighty = state.age >= 80;
     const permanent = state.age >= 100;
     // Title / body
     verifyModal.querySelector('#verify-title').textContent = forced ? t('verify.forcedTitle') : t('verify.title');
     if (verifyBody) verifyBody.textContent = forced ? t('verify.forcedBody') : t('verify.body');
-    // Buttons
+    // Keep and free modification are only available below age 80.
     verifyIncrease.textContent = permanent ? t('verify.proveExistence') : t('verify.increase');
-    verifyKeep.hidden = forced;
-    verifyModify.hidden = forced;
+    verifyKeep.hidden = eighty;
+    verifyModify.hidden = eighty;
     verifyForce.hidden = !forced || permanent;
     verifyForce.textContent = t('verify.force');
     // Close affordances: forced age can never dismiss without acting
@@ -591,7 +592,13 @@
   // Commit a single age change for this cycle. Broadcasts ageChanged exactly once.
   function commitAgeChange(delta, source, forcedFace = false) {
     if (!state || verifyLock) return;
-    if (state.age >= 80 && cycleProcessed()) { showToast(t('toast.cycleDone'), true); return; }
+    // Only automatic verification is limited to one growth per cycle.
+    // A verification explicitly opened by the visitor remains usable.
+    if (source === 'timer' && state.age >= 80 && cycleProcessed()) {
+      showToast(t('toast.cycleDone'), true);
+      closeVerification();
+      return;
+    }
     const before = state.age;
     const after = Math.min(MAX_AGE, before + delta);
     if (after <= before) {
@@ -2164,7 +2171,7 @@
     ageError.textContent = ''; startSession(age);
   });
   verifyAge.addEventListener('click', () => openVerification('manual'));
-  verifyClose.addEventListener('click', () => { if (state.age >= 80) return; addLog('log.cancelled'); closeVerification(); showToast(t('toast.cancelled')); });
+  verifyClose.addEventListener('click', () => { if (verifyModal.dataset.forced === '1') return; addLog('log.cancelled'); closeVerification(); showToast(t('toast.cancelled')); });
   verifyKeep.addEventListener('click', () => keepAge());
   verifyModify.addEventListener('click', () => {
     if (state.age >= 80) return;
@@ -2257,7 +2264,7 @@
     if (restartModal.classList.contains('open')) closeModal(restartModal);
     else if (consoleModal.classList.contains('open')) closeModal(consoleModal);
     else if (endingModal.classList.contains('open')) closeModal(endingModal);
-    else if (verifyModal.classList.contains('open')) { if (state && state.age >= 80) return; closeVerification(); }
+    else if (verifyModal.classList.contains('open')) { if (verifyModal.dataset.forced === '1') return; closeVerification(); }
     else if ((auroraGame.classList.contains('open') || pinballGame?.classList.contains('open')) && auroraAdmin && auroraAdmin.classList.contains('expanded')) setAuroraAdminExpanded(false);
     else if (auroraGame.classList.contains('open')) closeAuroraRelay();
     else if (pinballGame?.classList.contains('open')) closePinball();
