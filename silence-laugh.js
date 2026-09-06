@@ -340,7 +340,7 @@
     const info = silenceInfo();
     startedAt = Date.now() - (info ? info.elapsed : 0);
     // 淡入总线（不影响 snow-audio 的降噪）
-    try { bus.gain.setTargetAtTime(1.0, ctx.currentTime, 0.4); } catch (_e) {}
+    try { bus.gain.setTargetAtTime(0.3, ctx.currentTime, 0.4); } catch (_e) {}
     decodeAll().then(() => {
       if (!running) return;
       scheduleNext();

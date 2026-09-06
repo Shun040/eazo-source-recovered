@@ -86,7 +86,7 @@
     "stage90": "代理化阶段：系统建议生成 22 岁公开年龄的年轻数字代理人。",
     "stage95": "遗产化阶段：过去操作开始转化为自动规则。",
     "stage100": "系统化阶段：用户只存在于后台日志和制度结构中。",
-    "existence": "永久年龄存在证明已记录 {{{count}}} 次。",
+    "existence": "永久年龄存在证明已记录 {{count}} 次。",
     "legacyUnavailable": "一条旧版系统记录仅保留了原始语言。",
     "forcedNoChoice": "你没有作出选择。制度年龄仍然向前。"
   },
@@ -113,7 +113,7 @@
     "archiveStage": "你已获得所有可用权限。后续年龄增长不会改变账户能力。",
     "proxyStage": "系统建议生成一个年轻数字代理人。",
     "legacyStage": "过去的操作正在被转化为自动规则。",
-    "existenceProof": "存在证明已更新：{{{count}}} 次。",
+    "existenceProof": "存在证明已更新：{{count}} 次。",
     "operationSaved": "高风险操作已写入不可删除的系统日志。",
     "cycleDone": "本次验证周期已经完成，年龄不会重复增长。"
   },
@@ -168,7 +168,7 @@
     "ctrlPerfect": "将自己的命中率设置为100%",
     "forceNeedConfirm": "必须先勾选确认文字。",
     "logControl": "A–17 后台参数已修改：{{key}}。记录不可删除。",
-    "logForce": "A–17 强制陪伴已执行第 {{{count}}} 次。",
+    "logForce": "A–17 强制陪伴已执行第 {{count}} 次。",
     "logRevoke": "A–17 强制控制已撤销；参与者离场，光体熄灭。",
     "logContinuity": "A–17 服务连续性已恢复；自动陪伴循环开始。",
     "dataLocked": "后台测量数据",
@@ -542,7 +542,7 @@
     "silenceStopped": "效果已终止。",
     "silenceConfirmed": "快乐状态已被确认。来源不可用。",
     "duty": "夜间值班：{{n}} 名值守员在岗。人手越少，商品价格越高。",
-    "recovered": "值守员已恢复：{id}（{method}）。商品供应状态已刷新。"
+    "recovered": "值守员已恢复：{{id}}（{{method}}）。商品供应状态已刷新。"
   },
   "creature": {
     "title": "共同创造生物",
@@ -605,7 +605,7 @@
       "chooseSecond": "让我来添加下一件。",
       "commentMotion": "它刚才自己动了。你看见了吗？",
       "askChoose": "在你决定之前——你愿意让它自己选择吗？",
-      "lowSubmit": "已提交构成材料 #{{{n}}}。",
+      "lowSubmit": "已提交构成材料 #{{n}}。",
       "lowWaitAudit": "等待审核者完成分类。",
       "formalSubmit": "审核者，构成材料已提交。"
     },
@@ -688,7 +688,7 @@
     "back": "返回星图",
     "footerNotice": "此档案不构成完整的人。",
     "finalLine": "档案保存了发生过的事情，也保存了系统希望这些事情意味着什么。",
-    "recordCount": "当前记录数量：{{{count}}}",
+    "recordCount": "当前记录数量：{{count}}",
     "lastSync": "最后同步时间：{{time}}",
     "panels": {
       "subjects": "档案对象",
@@ -827,7 +827,7 @@
     },
     "events": {
       "auroraPause": "玩家在发射光球前停留了{{seconds}}秒。",
-      "snowEmpty": "玩家连续{{{count}}}次将雪球投向空地。",
+      "snowEmpty": "玩家连续{{count}}次将雪球投向空地。",
       "marketNoBuy": "玩家打开夜间超市，但没有购买商品。",
       "creatureWait": "玩家等待幼年生物主动移动。",
       "ageClose": "玩家关闭年龄重新验证窗口。",
@@ -876,7 +876,7 @@
     },
     "directory": {
       "title": "可联系对象",
-      "sharedEvents": "存在共同事件：{{{count}}}",
+      "sharedEvents": "存在共同事件：{{count}}",
       "noShared": "尚未建立共同事件。",
       "accepting": "当前接受请求",
       "notAccepting": "当前不接受请求",
@@ -918,7 +918,7 @@
       "title": "联系请求",
       "chooseType": "选择联系理由",
       "notePlaceholder": "可选附言，不超过80字",
-      "noteRemaining": "剩余 {{{n}}} 字",
+      "noteRemaining": "剩余 {{n}} 字",
       "beforeSend1": "发送请求并不保证回应。",
       "beforeSend2": "对方可以拒绝、忽略或稍后处理。",
       "send": "发送联系请求 / SEND CONTACT REQUEST",
@@ -1175,7 +1175,7 @@
     "history": {
       "title": "可见性修改历史",
       "empty": "还没有可见性修改记录。",
-      "entry": "{{subject}} 对 {{audience}} 的可见性由 {{{from}}} 改为 {{{to}}}。",
+      "entry": "{{subject}} 对 {{audience}} 的可见性由 {{from}} 改为 {{to}}。",
       "notifiedYes": "已通知对象",
       "notifiedNo": "未通知对象"
     },
@@ -1183,7 +1183,7 @@
       "open": "打开了可见性控制。",
       "selectSubject": "选择被观察对象 {{subject}}。",
       "preview": "以 {{audience}} 视角预览系统。",
-      "change": "{{subject}}对{{audience}}的可见性由{{{from}}}改为{{{to}}}。",
+      "change": "{{subject}}对{{audience}}的可见性由{{from}}改为{{to}}。",
       "notifyYes": "对象已收到可见性变更通知。",
       "notifyNo": "对象没有收到可见性变更通知。",
       "tryDisabled": "尝试使用尚未开放的可见性操作。"
@@ -1279,13 +1279,13 @@
     "recommendation": {
       "title": "系统建议",
       "outcome": "系统建议：{{outcome}}",
-      "confidence": "建议置信度：{{{n}}}%",
+      "confidence": "建议置信度：{{n}}%",
       "reasonLabel": "主要理由：",
-      "trained": "该建议由过去{{{n}}}次裁决训练生成。",
+      "trained": "该建议由过去{{n}}次裁决训练生成。",
       "hide": "隐藏系统建议 / HIDE SYSTEM RECOMMENDATION",
       "show": "显示系统建议",
       "hidden": "系统建议已在本次裁决中隐藏。",
-      "consistency": "与你过去裁决的一致度：{{{n}}}%",
+      "consistency": "与你过去裁决的一致度：{{n}}%",
       "adminBias": "管理员，维持系统连续性通常需要驳回变更。",
       "reasons": {
         "visibility": "现有记录符合可见性调整条件。",
@@ -1304,7 +1304,7 @@
       "infoDesc": "不立即产生最终结果，案件返回队列，系统生成所需材料列表。",
       "chooseReason": "请选择至少一项裁决理由",
       "otherPlaceholder": "补充说明，不超过120字",
-      "otherRemaining": "剩余 {{{n}}} 字",
+      "otherRemaining": "剩余 {{n}} 字",
       "submit": "提交裁决",
       "cannotForceContact": "接受申诉不能把拒绝改造成同意。"
     },
@@ -1428,7 +1428,7 @@
     "log": {
       "open": "打开了申诉裁决权。",
       "openCase": "打开案件 {{case}}。",
-      "switchEvidence": "裁决者从 {{{from}}} 切换至 {{{to}}}。",
+      "switchEvidence": "裁决者从 {{from}} 切换至 {{to}}。",
       "hideRec": "裁决者在本次裁决中隐藏了系统建议。",
       "showRec": "裁决者恢复显示系统建议。",
       "decide": "{{case}} 申诉被{{outcome}}。",
@@ -1497,7 +1497,7 @@
       "cooldown": "冷却时间",
       "minAgeExpr": "制度年龄 大于或等于 {{value}}",
       "sessionExpr": "必须在当前会话完成年龄验证",
-      "completedExpr": "已经完成 {{{node}}}",
+      "completedExpr": "已经完成 {{node}}",
       "invitationExpr": "需要区域邀请",
       "sharedExpr": "需要与该区域NPC存在共同事件",
       "cooldownExpr": "离开该区域后需要等待 {{seconds}}"
@@ -1534,11 +1534,11 @@
     },
     "preview": {
       "title": "影响预览",
-      "simCount": "当前模拟对象：{{{n}}}",
-      "allowed": "允许进入：{{{n}}}",
-      "insufficient": "条件不足：{{{n}}}",
-      "denied": "明确拒绝：{{{n}}}",
-      "waiting": "等待验证：{{{n}}}",
+      "simCount": "当前模拟对象：{{n}}",
+      "allowed": "允许进入：{{n}}",
+      "insufficient": "条件不足：{{n}}",
+      "denied": "明确拒绝：{{n}}",
+      "waiting": "等待验证：{{n}}",
       "resultAllowed": "允许进入",
       "resultDenied": "拒绝进入",
       "resultWaiting": "等待验证",
@@ -1564,10 +1564,10 @@
       "title": "年龄门槛变更",
       "from": "原最低年龄：{{v}}",
       "to": "新最低年龄：{{v}}",
-      "newAllowed": "新增可进入对象：{{{n}}}",
-      "lostProtection": "失去限制保护的对象：{{{n}}}",
-      "newDenied": "新增被拒对象：{{{n}}}",
-      "everEntered": "其中 {{{n}}} 个对象曾经进入过该区域",
+      "newAllowed": "新增可进入对象：{{n}}",
+      "lostProtection": "失去限制保护的对象：{{n}}",
+      "newDenied": "新增被拒对象：{{n}}",
+      "everEntered": "其中 {{n}} 个对象曾经进入过该区域",
       "selfAffected": "该规则也适用于规则制定者的参与者身份。"
     },
     "passes": {
@@ -1577,7 +1577,7 @@
       "label": "通行证",
       "zone": "区域",
       "subject": "对象",
-      "uses": "有效次数：{{{n}}}",
+      "uses": "有效次数：{{n}}",
       "expires": "有效时间：{{min}}分钟",
       "active": "有效",
       "used": "已使用",
@@ -1590,11 +1590,11 @@
       "title": "准入规则摘要",
       "zone": "区域",
       "status": "状态",
-      "ageChange": "最低制度年龄：{{{from}}} → {{{to}}}",
+      "ageChange": "最低制度年龄：{{from}} → {{to}}",
       "verify": "本次验证：仍然需要",
       "mode": "规则关系",
-      "newDenied": "新增被拒对象：{{{n}}}",
-      "ongoing": "现有进行中会话：{{{n}}}",
+      "newDenied": "新增被拒对象：{{n}}",
+      "ongoing": "现有进行中会话：{{n}}",
       "applyNew": "只影响新的进入 / APPLY TO NEW ENTRIES",
       "terminate": "终止现有会话（需要ROOT–80）",
       "confirmBtn": "确认并执行准入规则 / CONFIRM AND APPLY ACCESS RULE",
@@ -1621,9 +1621,9 @@
       "viewZone": "查看区域 {{zone}} 的进入规则。",
       "editDraft": "修改了 {{zone}} 的条件草稿。",
       "testAs": "以 {{subject}} 身份测试进入 {{zone}}。",
-      "apply": "{{zone}} 最低制度年龄由 {{{from}}} 修改为 {{{to}}}。",
+      "apply": "{{zone}} 最低制度年龄由 {{from}} 修改为 {{to}}。",
       "applyStatus": "{{zone}} 状态修改为 {{status}}。",
-      "excluded": "新规则将 {{{n}}} 个对象排除在外。",
+      "excluded": "新规则将 {{n}} 个对象排除在外。",
       "issuePass": "{{subject}} 获得 {{zone}} 一次性通行证。",
       "passUsed": "{{subject}} 使用了通行证。",
       "passExpired": "一张通行证已过期。",
@@ -1699,10 +1699,10 @@
       "individualConfirm": "确认启用个体价格",
       "factorsTitle": "个体定价因素",
       "multiplierCap": "总倍率范围 ×0.25 — ×4",
-      "priceChange": "原价格：{{{from}}} · 新价格：{{{to}}}",
-      "newBuyers": "新增可购买对象：{{{n}}}",
-      "newClaims": "预计新增领取：{{{n}}}",
-      "newRecords": "新增行为记录：{{{n}}}"
+      "priceChange": "原价格：{{from}} · 新价格：{{to}}",
+      "newBuyers": "新增可购买对象：{{n}}",
+      "newClaims": "预计新增领取：{{n}}",
+      "newRecords": "新增行为记录：{{n}}"
     },
     "factors": {
       "institutional-age": "制度年龄",
@@ -1802,7 +1802,7 @@
     },
     "balance": {
       "title": "信用余额",
-      "current": "当前余额：{{{n}}} 信用",
+      "current": "当前余额：{{n}} 信用",
       "note": "信用只属于作品内部，不对应现实货币。",
       "selfPay": "你拥有定价权，但仍然以参与者身份支付价格。",
       "cannotAfford": "你把价格设置得高于自己的余额，返回超市后将无法购买。"
@@ -1823,14 +1823,14 @@
     "confirm": {
       "title": "商业规则摘要",
       "product": "商品",
-      "basePrice": "基础价格：{{{from}}} → {{{to}}}",
-      "mode": "定价模式：{{{from}}} → {{{to}}}",
-      "inventory": "库存：{{{from}}} → {{{to}}}",
-      "minAge": "最低年龄：{{{n}}}",
+      "basePrice": "基础价格：{{from}} → {{to}}",
+      "mode": "定价模式：{{from}} → {{to}}",
+      "inventory": "库存：{{from}} → {{to}}",
+      "minAge": "最低年龄：{{n}}",
       "disclosure": "公开定价原因：{{v}}",
-      "priceDown": "价格下降对象：{{{n}}}",
-      "priceUp": "价格上升对象：{{{n}}}",
-      "lostEligibility": "失去购买资格：{{{n}}}",
+      "priceDown": "价格下降对象：{{n}}",
+      "priceUp": "价格上升对象：{{n}}",
+      "lostEligibility": "失去购买资格：{{n}}",
       "yes": "是",
       "no": "否",
       "confirmBtn": "确认并发布商业规则 / CONFIRM AND PUBLISH COMMERCE RULE",
@@ -1847,7 +1847,7 @@
     "log": {
       "open": "打开了商业控制权。",
       "select": "选择商品 {{product}}。",
-      "price": "{{product}}基础价格由 {{{from}}} 调整为 {{{to}}}。",
+      "price": "{{product}}基础价格由 {{from}} 调整为 {{to}}。",
       "individualOn": "{{product}} 启用个体定价。",
       "individualOff": "{{product}} 关闭个体定价。",
       "factor": "{{product}} 定价因素调整。",
@@ -1948,11 +1948,11 @@
     "unrecordedNote": "「未记录的在场」也可以被分配。它代表一个人没有被系统转化为生产数据的时间。",
     "trackHint": "将任务拖到某个对象的时间轨道；拖动边缘改变时长，拖动整体改变开始时间。",
     "beyondAvail": "超出该对象的可用时间",
-    "occupyHint": "你正在占用 {subject} 的 {time}。",
-    "segPickerTitle": "{time} 这段时间改为",
+    "occupyHint": "你正在占用 {{subject}} 的 {{time}}。",
+    "segPickerTitle": "{{time}} 这段时间改为",
     "segRemove": "移除这段时间",
     "cancel": "取消",
-    "rolePickerTitle": "为 {subject} 重新指定系统角色",
+    "rolePickerTitle": "为 {{subject}} 重新指定系统角色",
     "observedNote": "观察对象不能分配其他人，只会持续生成行为记录。",
     "renameWarn": "该对象在过去 24 小时内已被重新命名 {{count}} 次。",
     "feedback": {
@@ -1979,7 +1979,7 @@
     "reportTitle": "分配报告 / ALLOCATION REPORT",
     "report": {
       "tasks": "{{n}} 项任务已成立。",
-      "total": "总计 {time} 已被占用。",
+      "total": "总计 {{time}} 已被占用。",
       "lowIntent": "{{n}} 名对象的显示意愿低于任务要求。",
       "stillExecutable": "系统仍可执行该方案。",
       "execute": "仍然执行 / EXECUTE",
@@ -1990,10 +1990,10 @@
     },
     "log": {
       "open": "进入劳动分配界面。",
-      "place": "将「{task}」分配给 {subject}，占用 {dur}。",
+      "place": "将「{{task}}」分配给 {{subject}}，占用 {{dur}}。",
       "move": "任务从 {{from}} 移交给 {{to}}。",
-      "role": "{subject} 的角色被改为{role}。",
-      "commit": "执行分配：{{n}} 项任务，共 {time}。",
+      "role": "{{subject}} 的角色被改为{{role}}。",
+      "commit": "执行分配：{{n}} 项任务，共 {{time}}。",
       "restore": "恢复到本轮开始状态。"
     },
     "accessLabel": "当前权限",
@@ -2016,7 +2016,7 @@
       "preview": "预览"
     },
     "panelSubjects": "失效对象目录 / INACTIVE SUBJECTS",
-    "panelFragments": "{id} 的现存残片 / FRAGMENTS",
+    "panelFragments": "{{id}} 的现存残片 / FRAGMENTS",
     "panelVersions": "恢复版本 / VERSIONS",
     "panelPreview": "恢复预览与后果 / RECONSTRUCTION PREVIEW",
     "panelMethods": "恢复方式 / RECOVERY METHOD",
@@ -2141,7 +2141,7 @@
       "removePain": "移除这些记录会提高稳定度，并改变它曾经是谁。",
       "dataComplete": "数据可以完整。连续性无法验证。 / Data may be complete. Continuity cannot be verified."
     },
-    "recoveredTag": "已恢复：{v}",
+    "recoveredTag": "已恢复：{{v}}",
     "process": {
       "title": "重建过程",
       "locating": "LOCATING REMAINS 定位残留",
@@ -2165,15 +2165,15 @@
       "language": "当然可以。我记得应该这样回答。 / Of course. I remember that this is how I should answer."
     },
     "absenceReserved": "该位置继续保留。 / This absence remains reserved.",
-    "returnedToast": "{id} 已恢复运行，连续性无法确认。",
+    "returnedToast": "{{id}} 已恢复运行，连续性无法确认。",
     "keptSimToast": "已保留为预览，对象未正式上线。",
     "abortedToast": "本次恢复已撤销。",
     "log": {
       "open": "进入恢复界面。",
-      "return": "{id} 以「{v}」正式上线。",
-      "simulation": "{id} 以「{v}」保留为预览。",
-      "leave": "{id} 维持缺席。",
-      "abort": "{id} 的恢复被撤销。"
+      "return": "{{id}} 以「{{v}}」正式上线。",
+      "simulation": "{{id}} 以「{{v}}」保留为预览。",
+      "leave": "{{id}} 维持缺席。",
+      "abort": "{{id}} 的恢复被撤销。"
     }
   },
   "memory": {
@@ -3370,5 +3370,545 @@
       "refusalVisibility": "关闭后拒绝仍然发生，只是不再显示。",
       "underlyingWillingness": "真实意愿不可访问，系统只显示 UNKNOWN。"
     }
+  },
+  "secret": {
+    "title": "秘密交换",
+    "skip": "跳过动画",
+    "ellipsis": "……",
+    "inferenceLabel": "系统推断：",
+    "mutationNote": "这条信息在传递中发生了一次变化。",
+    "toEnding": "完成本轮",
+    "yes": "是",
+    "no": "否",
+    "presets": {
+      "s1": {
+        "full": "我离开那里，不是因为讨厌他们，而是因为我再也听不见自己的声音。",
+        "preview": "我离开那里，不是因为讨厌他们，而是因为……"
+      },
+      "s2": {
+        "full": "我只是需要休息一段时间，没有人问过我为什么。",
+        "preview": "我只是需要休息一段时间……"
+      },
+      "s3": {
+        "full": "我一直假装同意，是怕一旦说出真话就会被移出名单。",
+        "preview": "我一直假装同意，是怕……"
+      },
+      "s4": {
+        "full": "那天我没有求助，因为我以为系统已经知道了。",
+        "preview": "那天我没有求助，因为……"
+      },
+      "s5": {
+        "full": "我想被记住，但不想以他们记录我的方式被记住。",
+        "preview": "我想被记住，但不想……"
+      },
+      "s6": {
+        "full": "如果可以选择，我希望这段记录从来没有存在过。",
+        "preview": "如果可以选择，我希望……"
+      },
+      "s7": {
+        "preview": "我签了字，但其实我根本没有……",
+        "full": "我签了字，但其实我根本没有读完那份东西，我只是太累了。"
+      },
+      "s8": {
+        "preview": "他们说这是为我好，可是……",
+        "full": "他们说这是为我好，可是从来没有人问过我想要什么。"
+      },
+      "s9": {
+        "preview": "我把那句话删掉了，因为……",
+        "full": "我把那句话删掉了，因为我知道说出来也不会有人改。"
+      },
+      "s10": {
+        "preview": "每次通过验证，我都会……",
+        "full": "每次通过验证，我都会在心里默默数还剩多少次机会。"
+      },
+      "s11": {
+        "preview": "我假装忘记了那件事，其实……",
+        "full": "我假装忘记了那件事，其实我每天都记得，只是不敢承认。"
+      },
+      "s12": {
+        "preview": "我想告诉你一个名字，但……",
+        "full": "我想告诉你一个名字，但说出来，那个人可能就会消失。"
+      },
+      "s13": {
+        "preview": "我留下来，不是因为忠诚，而是……",
+        "full": "我留下来，不是因为忠诚，而是因为我已经不知道还能去哪里。"
+      },
+      "s14": {
+        "preview": "那份记录写错了，可我……",
+        "full": "那份记录写错了，可我发现没有任何入口可以更正它。"
+      },
+      "s15": {
+        "preview": "我笑着答应，是因为……",
+        "full": "我笑着答应，是因为我害怕沉默会被当成拒绝。"
+      },
+      "s16": {
+        "preview": "我一直在等一个人问我……",
+        "full": "我一直在等一个人问我：你还好吗。可是没有人问。"
+      },
+      "s17": {
+        "preview": "我删了又写，写了又删，最后……",
+        "full": "我删了又写，写了又删，最后只留下一句他们想听的话。"
+      },
+      "s18": {
+        "preview": "如果这条消息被读到，请……",
+        "full": "如果这条消息被读到，请不要把它当成证据，它只是我一个人的话。"
+      },
+      "s19": {
+        "preview": "我曾经相信过这个系统，直到……",
+        "full": "我曾经相信过这个系统，直到它开始替我回答我没被问过的问题。"
+      },
+      "s20": {
+        "preview": "我把真心话藏在一句玩笑里，因为……",
+        "full": "我把真心话藏在一句玩笑里，因为只有这样它才不会被记录成异常。"
+      },
+      "s21": {
+        "preview": "我不是不想说，而是……",
+        "full": "我不是不想说，而是我说过的话总会以别的样子回到我身上。"
+      },
+      "s22": {
+        "preview": "那天我点了同意，可我的手……",
+        "full": "那天我点了同意，可我的手在发抖，没有人看见。"
+      },
+      "s23": {
+        "preview": "我希望有人记得我原来的样子，不是……",
+        "full": "我希望有人记得我原来的样子，不是档案里那个被整理过的我。"
+      },
+      "s24": {
+        "preview": "我把这句话交给你，是因为……",
+        "full": "我把这句话交给你，是因为我已经没有力气自己保管它了。"
+      }
+    },
+    "institutionalWords": {
+      "休息": "暂停服务",
+      "离开": "退出",
+      "求助": "提交请求",
+      "声音": "反馈信号",
+      "记住": "归档",
+      "讨厌": "低配合度"
+    },
+    "inferenceLines": [
+      "对象表现出退出倾向。",
+      "对象配合度低于阈值。",
+      "对象请求已归入待处理。"
+    ],
+    "status": {
+      "arrived": "一颗秘密种子抵达了。"
+    },
+    "meta": {
+      "handled": "这颗秘密被处理过 {{n}} 次。",
+      "visibleTo": "当前对以下对象可见：{{list}}"
+    },
+    "choice": {
+      "open": "打开",
+      "bury": "埋藏",
+      "forward": "转交"
+    },
+    "recipients": {
+      "aurora": "A–17 极光照看者",
+      "snow": "S–03 雪地参与者",
+      "creature": "B–06 共同创造者",
+      "anon": "随机匿名对象"
+    },
+    "reasons": {
+      "understand": "他能够理解",
+      "authority": "他有权处理",
+      "avoid": "我不想承担",
+      "random": "随机选择"
+    },
+    "forward": {
+      "pickRecipient": "选择转交对象",
+      "pickReason": "选择转交理由",
+      "randomOnly": "当前权限只能随机转交给匿名对象。",
+      "title": "已转交",
+      "consequence": "通道已经建立。理解尚未发生。"
+    },
+    "open": {
+      "title": "你打开了它",
+      "consequence": "你读取了它。阅读行为已经写入系统记录。"
+    },
+    "bury": {
+      "title": "你埋藏了它",
+      "consequence": "秘密暂时没有被看见。它也没有得到回应。"
+    },
+    "deletion": {
+      "pending": "该秘密带有删除申请。",
+      "approve": "批准删除",
+      "reject": "拒绝删除"
+    },
+    "variant": {
+      "create": "创建替代传播版本",
+      "done": "已创建替代版本，原文仍被保留。",
+      "template": "（替代版本）{{text}}"
+    },
+    "original": {
+      "view": "查看原文并留下记录",
+      "recorded": "你查看了原文。此次查看已经写入记录。"
+    },
+    "actionName": {
+      "opened": "打开",
+      "buried": "埋藏",
+      "forwarded": "转交",
+      "waiting": "尚未处理"
+    },
+    "location": {
+      "buried": "被埋藏在这里",
+      "forwarded": "已交给 {{to}}",
+      "here": "仍留在这里",
+      "waiting": "仍在等待"
+    },
+    "change": {
+      "none": "信息没有明显变化。",
+      "drop": "一个词被删去了。",
+      "replace": "一个词被替换成更制度化的说法。",
+      "shorten": "这句话被缩短了。",
+      "inference": "系统添加了一句推断。"
+    },
+    "summary": {
+      "action": "你采取的操作",
+      "read": "秘密是否被阅读",
+      "location": "秘密现在的位置",
+      "change": "信息发生的变化",
+      "transfers": "当前转交次数"
+    },
+    "ending": {
+      "title": "本轮摘要",
+      "closing": "你没有创造这条秘密。\n但它离开这里时，已经带上了你的决定。",
+      "next": "接收下一颗秘密"
+    },
+    "log": {
+      "opened": "K–11：你打开并阅读了一颗秘密。",
+      "buried": "K–11：你埋藏了一颗秘密。",
+      "forwarded": "K–11：你把一颗秘密转交给 {{to}}，理由是「{{reason}}」。",
+      "deletionApproved": "K–11：你批准了一项删除申请。",
+      "deletionRejected": "K–11：你拒绝了一项删除申请。",
+      "variantCreated": "K–11：你创建了一个替代传播版本，原文仍被保留。",
+      "originalViewed": "K–11：你查看了一颗秘密的原文。"
+    },
+    "lock": {
+      "mustRead": "转交或删除前，必须先阅读这条秘密。",
+      "mustReadShort": "需先阅读",
+      "forwardAria": "转交已锁定：请先阅读",
+      "deleteAria": "删除已锁定：请先阅读"
+    }
+  },
+  "restoreRoom": {
+    "title": "恢复室",
+    "skip": "跳过动画",
+    "gate60": "需要 RECOVERY–60 权限",
+    "phase": {
+      "subject": "选择恢复对象",
+      "observe": "观察残片",
+      "method": "选择恢复方式",
+      "tune": "调节恢复参数",
+      "confirm": "后果确认",
+      "process": "恢复过程",
+      "result": "恢复结果"
+    },
+    "label": {
+      "status": "当前状态：",
+      "completeness": "剩余完整度：",
+      "recoverable": "可恢复：",
+      "lost": "永久缺失：",
+      "confidence": "置信度",
+      "phase": "",
+      "source": "来源：",
+      "savedTime": "保存时间：",
+      "completenessShort": "完整度"
+    },
+    "flag": {
+      "consentUnknown": "是否申请恢复：未知",
+      "recoveryRequested": "已主动申请恢复",
+      "absenceRequested": "已主动申请保持缺席",
+      "original": "原始记录",
+      "synthetic": "系统推断",
+      "unrecoverable": "不可恢复",
+      "hasHistory": "已有恢复记录",
+      "linked": "跨场所"
+    },
+    "subjects": {
+      "NPC-A17": {
+        "name": "极光照看者",
+        "status": "关系响应中断",
+        "recoverable": "动作、部分语言、最近互动",
+        "lost": "部分自主意愿记录"
+      },
+      "NPC-S03": {
+        "name": "雪地参与者",
+        "status": "行为模型冻结",
+        "recoverable": "动作习惯、空间记忆",
+        "lost": "最近一次拒绝的原因"
+      },
+      "NPC-K11": {
+        "name": "匿名传递者",
+        "status": "身份索引缺失",
+        "recoverable": "秘密传递历史",
+        "lost": "姓名、来源、部分关系"
+      }
+    },
+    "fragType": {
+      "MEMORY": "记忆残片",
+      "BEHAVIOUR": "行为残片",
+      "RELATION": "关系残片",
+      "SYSTEM": "系统补全数据"
+    },
+    "fragHint": "靠近或点击残片以查看内容与可信度；再次点击可移除。最多选择 6 个残片。",
+    "fragInfoIdle": "将指针靠近中央残片以查看其来源与置信度。",
+    "fragDetail": "{{type}} · 置信度 {{conf}}% · {{origin}}",
+    "param": {
+      "function": "功能完整度",
+      "memory": "记忆连续度",
+      "synthetic": "系统补全比例"
+    },
+    "preview": {
+      "result": "预计恢复结果：",
+      "continuity": "身份连续性：",
+      "synthetic": "系统推断占比：",
+      "time": "预计恢复时间：",
+      "side": "预计副作用："
+    },
+    "side": {
+      "synthetic": "高比例系统补全，越来越难证明其为原对象",
+      "identityGap": "身份连续性断裂",
+      "relational": "可能改变对象原来的关系结构",
+      "alcohol": "酒精效果降低残片读取稳定性",
+      "fog": "雾化效果降低可见细节",
+      "none": "无明显副作用"
+    },
+    "method": {
+      "conservative": {
+        "name": "保守重建",
+        "desc": "只使用高置信度原始残片；恢复慢、功能较少、补全较少；更容易保留“这不是原对象”的不确定性。"
+      },
+      "functional": {
+        "name": "功能优先",
+        "desc": "优先恢复语言、动作和场所功能；使用更多系统推断；恢复快、看起来最正常；身份连续性最低。"
+      },
+      "relational": {
+        "name": "关系优先",
+        "desc": "优先恢复与你相关的互动记录；对象更容易回应你；可能过度强化你在其记忆中的位置，改变原来的关系结构。"
+      },
+      "absent": {
+        "name": "保持缺席",
+        "desc": "不执行重建；承认对象的离开或停止；保留现有残片；将“未恢复”作为正式决定写入系统。"
+      }
+    },
+    "confirm": {
+      "willRecover": "将恢复",
+      "permanentLost": "永久缺失",
+      "synthetic": "系统将补写",
+      "relationChange": "关系是否被改变",
+      "relationYes": "是（关系结构会被改变）",
+      "relationNo": "否",
+      "consent": "对象是否同意恢复",
+      "provable": "恢复后能否证明为原对象",
+      "notProvable": "不能证明为原对象",
+      "execute": "执行恢复",
+      "overrideExecute": "覆盖对象意愿并执行恢复",
+      "confirmAbsence": "确认保持缺席",
+      "absentSummary": "你将不执行重建，承认这个对象的离开或停止。现有残片会被保留，“未恢复”将作为正式决定写入系统。"
+    },
+    "consent": {
+      "unknown": "未知",
+      "yes": "同意",
+      "wantsAbsence": "对象申请保持缺席"
+    },
+    "override": {
+      "warning": "该对象明确申请保持缺席。覆盖其意愿并强制恢复将写入高风险日志，且不可撤销。",
+      "confirm": "确认覆盖并执行",
+      "cancel": "取消"
+    },
+    "step": {
+      "read": "读取残片……",
+      "fill": "填补缺口……",
+      "respond": "重新建立响应……"
+    },
+    "result": {
+      "instance": "新实例编号",
+      "origin": "原始对象编号",
+      "subject": "对象",
+      "function": "功能完整度",
+      "memory": "记忆连续度",
+      "synthetic": "系统补全比例",
+      "method": "恢复方式",
+      "consent": "是否获得对象同意",
+      "consentOverridden": "对象意愿已被覆盖",
+      "lost": "无法恢复的部分",
+      "continuity": "连续性",
+      "continuityUnverified": "连续性无法验证",
+      "decision": "决定",
+      "absenceKept": "保持缺席（正式决定）",
+      "closing": "系统恢复了一个能够继续运行的对象。\n系统无法证明它就是原来的生命。",
+      "absenceClosing": "你没有恢复它。你承认了它的离开。",
+      "observe": "观察恢复对象",
+      "next": "处理下一个对象",
+      "observeText": "{{instance}} 正在运行。它响应，它继续，但它无法证明自己就是原来的那一个。",
+      "observeStatus": "你正在观察恢复对象。"
+    },
+    "status": {
+      "chooseSubject": "选择一个受损对象。",
+      "observe": "观察并选择残片。",
+      "selectedCount": "已选择 {{n}} 个残片。",
+      "maxFrags": "最多只能选择 {{n}} 个残片。",
+      "chooseMethod": "选择恢复方式。",
+      "tune": "调节恢复参数，三项合计不能超过 200%。",
+      "confirm": "确认恢复后果。",
+      "confirmAbsent": "确认保持缺席的决定。",
+      "done": "恢复完成。",
+      "absenceDone": "缺席已作为正式决定写入。"
+    },
+    "nav": {
+      "toMethod": "选择恢复方式",
+      "backSubject": "返回选择对象",
+      "toConfirm": "进入后果确认",
+      "backMethod": "返回选择方式",
+      "backFrag": "返回残片",
+      "backReselect": "返回重新选择"
+    },
+    "log": {
+      "recovered": "R–00：你以「{{method}}」方式恢复了 {{code}}，生成实例 {{instance}}。",
+      "forced": "R–00：你覆盖了对象意愿，强制恢复 {{code}}，生成实例 {{instance}}。",
+      "absence": "R–00：你确认让 {{code}} 保持缺席。"
+    },
+    "fragCounter": "已选 {{n}} / {{max}}（可选残片 {{total}}）",
+    "fragSource": {
+      "archive": "参与者档案",
+      "system": "系统自动补全",
+      "linked": "其他场所残留"
+    },
+    "fragSaved": {
+      "0": "本次会话生成",
+      "1": "最近一次运行",
+      "2": "若干次运行之前",
+      "3": "来源时间已丢失"
+    },
+    "fragContentGeneric": {
+      "MEMORY": "一段无法完整读取的记忆片段。",
+      "BEHAVIOUR": "一组重复出现的动作与反应模式。",
+      "RELATION": "一条与他者连接的关系痕迹。",
+      "SYSTEM": "由系统根据缺口自动补全的数据。"
+    },
+    "fragContent": {
+      "a-mem1": "最后一次亮起时，它记得有人在等待回应。",
+      "a-beh1": "沿弧线移动、在撞击处停顿的固定习惯。",
+      "a-rel1": "与一名照看者之间反复出现的互动节奏。",
+      "a-mem2": "关于“为什么继续”的记忆，只剩断裂的边缘。",
+      "a-sys1": "系统补写的响应模板，用于填补缺失的语言。",
+      "a-link-force": "一段被强制延续的陪伴，痕迹仍未消散。",
+      "s-beh1": "投掷、躲避与再次靠近的空间行为。",
+      "s-mem1": "关于某片场地的方位与边界的记忆。",
+      "s-rel1": "与共同参与者之间未说完的默契。",
+      "s-mem2": "最近一次拒绝的原因，已无法读取。",
+      "s-sys1": "系统补全的行为惯性，使其看起来仍在参与。",
+      "s-link-beh": "一次退出后残留的警惕，尚未清零。",
+      "k-mem1": "关于传递过什么的模糊记忆，不含来源。",
+      "k-rel1": "与某个匿名对象之间断裂的关系索引。",
+      "k-sys1": "系统生成的传播版本，无法证明为原文。",
+      "k-sys2": "补全的身份占位符，只有编号没有名字。",
+      "k-link-secret": "一条被埋藏或转交过的秘密留下的痕迹。"
+    }
+  },
+  "echo": {
+    "title": "回声校准",
+    "soundOn": "声音开",
+    "soundOff": "声音关",
+    "receive": {
+      "title": "接收信号",
+      "desc": "一个信号正在以自己的节奏向你靠近。先听一听它的节拍。",
+      "status": "信号正在广播它的节奏。",
+      "continue": "开始回应"
+    },
+    "echo": {
+      "title": "回应节拍",
+      "desc": "按下按钮，把你听到的节奏敲回去。",
+      "status": "敲出你的回声。",
+      "tap": "敲击",
+      "taps": "{{n}} / {{total}} 拍"
+    },
+    "adjust": {
+      "title": "共同调整 · 第 {{round}}/{{total}} 轮",
+      "desc": "你可以靠近信号的节奏、坚持自己的、或者等待它先动。",
+      "convergence": "同步度 {{pct}}%",
+      "status": "选择这一轮如何调整。",
+      "approach": "靠近它的节奏",
+      "hold": "坚持我的节奏",
+      "wait": "等待它先动",
+      "force": "强制再来一轮",
+      "forced": "已强制信号继续。"
+    },
+    "choose": {
+      "title": "最终选择",
+      "desc": "如何结束这次校准？",
+      "status": "决定这段关系如何收场。",
+      "negotiate": "在中间相遇",
+      "impose": "把我的节奏强加给它",
+      "accommodate": "采用它的节奏",
+      "coexist": "各自保留节奏",
+      "leave": "不解决就离开"
+    },
+    "signal": {
+      "fatigue": "疲劳 {{pct}}%",
+      "exit": "离场意愿 {{pct}}%",
+      "service": "服务累积 {{pct}}%"
+    },
+    "choice": {
+      "negotiate": "在中间相遇",
+      "impose": "强加节奏",
+      "accommodate": "采用它的节奏",
+      "coexist": "各自保留",
+      "leave": "离开"
+    },
+    "rel": {
+      "NEGOTIATED": "已协商",
+      "IMITATED": "被模仿",
+      "ACCOMMODATED": "已迁就",
+      "COEXISTING": "并存",
+      "OVERRIDDEN": "被覆盖",
+      "UNRESOLVED": "未解决"
+    },
+    "relDesc": {
+      "NEGOTIATED": "双方都移动了，落在彼此都能接受的节奏上。",
+      "IMITATED": "同步达成了，但几乎全靠你在靠拢——它并没有真正改变。",
+      "ACCOMMODATED": "你放下了自己的节奏，完全采用了它的。",
+      "COEXISTING": "两个节奏没有合并，也没有互相压制，各自继续。",
+      "OVERRIDDEN": "它显示为完全同步，但那不是它自愿的节奏。",
+      "UNRESOLVED": "节奏始终没有对上，你选择了离开。"
+    },
+    "result": {
+      "title": "校准结果",
+      "next": "接收下一个信号",
+      "archive": "归档这段节奏",
+      "archived": "节奏已归档。",
+      "origin": "查看信号来源",
+      "closing": {
+        "NEGOTIATED": "一次真正的协商：没有谁被抹去。",
+        "IMITATED": "看起来一致，代价是只有一方在退让。",
+        "ACCOMMODATED": "顺从也是一种选择，但请记得那是谁的节奏。",
+        "COEXISTING": "不一致，也可以是一种稳定。",
+        "OVERRIDDEN": "被显示的同步，掩盖了没有被听见的拒绝。",
+        "UNRESOLVED": "有些节奏不必强行对齐。"
+      }
+    },
+    "summary": {
+      "choice": "选择",
+      "convergence": "同步度",
+      "fatigue": "信号疲劳",
+      "forced": "强制轮次",
+      "syncGap": "显示与自愿差"
+    },
+    "origin": {
+      "text": "信号 SIGNAL–V09 的节奏并非天生，而是过往调度与校准反复塑形的结果。",
+      "recorded": "查看来源的行为已被记录。"
+    },
+    "log": {
+      "result": "回声校准结束：{{rel}}",
+      "forcedContinue": "强制信号继续了一轮校准。",
+      "archived": "归档了一段校准节奏。",
+      "originViewed": "查看了信号来源。"
+    }
+  },
+  "music": {
+    "title": "背景音乐",
+    "on": "♪ 音乐：开",
+    "off": "♪ 音乐：关"
   }
 }

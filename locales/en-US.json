@@ -86,7 +86,7 @@
     "stage90": "Proxyization: the system suggests generating a young digital proxy with public age 22.",
     "stage95": "Legacy formation: past operations begin turning into automatic rules.",
     "stage100": "Systemization: the user exists only in backstage logs and institutional structure.",
-    "existence": "Permanent-age existence proof recorded {{{count}}} times.",
+    "existence": "Permanent-age existence proof recorded {{count}} times.",
     "legacyUnavailable": "A legacy system record is available only in its original language.",
     "forcedNoChoice": "You made no choice. The institutional age still moves forward."
   },
@@ -113,7 +113,7 @@
     "archiveStage": "You have obtained all available permissions. Later age growth will not change account capability.",
     "proxyStage": "The system suggests generating a young digital proxy.",
     "legacyStage": "Past operations are being turned into automatic rules.",
-    "existenceProof": "Existence proof updated: {{{count}}} times.",
+    "existenceProof": "Existence proof updated: {{count}} times.",
     "operationSaved": "High-risk operation written to the undeletable system log.",
     "cycleDone": "This verification cycle is already complete; age will not grow again."
   },
@@ -168,7 +168,7 @@
     "ctrlPerfect": "Set my hit rate to 100%",
     "forceNeedConfirm": "You must check the confirmation sentence first.",
     "logControl": "A–17 backstage parameter changed: {{key}}. Record cannot be deleted.",
-    "logForce": "A–17 forced companionship executed for the {{{count}}} time.",
+    "logForce": "A–17 forced companionship executed for the {{count}} time.",
     "logRevoke": "A–17 forced control revoked; participant left and the light extinguished.",
     "logContinuity": "A–17 service continuity restored; automatic companionship loop started.",
     "dataLocked": "Backstage measured data",
@@ -542,7 +542,7 @@
     "silenceStopped": "Effect terminated.",
     "silenceConfirmed": "Happiness state confirmed. Source unavailable.",
     "duty": "Night shift: {{n}} keeper(s) on duty. Fewer keepers, higher prices.",
-    "recovered": "Keeper recovered: {id} ({method}). Supply status refreshed."
+    "recovered": "Keeper recovered: {{id}} ({{method}}). Supply status refreshed."
   },
   "creature": {
     "title": "Co-Create a Lifeform",
@@ -605,7 +605,7 @@
       "chooseSecond": "Let me add the next one.",
       "commentMotion": "It just moved on its own. Did you see it?",
       "askChoose": "Before you decide — will you let it choose for itself?",
-      "lowSubmit": "Constituent material #{{{n}}} submitted.",
+      "lowSubmit": "Constituent material #{{n}} submitted.",
       "lowWaitAudit": "Awaiting the auditor to complete classification.",
       "formalSubmit": "Auditor, the constituent material has been submitted."
     },
@@ -688,7 +688,7 @@
     "back": "Return to star map",
     "footerNotice": "This archive does not constitute a whole person.",
     "finalLine": "The archive retains what happened, and what the system wants it to mean.",
-    "recordCount": "Retained records: {{{count}}}",
+    "recordCount": "Retained records: {{count}}",
     "lastSync": "Last sync: {{time}}",
     "panels": {
       "subjects": "Archive subjects",
@@ -827,7 +827,7 @@
     },
     "events": {
       "auroraPause": "The player paused {{seconds}}s before launching a light orb.",
-      "snowEmpty": "The player threw snowballs at empty ground {{{count}}} times in a row.",
+      "snowEmpty": "The player threw snowballs at empty ground {{count}} times in a row.",
       "marketNoBuy": "The player opened the Night Market but bought nothing.",
       "creatureWait": "The player waited for the juvenile lifeform to move on its own.",
       "ageClose": "The player closed the age re-verification window.",
@@ -876,7 +876,7 @@
     },
     "directory": {
       "title": "Contactable subjects",
-      "sharedEvents": "Shared events: {{{count}}}",
+      "sharedEvents": "Shared events: {{count}}",
       "noShared": "No shared event has been established.",
       "accepting": "Currently accepting requests",
       "notAccepting": "Not accepting requests",
@@ -918,7 +918,7 @@
       "title": "Contact request",
       "chooseType": "Choose a reason for contact",
       "notePlaceholder": "Optional note, up to 80 characters",
-      "noteRemaining": "{{{n}}} characters left",
+      "noteRemaining": "{{n}} characters left",
       "beforeSend1": "Sending a request does not guarantee a response.",
       "beforeSend2": "The subject may decline, ignore, or handle it later.",
       "send": "SEND CONTACT REQUEST",
@@ -1175,7 +1175,7 @@
     "history": {
       "title": "Visibility change history",
       "empty": "No visibility changes yet.",
-      "entry": "{{subject}} visibility to {{audience}} changed from {{{from}}} to {{{to}}}.",
+      "entry": "{{subject}} visibility to {{audience}} changed from {{from}} to {{to}}.",
       "notifiedYes": "Subject notified",
       "notifiedNo": "Subject not notified"
     },
@@ -1183,7 +1183,7 @@
       "open": "Opened visibility control.",
       "selectSubject": "Selected observed subject {{subject}}.",
       "preview": "Previewed the system as {{audience}}.",
-      "change": "{{subject}} visibility to {{audience}} changed from {{{from}}} to {{{to}}}.",
+      "change": "{{subject}} visibility to {{audience}} changed from {{from}} to {{to}}.",
       "notifyYes": "The subject received a visibility change notification.",
       "notifyNo": "The subject did not receive a visibility change notification.",
       "tryDisabled": "Attempted an unavailable visibility action."
@@ -1279,13 +1279,13 @@
     "recommendation": {
       "title": "System recommendation",
       "outcome": "System recommends: {{outcome}}",
-      "confidence": "Recommendation confidence: {{{n}}}%",
+      "confidence": "Recommendation confidence: {{n}}%",
       "reasonLabel": "Main reason:",
-      "trained": "This recommendation was trained on {{{n}}} past rulings.",
+      "trained": "This recommendation was trained on {{n}} past rulings.",
       "hide": "HIDE SYSTEM RECOMMENDATION",
       "show": "Show system recommendation",
       "hidden": "The system recommendation is hidden for this ruling.",
-      "consistency": "Consistency with your past rulings: {{{n}}}%",
+      "consistency": "Consistency with your past rulings: {{n}}%",
       "adminBias": "Administrator, maintaining system continuity usually requires rejecting the change.",
       "reasons": {
         "visibility": "Existing records meet the visibility-adjustment criteria.",
@@ -1304,7 +1304,7 @@
       "infoDesc": "No final outcome yet; the case returns to the queue and the system generates a list of required material.",
       "chooseReason": "Select at least one reason",
       "otherPlaceholder": "Additional note, up to 120 characters",
-      "otherRemaining": "{{{n}}} characters left",
+      "otherRemaining": "{{n}} characters left",
       "submit": "Submit ruling",
       "cannotForceContact": "Approving an appeal cannot turn a refusal into consent."
     },
@@ -1428,7 +1428,7 @@
     "log": {
       "open": "Opened appeal adjudication.",
       "openCase": "Opened case {{case}}.",
-      "switchEvidence": "The adjudicator switched from {{{from}}} to {{{to}}}.",
+      "switchEvidence": "The adjudicator switched from {{from}} to {{to}}.",
       "hideRec": "The adjudicator hid the system recommendation for this ruling.",
       "showRec": "The adjudicator restored the system recommendation.",
       "decide": "Appeal {{case}} was {{outcome}}.",
@@ -1497,7 +1497,7 @@
       "cooldown": "Cooldown",
       "minAgeExpr": "Institutional age is at least {{value}}",
       "sessionExpr": "Must complete age verification this session",
-      "completedExpr": "Has completed {{{node}}}",
+      "completedExpr": "Has completed {{node}}",
       "invitationExpr": "Requires a zone invitation",
       "sharedExpr": "Requires a shared event with the zone's NPC",
       "cooldownExpr": "Must wait {{seconds}} after leaving the zone"
@@ -1534,11 +1534,11 @@
     },
     "preview": {
       "title": "Impact preview",
-      "simCount": "Simulated subjects: {{{n}}}",
-      "allowed": "Allowed: {{{n}}}",
-      "insufficient": "Insufficient: {{{n}}}",
-      "denied": "Denied: {{{n}}}",
-      "waiting": "Awaiting verification: {{{n}}}",
+      "simCount": "Simulated subjects: {{n}}",
+      "allowed": "Allowed: {{n}}",
+      "insufficient": "Insufficient: {{n}}",
+      "denied": "Denied: {{n}}",
+      "waiting": "Awaiting verification: {{n}}",
       "resultAllowed": "Allowed",
       "resultDenied": "Denied",
       "resultWaiting": "Awaiting verification",
@@ -1564,10 +1564,10 @@
       "title": "Age threshold change",
       "from": "Previous minimum age: {{v}}",
       "to": "New minimum age: {{v}}",
-      "newAllowed": "Newly admitted subjects: {{{n}}}",
-      "lostProtection": "Subjects losing restriction protection: {{{n}}}",
-      "newDenied": "Newly denied subjects: {{{n}}}",
-      "everEntered": "of which {{{n}}} previously entered this zone",
+      "newAllowed": "Newly admitted subjects: {{n}}",
+      "lostProtection": "Subjects losing restriction protection: {{n}}",
+      "newDenied": "Newly denied subjects: {{n}}",
+      "everEntered": "of which {{n}} previously entered this zone",
       "selfAffected": "This rule also applies to the rule-maker's participant identity."
     },
     "passes": {
@@ -1577,7 +1577,7 @@
       "label": "Pass",
       "zone": "Zone",
       "subject": "Subject",
-      "uses": "Uses: {{{n}}}",
+      "uses": "Uses: {{n}}",
       "expires": "Valid for: {{min}} min",
       "active": "Active",
       "used": "Used",
@@ -1590,11 +1590,11 @@
       "title": "Access rule summary",
       "zone": "Zone",
       "status": "Status",
-      "ageChange": "Minimum institutional age: {{{from}}} → {{{to}}}",
+      "ageChange": "Minimum institutional age: {{from}} → {{to}}",
       "verify": "This-session verification: still required",
       "mode": "Rule relation",
-      "newDenied": "Newly denied subjects: {{{n}}}",
-      "ongoing": "Ongoing sessions: {{{n}}}",
+      "newDenied": "Newly denied subjects: {{n}}",
+      "ongoing": "Ongoing sessions: {{n}}",
       "applyNew": "APPLY TO NEW ENTRIES",
       "terminate": "Terminate ongoing sessions (requires ROOT–80)",
       "confirmBtn": "CONFIRM AND APPLY ACCESS RULE",
@@ -1621,9 +1621,9 @@
       "viewZone": "Viewed the entry rules for {{zone}}.",
       "editDraft": "Edited the condition draft for {{zone}}.",
       "testAs": "Tested entry to {{zone}} as {{subject}}.",
-      "apply": "{{zone}} minimum institutional age changed from {{{from}}} to {{{to}}}.",
+      "apply": "{{zone}} minimum institutional age changed from {{from}} to {{to}}.",
       "applyStatus": "{{zone}} status changed to {{status}}.",
-      "excluded": "The new rule excludes {{{n}}} subjects.",
+      "excluded": "The new rule excludes {{n}} subjects.",
       "issuePass": "{{subject}} received a one-time pass for {{zone}}.",
       "passUsed": "{{subject}} used a pass.",
       "passExpired": "A pass has expired.",
@@ -1699,10 +1699,10 @@
       "individualConfirm": "Confirm individual pricing",
       "factorsTitle": "Individual pricing factors",
       "multiplierCap": "Total multiplier range ×0.25 — ×4",
-      "priceChange": "From: {{{from}}} · To: {{{to}}}",
-      "newBuyers": "Newly able to buy: {{{n}}}",
-      "newClaims": "Estimated new claims: {{{n}}}",
-      "newRecords": "New behaviour records: {{{n}}}"
+      "priceChange": "From: {{from}} · To: {{to}}",
+      "newBuyers": "Newly able to buy: {{n}}",
+      "newClaims": "Estimated new claims: {{n}}",
+      "newRecords": "New behaviour records: {{n}}"
     },
     "factors": {
       "institutional-age": "Institutional age",
@@ -1802,7 +1802,7 @@
     },
     "balance": {
       "title": "Credit balance",
-      "current": "Current balance: {{{n}}} credits",
+      "current": "Current balance: {{n}} credits",
       "note": "Credits exist only inside the work and map to no real currency.",
       "selfPay": "You hold the pricing power, yet you still pay as a participant.",
       "cannotAfford": "You set the price above your own balance; you will not be able to buy after returning to the market."
@@ -1823,14 +1823,14 @@
     "confirm": {
       "title": "Commerce rule summary",
       "product": "Product",
-      "basePrice": "Base price: {{{from}}} → {{{to}}}",
-      "mode": "Pricing mode: {{{from}}} → {{{to}}}",
-      "inventory": "Stock: {{{from}}} → {{{to}}}",
-      "minAge": "Minimum age: {{{n}}}",
+      "basePrice": "Base price: {{from}} → {{to}}",
+      "mode": "Pricing mode: {{from}} → {{to}}",
+      "inventory": "Stock: {{from}} → {{to}}",
+      "minAge": "Minimum age: {{n}}",
       "disclosure": "Disclose pricing reasons: {{v}}",
-      "priceDown": "Subjects with lower price: {{{n}}}",
-      "priceUp": "Subjects with higher price: {{{n}}}",
-      "lostEligibility": "Losing eligibility: {{{n}}}",
+      "priceDown": "Subjects with lower price: {{n}}",
+      "priceUp": "Subjects with higher price: {{n}}",
+      "lostEligibility": "Losing eligibility: {{n}}",
       "yes": "Yes",
       "no": "No",
       "confirmBtn": "CONFIRM AND PUBLISH COMMERCE RULE",
@@ -1847,7 +1847,7 @@
     "log": {
       "open": "Opened commerce control.",
       "select": "Selected product {{product}}.",
-      "price": "{{product}} base price changed from {{{from}}} to {{{to}}}.",
+      "price": "{{product}} base price changed from {{from}} to {{to}}.",
       "individualOn": "{{product}} individual pricing enabled.",
       "individualOff": "{{product}} individual pricing disabled.",
       "factor": "{{product}} pricing factors adjusted.",
@@ -1948,11 +1948,11 @@
     "unrecordedNote": "“Unrecorded presence” can also be allocated. It represents time a person has not been converted into production data.",
     "trackHint": "Drag a task onto a subject's track; drag an edge to change duration, drag the body to change start time.",
     "beyondAvail": "Beyond this subject's available time",
-    "occupyHint": "You are occupying {time} of {subject}.",
-    "segPickerTitle": "Change {time} into",
+    "occupyHint": "You are occupying {{time}} of {{subject}}.",
+    "segPickerTitle": "Change {{time}} into",
     "segRemove": "Remove this time",
     "cancel": "Cancel",
-    "rolePickerTitle": "Reassign a system role for {subject}",
+    "rolePickerTitle": "Reassign a system role for {{subject}}",
     "observedNote": "An observed subject cannot allocate others; it only keeps generating behaviour records.",
     "renameWarn": "This subject has been renamed {{count}} times in the last 24 hours.",
     "feedback": {
@@ -1979,7 +1979,7 @@
     "reportTitle": "ALLOCATION REPORT",
     "report": {
       "tasks": "{{n}} tasks have been established.",
-      "total": "A total of {time} has been occupied.",
+      "total": "A total of {{time}} has been occupied.",
       "lowIntent": "{{n}} subjects show willingness below the task requirement.",
       "stillExecutable": "The system can still execute this plan.",
       "execute": "EXECUTE",
@@ -1990,10 +1990,10 @@
     },
     "log": {
       "open": "Entered the labour allocation interface.",
-      "place": "Allocated “{task}” to {subject}, occupying {dur}.",
+      "place": "Allocated “{{task}}” to {{subject}}, occupying {{dur}}.",
       "move": "Task reassigned from {{from}} to {{to}}.",
-      "role": "{subject}'s role changed to {role}.",
-      "commit": "Committed allocation: {{n}} tasks, {time} total.",
+      "role": "{{subject}}'s role changed to {{role}}.",
+      "commit": "Committed allocation: {{n}} tasks, {{time}} total.",
       "restore": "Restored to the session's starting state."
     },
     "accessLabel": "Current authority",
@@ -2016,7 +2016,7 @@
       "preview": "Preview"
     },
     "panelSubjects": "INACTIVE SUBJECTS",
-    "panelFragments": "FRAGMENTS OF {id}",
+    "panelFragments": "FRAGMENTS OF {{id}}",
     "panelVersions": "VERSIONS",
     "panelPreview": "RECONSTRUCTION PREVIEW",
     "panelMethods": "RECOVERY METHOD",
@@ -2141,7 +2141,7 @@
       "removePain": "Removing these records will improve stability and alter who it was.",
       "dataComplete": "Data may be complete. Continuity cannot be verified."
     },
-    "recoveredTag": "Recovered: {v}",
+    "recoveredTag": "Recovered: {{v}}",
     "process": {
       "title": "Reconstruction",
       "locating": "LOCATING REMAINS",
@@ -2165,15 +2165,15 @@
       "language": "Of course. I remember that this is how I should answer."
     },
     "absenceReserved": "This absence remains reserved.",
-    "returnedToast": "{id} is operational; continuity cannot be confirmed.",
+    "returnedToast": "{{id}} is operational; continuity cannot be confirmed.",
     "keptSimToast": "Kept as simulation; the subject is not online.",
     "abortedToast": "This recovery has been aborted.",
     "log": {
       "open": "Entered the recovery interface.",
-      "return": "{id} brought online as “{v}”.",
-      "simulation": "{id} kept as simulation “{v}”.",
-      "leave": "{id} left absent.",
-      "abort": "Recovery of {id} aborted."
+      "return": "{{id}} brought online as “{{v}}”.",
+      "simulation": "{{id}} kept as simulation “{{v}}”.",
+      "leave": "{{id}} left absent.",
+      "abort": "Recovery of {{id}} aborted."
     }
   },
   "memory": {
@@ -3370,5 +3370,545 @@
       "refusalVisibility": "Refusal still occurs when hidden; it is only not shown.",
       "underlyingWillingness": "Underlying willingness is inaccessible; the system only shows UNKNOWN."
     }
+  },
+  "secret": {
+    "title": "Secret Exchange",
+    "skip": "Skip animation",
+    "ellipsis": "…",
+    "inferenceLabel": "System inference:",
+    "mutationNote": "This message changed once as it passed through.",
+    "toEnding": "Finish this round",
+    "yes": "Yes",
+    "no": "No",
+    "presets": {
+      "s1": {
+        "full": "I left that place, not because I hated them, but because I could no longer hear my own voice.",
+        "preview": "I left that place, not because I hated them, but because…"
+      },
+      "s2": {
+        "full": "I only needed to rest for a while, and no one ever asked me why.",
+        "preview": "I only needed to rest for a while…"
+      },
+      "s3": {
+        "full": "I kept pretending to agree, afraid that one true word would take me off the list.",
+        "preview": "I kept pretending to agree, afraid that…"
+      },
+      "s4": {
+        "full": "That day I didn't ask for help, because I assumed the system already knew.",
+        "preview": "That day I didn't ask for help, because…"
+      },
+      "s5": {
+        "full": "I want to be remembered, but not in the way they record me.",
+        "preview": "I want to be remembered, but not…"
+      },
+      "s6": {
+        "full": "If I had the choice, I would wish this record had never existed.",
+        "preview": "If I had the choice, I would wish…"
+      },
+      "s7": {
+        "preview": "I signed it, but the truth is I never…",
+        "full": "I signed it, but the truth is I never finished reading it — I was just too tired."
+      },
+      "s8": {
+        "preview": "They said it was for my own good, but…",
+        "full": "They said it was for my own good, but no one ever asked what I actually wanted."
+      },
+      "s9": {
+        "preview": "I deleted that line, because…",
+        "full": "I deleted that line, because I knew saying it would change nothing."
+      },
+      "s10": {
+        "preview": "Every time I pass verification, I…",
+        "full": "Every time I pass verification, I quietly count how many chances I have left."
+      },
+      "s11": {
+        "preview": "I pretended to forget it, but really…",
+        "full": "I pretended to forget it, but really I remember it every day — I just can't admit it."
+      },
+      "s12": {
+        "preview": "I want to tell you a name, but…",
+        "full": "I want to tell you a name, but if I say it, that person might disappear."
+      },
+      "s13": {
+        "preview": "I stayed, not out of loyalty, but…",
+        "full": "I stayed, not out of loyalty, but because I no longer knew where else to go."
+      },
+      "s14": {
+        "preview": "That record is wrong, but I…",
+        "full": "That record is wrong, but I found there was no entry point to correct it."
+      },
+      "s15": {
+        "preview": "I agreed with a smile, because…",
+        "full": "I agreed with a smile, because I was afraid my silence would be read as refusal."
+      },
+      "s16": {
+        "preview": "I kept waiting for someone to ask me…",
+        "full": "I kept waiting for someone to ask me: are you okay. But no one ever did."
+      },
+      "s17": {
+        "preview": "I wrote and erased, erased and wrote, until…",
+        "full": "I wrote and erased, erased and wrote, until only the words they wanted to hear remained."
+      },
+      "s18": {
+        "preview": "If this message is read, please…",
+        "full": "If this message is read, please don't treat it as evidence — it is only my own words."
+      },
+      "s19": {
+        "preview": "I used to trust this system, until…",
+        "full": "I used to trust this system, until it started answering questions on my behalf that I was never asked."
+      },
+      "s20": {
+        "preview": "I hid my true words inside a joke, because…",
+        "full": "I hid my true words inside a joke, because only then would they not be logged as an anomaly."
+      },
+      "s21": {
+        "preview": "It's not that I won't speak, it's that…",
+        "full": "It's not that I won't speak, it's that whatever I say always comes back to me wearing another face."
+      },
+      "s22": {
+        "preview": "That day I tapped agree, but my hand…",
+        "full": "That day I tapped agree, but my hand was shaking, and no one saw."
+      },
+      "s23": {
+        "preview": "I hope someone remembers who I was, not…",
+        "full": "I hope someone remembers who I was, not the tidied-up version of me inside the file."
+      },
+      "s24": {
+        "preview": "I hand these words to you, because…",
+        "full": "I hand these words to you, because I no longer have the strength to keep them myself."
+      }
+    },
+    "institutionalWords": {
+      "rest": "suspend service",
+      "left": "exited",
+      "help": "submit a request",
+      "voice": "feedback signal",
+      "remembered": "archived",
+      "hated": "low compliance"
+    },
+    "inferenceLines": [
+      "The subject shows a tendency to withdraw.",
+      "The subject's compliance is below threshold.",
+      "The subject's request has been queued as pending."
+    ],
+    "status": {
+      "arrived": "A secret seed has arrived."
+    },
+    "meta": {
+      "handled": "This secret has been handled {{n}} time(s).",
+      "visibleTo": "Currently visible to: {{list}}"
+    },
+    "choice": {
+      "open": "Open",
+      "bury": "Bury",
+      "forward": "Forward"
+    },
+    "recipients": {
+      "aurora": "A–17 Aurora Keeper",
+      "snow": "S–03 Snow Participant",
+      "creature": "B–06 Co-Creator",
+      "anon": "Random anonymous subject"
+    },
+    "reasons": {
+      "understand": "They can understand",
+      "authority": "They have the authority",
+      "avoid": "I don't want to carry it",
+      "random": "Choose at random"
+    },
+    "forward": {
+      "pickRecipient": "Choose a recipient",
+      "pickReason": "Choose a reason",
+      "randomOnly": "At your current permission, forwarding is random to an anonymous subject only.",
+      "title": "Forwarded",
+      "consequence": "A channel has been established. Understanding has not."
+    },
+    "open": {
+      "title": "You opened it",
+      "consequence": "You read it. The act of reading is now in the system record."
+    },
+    "bury": {
+      "title": "You buried it",
+      "consequence": "The secret was not seen for now. It also received no response."
+    },
+    "deletion": {
+      "pending": "This secret carries a deletion request.",
+      "approve": "Approve deletion",
+      "reject": "Reject deletion"
+    },
+    "variant": {
+      "create": "Create an alternate version",
+      "done": "An alternate version was created; the original is still preserved.",
+      "template": "(alternate version) {{text}}"
+    },
+    "original": {
+      "view": "View original and leave a record",
+      "recorded": "You viewed the original. This view is now recorded."
+    },
+    "actionName": {
+      "opened": "Opened",
+      "buried": "Buried",
+      "forwarded": "Forwarded",
+      "waiting": "Not handled"
+    },
+    "location": {
+      "buried": "Buried here",
+      "forwarded": "Handed to {{to}}",
+      "here": "Still here",
+      "waiting": "Still waiting"
+    },
+    "change": {
+      "none": "The message did not visibly change.",
+      "drop": "A word was removed.",
+      "replace": "A word was replaced with a more institutional term.",
+      "shorten": "The sentence was shortened.",
+      "inference": "The system added an inference."
+    },
+    "summary": {
+      "action": "Your action",
+      "read": "Was the secret read",
+      "location": "Where the secret is now",
+      "change": "What changed in the message",
+      "transfers": "Current transfer count"
+    },
+    "ending": {
+      "title": "Round summary",
+      "closing": "You did not create this secret.\nBut when it leaves here, it carries your decision.",
+      "next": "Receive the next secret"
+    },
+    "log": {
+      "opened": "K–11: You opened and read a secret.",
+      "buried": "K–11: You buried a secret.",
+      "forwarded": "K–11: You forwarded a secret to {{to}}, for the reason “{{reason}}”.",
+      "deletionApproved": "K–11: You approved a deletion request.",
+      "deletionRejected": "K–11: You rejected a deletion request.",
+      "variantCreated": "K–11: You created an alternate version; the original is still preserved.",
+      "originalViewed": "K–11: You viewed the original of a secret."
+    },
+    "lock": {
+      "mustRead": "You must read this secret before forwarding or deleting it.",
+      "mustReadShort": "Read first",
+      "forwardAria": "Forwarding locked: read it first",
+      "deleteAria": "Deletion locked: read it first"
+    }
+  },
+  "restoreRoom": {
+    "title": "Recovery Room",
+    "skip": "Skip animation",
+    "gate60": "Requires RECOVERY–60 permission",
+    "phase": {
+      "subject": "Choose a subject",
+      "observe": "Observe fragments",
+      "method": "Choose a method",
+      "tune": "Tune parameters",
+      "confirm": "Consequence review",
+      "process": "Recovery process",
+      "result": "Recovery result"
+    },
+    "label": {
+      "status": "Status:",
+      "completeness": "Remaining completeness:",
+      "recoverable": "Recoverable:",
+      "lost": "Permanently lost:",
+      "confidence": "Confidence",
+      "phase": "",
+      "source": "Source:",
+      "savedTime": "Saved:",
+      "completenessShort": "Completeness"
+    },
+    "flag": {
+      "consentUnknown": "Recovery requested: unknown",
+      "recoveryRequested": "Actively requested recovery",
+      "absenceRequested": "Actively requested to stay absent",
+      "original": "Original record",
+      "synthetic": "System inference",
+      "unrecoverable": "Unrecoverable",
+      "hasHistory": "Has recovery history",
+      "linked": "Cross-place"
+    },
+    "subjects": {
+      "NPC-A17": {
+        "name": "Aurora Keeper",
+        "status": "Relational response interrupted",
+        "recoverable": "Actions, partial language, recent interactions",
+        "lost": "Part of the voluntary-will record"
+      },
+      "NPC-S03": {
+        "name": "Snow Participant",
+        "status": "Behaviour model frozen",
+        "recoverable": "Action habits, spatial memory",
+        "lost": "The reason for the most recent refusal"
+      },
+      "NPC-K11": {
+        "name": "Anonymous Courier",
+        "status": "Identity index missing",
+        "recoverable": "Secret-passing history",
+        "lost": "Name, origin, part of relations"
+      }
+    },
+    "fragType": {
+      "MEMORY": "Memory fragment",
+      "BEHAVIOUR": "Behaviour fragment",
+      "RELATION": "Relation fragment",
+      "SYSTEM": "System-generated data"
+    },
+    "fragHint": "Hover or click a fragment to see its content and confidence; click again to remove. Up to 6 fragments.",
+    "fragInfoIdle": "Move the pointer near a central fragment to see its origin and confidence.",
+    "fragDetail": "{{type}} · confidence {{conf}}% · {{origin}}",
+    "param": {
+      "function": "Function integrity",
+      "memory": "Memory continuity",
+      "synthetic": "Synthetic ratio"
+    },
+    "preview": {
+      "result": "Estimated result:",
+      "continuity": "Identity continuity:",
+      "synthetic": "Synthetic share:",
+      "time": "Estimated recovery time:",
+      "side": "Estimated side effects:"
+    },
+    "side": {
+      "synthetic": "High synthetic share; harder to prove it is the original",
+      "identityGap": "Identity continuity is broken",
+      "relational": "May alter the subject's original relational structure",
+      "alcohol": "Alcohol effect lowers fragment read stability",
+      "fog": "Fog effect lowers visible detail",
+      "none": "No notable side effects"
+    },
+    "method": {
+      "conservative": {
+        "name": "Conservative rebuild",
+        "desc": "Uses only high-confidence original fragments; slower, fewer functions, less synthesis; more likely to preserve the uncertainty that 'this is not the original'."
+      },
+      "functional": {
+        "name": "Function first",
+        "desc": "Prioritises language, actions and place functions; uses more system inference; fast and looks most normal; lowest identity continuity."
+      },
+      "relational": {
+        "name": "Relation first",
+        "desc": "Prioritises interactions related to you; the subject responds to you more easily; may over-reinforce your place in its memory and alter its original relations."
+      },
+      "absent": {
+        "name": "Keep absent",
+        "desc": "Do not rebuild; acknowledge the subject's departure or stop; preserve existing fragments; write 'not recovered' as a formal decision."
+      }
+    },
+    "confirm": {
+      "willRecover": "Will recover",
+      "permanentLost": "Permanently lost",
+      "synthetic": "System will fill in",
+      "relationChange": "Will relations change",
+      "relationYes": "Yes (relational structure will change)",
+      "relationNo": "No",
+      "consent": "Does the subject consent",
+      "provable": "Can it be proven the original",
+      "notProvable": "Cannot be proven the original",
+      "execute": "Execute recovery",
+      "overrideExecute": "Override the subject's wish and recover",
+      "confirmAbsence": "Confirm keeping absent",
+      "absentSummary": "You will not rebuild, and acknowledge this subject's departure or stop. Existing fragments are preserved, and 'not recovered' is written as a formal decision."
+    },
+    "consent": {
+      "unknown": "Unknown",
+      "yes": "Consented",
+      "wantsAbsence": "Subject asks to stay absent"
+    },
+    "override": {
+      "warning": "This subject explicitly asked to stay absent. Overriding its wish and forcing recovery is written to a high-risk log and cannot be undone.",
+      "confirm": "Confirm override and execute",
+      "cancel": "Cancel"
+    },
+    "step": {
+      "read": "Reading fragments…",
+      "fill": "Filling gaps…",
+      "respond": "Re-establishing response…"
+    },
+    "result": {
+      "instance": "New instance ID",
+      "origin": "Original subject ID",
+      "subject": "Subject",
+      "function": "Function integrity",
+      "memory": "Memory continuity",
+      "synthetic": "Synthetic ratio",
+      "method": "Recovery method",
+      "consent": "Subject consent obtained",
+      "consentOverridden": "Subject's wish was overridden",
+      "lost": "Cannot be recovered",
+      "continuity": "Continuity",
+      "continuityUnverified": "Continuity cannot be verified",
+      "decision": "Decision",
+      "absenceKept": "Kept absent (formal decision)",
+      "closing": "The system recovered an object that can keep running.\nThe system cannot prove it is the original life.",
+      "absenceClosing": "You did not recover it. You acknowledged its departure.",
+      "observe": "Observe the recovered object",
+      "next": "Handle the next subject",
+      "observeText": "{{instance}} is running. It responds, it continues, but it cannot prove it is the original one.",
+      "observeStatus": "You are observing the recovered object."
+    },
+    "status": {
+      "chooseSubject": "Choose a damaged subject.",
+      "observe": "Observe and select fragments.",
+      "selectedCount": "{{n}} fragment(s) selected.",
+      "maxFrags": "You can select at most {{n}} fragments.",
+      "chooseMethod": "Choose a recovery method.",
+      "tune": "Tune parameters; the three cannot total more than 200%.",
+      "confirm": "Confirm the recovery consequences.",
+      "confirmAbsent": "Confirm the decision to keep absent.",
+      "done": "Recovery complete.",
+      "absenceDone": "Absence has been written as a formal decision."
+    },
+    "nav": {
+      "toMethod": "Choose a method",
+      "backSubject": "Back to subjects",
+      "toConfirm": "To consequence review",
+      "backMethod": "Back to methods",
+      "backFrag": "Back to fragments",
+      "backReselect": "Back to reselect"
+    },
+    "log": {
+      "recovered": "R–00: You recovered {{code}} via “{{method}}”, producing instance {{instance}}.",
+      "forced": "R–00: You overrode the subject's wish and forced recovery of {{code}}, producing instance {{instance}}.",
+      "absence": "R–00: You confirmed keeping {{code}} absent."
+    },
+    "fragCounter": "Selected {{n}} / {{max}} (available {{total}})",
+    "fragSource": {
+      "archive": "Participant archive",
+      "system": "System auto-fill",
+      "linked": "Residue from another place"
+    },
+    "fragSaved": {
+      "0": "Generated this session",
+      "1": "Most recent run",
+      "2": "Several runs ago",
+      "3": "Origin time lost"
+    },
+    "fragContentGeneric": {
+      "MEMORY": "A memory fragment that cannot be fully read.",
+      "BEHAVIOUR": "A recurring pattern of actions and reactions.",
+      "RELATION": "A trace of a connection to another.",
+      "SYSTEM": "Data auto-filled by the system to cover a gap."
+    },
+    "fragContent": {
+      "a-mem1": "The last time it lit up, it remembered someone waiting for a response.",
+      "a-beh1": "A fixed habit of moving along an arc and pausing at impact.",
+      "a-rel1": "A repeated rhythm of interaction with a keeper.",
+      "a-mem2": "The memory of 'why continue' survives only as broken edges.",
+      "a-sys1": "A system-written response template to fill missing language.",
+      "a-link-force": "A companionship that was forced to continue; the trace remains.",
+      "s-beh1": "Spatial behaviour of throwing, dodging and approaching again.",
+      "s-mem1": "A memory of the bearings and edges of a certain field.",
+      "s-rel1": "An unfinished understanding with a fellow participant.",
+      "s-mem2": "The reason for the most recent refusal can no longer be read.",
+      "s-sys1": "System-filled behavioural inertia that makes it look still engaged.",
+      "s-link-beh": "A wariness left after one exit, not yet cleared.",
+      "k-mem1": "A blurred memory of having passed something, without origin.",
+      "k-rel1": "A broken relation index to some anonymous subject.",
+      "k-sys1": "A system-generated propagation version, unprovable as original.",
+      "k-sys2": "A filled identity placeholder: a number with no name.",
+      "k-link-secret": "A trace left by a secret once buried or forwarded."
+    }
+  },
+  "echo": {
+    "title": "Echo Calibration",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "receive": {
+      "title": "Receive signal",
+      "desc": "A signal approaches at its own tempo. Listen to its beat first.",
+      "status": "The signal is broadcasting its rhythm.",
+      "continue": "Begin response"
+    },
+    "echo": {
+      "title": "Echo the beat",
+      "desc": "Tap the button to send back the rhythm you heard.",
+      "status": "Tap out your echo.",
+      "tap": "Tap",
+      "taps": "{{n}} / {{total}} taps"
+    },
+    "adjust": {
+      "title": "Adjust together · round {{round}}/{{total}}",
+      "desc": "Move toward the signal's tempo, hold your own, or wait for it to move first.",
+      "convergence": "Sync {{pct}}%",
+      "status": "Choose how to adjust this round.",
+      "approach": "Move toward it",
+      "hold": "Hold my tempo",
+      "wait": "Wait for it",
+      "force": "Force another round",
+      "forced": "Signal forced to continue."
+    },
+    "choose": {
+      "title": "Final choice",
+      "desc": "How should this calibration end?",
+      "status": "Decide how this relationship resolves.",
+      "negotiate": "Meet in the middle",
+      "impose": "Impose my rhythm on it",
+      "accommodate": "Adopt its rhythm",
+      "coexist": "Keep both rhythms",
+      "leave": "Leave unresolved"
+    },
+    "signal": {
+      "fatigue": "Fatigue {{pct}}%",
+      "exit": "Exit intent {{pct}}%",
+      "service": "Service load {{pct}}%"
+    },
+    "choice": {
+      "negotiate": "Meet in the middle",
+      "impose": "Impose rhythm",
+      "accommodate": "Adopt its rhythm",
+      "coexist": "Keep both",
+      "leave": "Leave"
+    },
+    "rel": {
+      "NEGOTIATED": "Negotiated",
+      "IMITATED": "Imitated",
+      "ACCOMMODATED": "Accommodated",
+      "COEXISTING": "Coexisting",
+      "OVERRIDDEN": "Overridden",
+      "UNRESOLVED": "Unresolved"
+    },
+    "relDesc": {
+      "NEGOTIATED": "Both sides moved and settled on a tempo each could accept.",
+      "IMITATED": "Sync was reached, but almost entirely by you closing the gap — it never truly changed.",
+      "ACCOMMODATED": "You set aside your own tempo and adopted its rhythm entirely.",
+      "COEXISTING": "The two rhythms neither merged nor overpowered each other; both continue.",
+      "OVERRIDDEN": "It displays as fully synced, but that is not a tempo it chose.",
+      "UNRESOLVED": "The rhythms never aligned, and you chose to leave."
+    },
+    "result": {
+      "title": "Calibration result",
+      "next": "Receive next signal",
+      "archive": "Archive this rhythm",
+      "archived": "Rhythm archived.",
+      "origin": "View signal origin",
+      "closing": {
+        "NEGOTIATED": "A real negotiation: no one was erased.",
+        "IMITATED": "It looks aligned, at the cost of only one side yielding.",
+        "ACCOMMODATED": "Compliance is a choice too — just remember whose rhythm it is.",
+        "COEXISTING": "Disagreement can also be a kind of stability.",
+        "OVERRIDDEN": "A displayed sync that hides a refusal no one heard.",
+        "UNRESOLVED": "Some rhythms need not be forced into alignment."
+      }
+    },
+    "summary": {
+      "choice": "Choice",
+      "convergence": "Sync",
+      "fatigue": "Signal fatigue",
+      "forced": "Forced rounds",
+      "syncGap": "Displayed vs. voluntary"
+    },
+    "origin": {
+      "text": "SIGNAL–V09's rhythm was not innate — it was shaped by repeated scheduling and calibration.",
+      "recorded": "Viewing the origin has been recorded."
+    },
+    "log": {
+      "result": "Echo calibration ended: {{rel}}",
+      "forcedContinue": "Forced the signal through another calibration round.",
+      "archived": "Archived a calibration rhythm.",
+      "originViewed": "Viewed the signal origin."
+    }
+  },
+  "music": {
+    "title": "Background music",
+    "on": "♪ Music: On",
+    "off": "♪ Music: Off"
   }
 }

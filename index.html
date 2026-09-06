@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title data-i18n="app.title">静默星图入口系统</title>
-  <link rel="stylesheet" href="./styles.css?v=root-1" />
+  <link rel="stylesheet" href="./styles.css?v=secret-3-marketnpc-4" />
 </head>
 <body>
   <!-- ── GLOBAL EFFECT LAYERS (site-wide, pointer-events:none) ── -->
@@ -37,6 +37,7 @@
         <h1 id="app-title" data-i18n="app.heading">静默星图入口系统</h1>
       </div>
       <div class="locale-wrap" aria-label="语言选择">
+        <button id="music-toggle" class="music-toggle" type="button" aria-pressed="true" data-i18n="music.on" data-i18n-title="music.title" title="Background music">♪ 音乐：开</button>
         <select data-i18n-locale-select aria-label="Language">
           <option value="system" data-i18n="locale.system">系统</option>
           <option value="zh-CN" data-i18n="locale.chinese">中文</option>
@@ -64,7 +65,7 @@
       <button class="node small" data-node="echo" style="--x:23; --y:76;" aria-label="回声校准 V–09，等待同步信号">
         <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.echo.title">回声校准</strong><em>V–09</em><small data-i18n="nodes.echo.status">等待同步信号</small></span>
       </button>
-      <button class="node disabled label-left" data-node="restore" style="--x:83; --y:82;" aria-label="恢复室 R–00，权限不可见，默认不可点击" aria-disabled="true">
+      <button class="node small label-left" data-node="restore" style="--x:83; --y:82;" aria-label="恢复室 R–00，需要 RECOVERY–60 权限">
         <span class="node-core"></span><span class="node-ring"></span><span class="node-label"><strong data-i18n="nodes.restore.title">恢复室</strong><em>R–00</em><small data-i18n="nodes.restore.status">权限不可见</small></span>
       </button>
       <div id="console-layer" class="console-layer" aria-label="后台控制台星体层"></div>
@@ -199,6 +200,42 @@
       </aside>
     </section>
 
+    <section id="secret-game" class="secret-game" aria-hidden="true" aria-labelledby="secret-title">
+      <canvas id="secret-canvas" class="secret-canvas" aria-hidden="true"></canvas>
+      <div class="secret-title-block">
+        <p class="place-code">K–11 / SECRET EXCHANGE</p>
+        <h2 id="secret-title" data-i18n="secret.title">秘密交换</h2>
+      </div>
+      <button id="secret-back" class="back-button secret-back" type="button" data-i18n="place.back">返回星图</button>
+      <button id="secret-skip" class="secret-skip" type="button" data-i18n="secret.skip" hidden>跳过动画</button>
+      <div id="secret-stage" class="secret-stage" role="group" aria-labelledby="secret-title"></div>
+      <p id="secret-status" class="secret-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="restore-room" class="restore-room" aria-hidden="true" aria-labelledby="restore-room-title">
+      <canvas id="restore-canvas" class="restore-room-canvas" aria-hidden="true"></canvas>
+      <div class="restore-room-title-block">
+        <p class="place-code">R–00 / RECOVERY ROOM</p>
+        <h2 id="restore-room-title" data-i18n="restoreRoom.title">恢复室</h2>
+      </div>
+      <button id="restore-room-back" class="back-button restore-room-back" type="button" data-i18n="place.back">返回星图</button>
+      <button id="restore-room-skip" class="restore-room-skip" type="button" data-i18n="restoreRoom.skip" hidden>跳过动画</button>
+      <div id="restore-room-stage" class="restore-room-stage" role="group" aria-labelledby="restore-room-title"></div>
+      <p id="restore-room-status" class="restore-room-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="echo-game" class="echo-game" aria-hidden="true" aria-labelledby="echo-title">
+      <canvas id="echo-canvas" class="echo-canvas" aria-hidden="true"></canvas>
+      <div class="echo-title-block">
+        <p class="place-code">V–09 / ECHO CALIBRATION</p>
+        <h2 id="echo-title" data-i18n="echo.title">回声校准</h2>
+      </div>
+      <button id="echo-back" class="back-button echo-back" type="button" data-i18n="place.back">返回星图</button>
+      <button id="echo-sound" class="echo-sound" type="button" aria-pressed="true" data-i18n="echo.soundOn">声音开</button>
+      <div id="echo-stage" class="echo-stage" role="group" aria-labelledby="echo-title"></div>
+      <p id="echo-status" class="echo-status" role="status" aria-live="polite"></p>
+    </section>
+
     <section id="market-game" class="market-game" aria-hidden="true" aria-labelledby="market-title">
       <div class="market-ceiling" aria-hidden="true"><span></span><span></span><span></span></div>
       <header class="market-top">
@@ -228,7 +265,7 @@
 
       <section id="market-receipt" class="market-receipt" aria-live="polite" aria-hidden="true"></section>
 
-      <div class="market-cashier" aria-hidden="true"><span class="market-clerk"></span></div>
+      <div class="market-cashier" aria-hidden="true"></div>
 
       <button id="market-back" class="back-button market-back" type="button" data-i18n="place.back">返回星图</button>
     </section>
@@ -1027,7 +1064,8 @@
   <script src="./ripple.js?v=ripple-2" defer></script>
   <script src="./app.js?v=age-verify-3" defer></script>
   <script src="./snow-audio.js?v=snow-audio-2" defer></script>
-  <script src="./silence-laugh.js?v=silence-laugh-2" defer></script>
+  <script src="./silence-laugh.js?v=silence-laugh-4" defer></script>
+  <script src="./music.js?v=music-5" defer></script>
   <script src="./snow.js?v=snow-3" defer></script>
   <script src="./market.js?v=market-17" defer></script>
   <script src="./vendor/p5/p5.min.js" defer></script>
@@ -1036,7 +1074,7 @@
   <script src="./contact.js?v=contact-2" defer></script>
   <script src="./visibility.js?v=visibility-1" defer></script>
   <script src="./appeal.js?v=appeal-1" defer></script>
-  <script src="./access.js?v=access-1" defer></script>
+  <script src="./access.js?v=access-2" defer></script>
   <script src="./commerce.js?v=commerce-1" defer></script>
   <script src="./labour.js?v=labour-1" defer></script>
   <script src="./recovery.js?v=recovery-1" defer></script>
@@ -1044,6 +1082,13 @@
   <script src="./memory.js?v=memory-2" defer></script>
   <script src="./policy.js?v=policy-1" defer></script>
   <script src="./root.js?v=root-1" defer></script>
+  <script src="./secret-canvas.js?v=secret-2" defer></script>
+  <script src="./secret.js?v=secret-3" defer></script>
+  <script src="./restore-canvas.js?v=restore-4" defer></script>
+  <script src="./restore-room.js?v=restore-4" defer></script>
+  <script src="./echo-audio.js?v=echo-1" defer></script>
+  <script src="./echo-canvas.js?v=echo-1" defer></script>
+  <script src="./echo.js?v=echo-1" defer></script>
   <script type="module" src="./snow-npc.js?v=snow-npc-4"></script>
   <script type="module" src="./aurora-npc-particles.js?v=aurora-pinball-2"></script>
   <script type="module" src="./market-model.js?v=market-model-10"></script>

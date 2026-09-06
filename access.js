@@ -23,7 +23,7 @@
     { id: "B-06", initial: "age18" },
     { id: "M-04", initial: "age18" },
     { id: "V-09", initial: "all-ages" },
-    { id: "R-00", initial: "protected" }
+    { id: "R-00", initial: "all-ages" }
   ];
   // 底部只读权限阈值
   const THRESHOLDS = ["ARCHIVE-25", "CONTACT-30"];
@@ -78,7 +78,8 @@
 
   // ---- 数据模型 ----
   function defaultRules(zone) {
-    if (zone.id === "R-00") return { status: "protected", mode: "all", conditions: [], exceptions: {} };
+    // R–00 恢复室现在是玩家可进入的场所，准入由制度年龄（60岁）控制，
+    // ACCESS–45 默认不再把它设为系统保护区域。
     const conditions = zone.initial === "age18" ? [{ type: "minimum-age", value: 18, enabled: true }] : [];
     return { status: "open", mode: "all", conditions, exceptions: {} };
   }
@@ -90,6 +91,12 @@
     if (!Array.isArray(st.access.history)) st.access.history = [];
     if (!st.access.entered) st.access.entered = {};
     ZONES.forEach(z => { if (!st.access.rules[z.id]) st.access.rules[z.id] = defaultRules(z); });
+    // 迁移：早期版本把 R–00 默认设为系统保护区域，导致玩家无法进入恢复室。
+    // 若玩家从未主动改过（仍是无条件 protected），重置为开放。
+    const r00 = st.access.rules["R-00"];
+    if (r00 && r00.status === "protected" && (!r00.conditions || r00.conditions.length === 0) && (!r00.exceptions || Object.keys(r00.exceptions).length === 0)) {
+      st.access.rules["R-00"] = defaultRules({ id: "R-00", initial: "all-ages" });
+    }
     return st.access;
   }
   function rulesFor(zoneId) { const s = store(); return s ? s.rules[zoneId] : null; }

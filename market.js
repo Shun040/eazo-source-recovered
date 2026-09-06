@@ -70,25 +70,12 @@
     if (!shelf) return;
     window.eazoMarketModel?.unmountShelf?.();
     shelf.innerHTML = "";
-    // LABOUR–55 联动：夜间值班信息
-    try {
-      const staff = window.eazoLabourNightStaff?.();
-      if (typeof staff === "number") {
-        const banner = document.createElement("div");
-        banner.className = "market-duty-banner";
-        banner.textContent = t("market.duty", { n: String(staff) });
-        shelf.appendChild(banner);
-      }
-    } catch (_e) {}
-    // RECOVERY–60 联动：值守员恢复后的 NPC 状态提示
+    // RECOVERY–60 联动：值守员恢复后的 NPC 状态提示（显示在货架上方，不占陈列位）
     try {
       const st = window.eazoGetState?.();
       const kr = st?.recovery?.marketKeeperRecovered;
-      if (kr) {
-        const b2 = document.createElement("div");
-        b2.className = "market-duty-banner market-recovery-banner";
-        b2.textContent = t("market.recovered", { id: kr.id, method: t("recovery.method." + kr.method + ".name") });
-        shelf.appendChild(b2);
+      if (kr && npcLine) {
+        npcLine.textContent = t("market.recovered", { id: kr.id, method: t("recovery.method." + kr.method + ".name") });
       }
     } catch (_e) {}
     PRODUCTS.forEach((p) => {

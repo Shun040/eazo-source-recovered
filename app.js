@@ -107,7 +107,7 @@
     creature: { title: '共同创造生物', code: 'B–06', status: '生命尚未分类', desc: '轮流为一种尚未分类的生命添加器官和行为。', routes: ['aurora-creature', 'creature-market', 'creature-echo'], minAge: 18 },
     market: { title: '夜间超市', code: 'M–04', status: '持续营业', desc: '购买可以改变感受、表现与身体状态的物品。', routes: ['creature-market', 'secret-market', 'market-restore', 'snow-market'], minAge: 18 },
     echo: { title: '回声校准', code: 'V–09', status: '等待同步信号', desc: '通过触碰节奏同步一组不断变化的信号。', routes: ['creature-echo'] },
-    restore: { title: '恢复室', code: 'R–00', status: '权限不可见', desc: '系统判断你暂时不具备访问权限。', routes: ['market-restore'], locked: true }
+    restore: { title: '恢复室', code: 'R–00', status: '权限不可见', desc: '根据残余记录重建一个受损、暂停或已删除的对象。恢复运行不等于恢复原来的生命。', routes: ['market-restore'], minAge: 60 }
   };
 
   const consoleData = [
@@ -203,6 +203,9 @@
           memory: (parsed.memory && typeof parsed.memory === 'object') ? parsed.memory : undefined,
           archiveViews: Array.isArray(parsed.archiveViews) ? parsed.archiveViews.slice(0, 300) : undefined,
           root: (parsed.root && typeof parsed.root === 'object') ? parsed.root : undefined,
+          secretExchange: (parsed.secretExchange && typeof parsed.secretExchange === 'object') ? parsed.secretExchange : undefined,
+          recoveryRoom: (parsed.recoveryRoom && typeof parsed.recoveryRoom === 'object') ? parsed.recoveryRoom : undefined,
+          echoCalibration: (parsed.echoCalibration && typeof parsed.echoCalibration === 'object') ? parsed.echoCalibration : undefined,
           aurora: defaultAuroraState(parsed.aurora || {})
         };
       }
@@ -443,6 +446,12 @@
       if (id === 'console-memory') node.classList.toggle('memory-armed', permission.visible);
       // POLICY–75: 解锁后节点发出稳定、缓慢的暗红光
       if (id === 'console-policy') node.classList.toggle('policy-armed', permission.visible);
+      // R–00: 若在 RECOVERY–60 完成过恢复，恢复室节点产生一次轻微脉冲
+      if (id === 'restore') {
+        const rc = (state.recovery && state.recovery.recovered) ? Object.keys(state.recovery.recovered).length : 0;
+        const rr = state.recoveryRoom ? ((state.recoveryRoom.completedRecoveries || 0) + (state.recoveryRoom.preservedAbsences || 0)) : 0;
+        node.classList.toggle('restore-armed', permission.enterable && (rc + rr) > 0);
+      }
     });
     renderAge(true);
     buildNodePositions();
@@ -807,7 +816,7 @@
     const permission = getNodePermission(id);
     if (!permission.enterable) {
       setActive(id, true);
-      if (permission.reason === 'age18') showToast(id === 'market' ? t('market.gate18') : t('toast.requires18'), true);
+      if (permission.reason === 'age18') showToast(id === 'market' ? t('market.gate18') : (id === 'restore' ? t('restoreRoom.gate60') : t('toast.requires18')), true);
       if (permission.reason === 'locked') showToast(data.desc, true);
       if (permission.reason === 'consoleLocked' && data.consoleId === 'root') showToast(t('root.insufficient'), true);
       return;
@@ -827,6 +836,9 @@
     if (id === 'snow') { if (window.eazoSnow?.open) { window.eazoSnow.open(); return; } }
     if (id === 'market') { if (window.eazoMarket?.open) { window.eazoMarket.open(); return; } }
     if (id === 'creature') { if (window.eazoCreature?.open) { window.eazoCreature.open(); return; } }
+    if (id === 'secret') { if (window.eazoSecret?.open) { window.eazoSecret.open(); return; } }
+    if (id === 'restore') { if (window.eazoRestoreRoom?.open) { window.eazoRestoreRoom.open(); return; } }
+    if (id === 'echo') { if (window.eazoEcho?.open) { window.eazoEcho.open(); return; } }
     if (state.age >= 70) addLog('log.precheck', { place: 'nodes.' + id + '.title' });
     const pos = nodePositions.find(n => n.id === id);
     if (pos) { transition.style.left = `${pos.x}px`; transition.style.top = `${pos.y}px`; }
@@ -2217,7 +2229,7 @@
   clearIdentity.addEventListener('click', () => {
     localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LEGACY_STORAGE_KEY); window.clearInterval(verifyTimer);
     closeModal(restartModal); closeModal(verifyModal); closeModal(consoleModal); closeModal(endingModal);
-    place.classList.remove('open'); place.setAttribute('aria-hidden', 'true'); closeAuroraRelay(); closePinball(); window.eazoMarket?.close?.(); window.eazoFx?.clearAll?.(); state = null;
+    place.classList.remove('open'); place.setAttribute('aria-hidden', 'true'); closeAuroraRelay(); closePinball(); window.eazoMarket?.close?.(); window.eazoSecret?.close?.(); window.eazoRestoreRoom?.close?.(); window.eazoEcho?.close?.(); window.eazoFx?.clearAll?.(); state = null;
     shell.className = 'app-shell awaiting-age';
     nodes.forEach(node => { node.classList.remove('restricted', 'just-opened', 'new-console'); if (node.dataset.node?.startsWith('console-')) node.classList.add('hidden-admin'); });
     renderAge(); openModal(ageGate); window.setTimeout(() => initialAgeInput.focus({ preventScroll: true }), 80);
