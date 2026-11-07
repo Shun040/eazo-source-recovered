@@ -35,7 +35,7 @@
     };
   }
 
-  let root, shelf, cartList, cartEmpty, cartTotal, npcLine, receipt, ageEl;
+  let root, shelf, cartList, cartEmpty, cartTotal, npcLine, receipt, ageEl, balanceEl;
   let detailLayer, cornerEl, summaryToast;
   let bound = false, opened = false;
   let cart = [];
@@ -162,6 +162,19 @@
     renderCart();
     if (cart.length >= 2) say("market.npc.multi");
   }
+  function renderBalance() {
+    if (balanceEl) balanceEl.textContent = String(window.eazoCommerce?.getBalance?.() ?? "--");
+  }
+  // 余额变化后，买不起的商品置灰（不重绘货架，避免重载 3D 模型）
+  function refreshAffordability() {
+    shelf?.querySelectorAll(".market-item").forEach((btn) => {
+      const o = offerFor(btn.dataset.id);
+      const blocked = o.status === "suspended" || o.soldOut || !o.eligible;
+      btn.classList.toggle("market-item-blocked", blocked);
+      if (blocked) { btn.setAttribute("aria-disabled", "true"); btn.title = o.reason || ""; }
+      else { btn.removeAttribute("aria-disabled"); btn.removeAttribute("title"); }
+    });
+  }
   function removeFromCart(i) { cart.splice(i, 1); renderCart(); }
   function renderCart() {
     cartList.innerHTML = "";
@@ -173,11 +186,15 @@
     });
     cartEmpty.style.display = cart.length ? "none" : "block";
     cartTotal.textContent = String(cart.reduce((s, p) => s + p.price, 0));
+    renderBalance();
   }
 
   // ── Checkout: consume every item in cart, apply effects, print receipt ──
   function checkout() {
     if (!cart.length) return;
+    // 真实扣费：余额不足则整单拒绝；成功才应用效果
+    const paid = window.eazoCommerce?.spend?.(cart.map(p => ({ id: p.id, price: p.price })));
+    if (paid && !paid.ok) { say("market.npc.noFunds", true); return; }
     const lines = [];
     const consumedAt = new Date();
     cart.forEach((p) => {
@@ -533,6 +550,8 @@
     npcLine = document.getElementById("market-npc-line");
     receipt = document.getElementById("market-receipt");
     ageEl = document.getElementById("market-age");
+    balanceEl = document.getElementById("market-balance");
+    window.addEventListener("eazo:balancechange", () => { renderBalance(); if (opened) refreshAffordability(); });
     detailLayer = document.getElementById("market-detail");
     cornerEl = document.getElementById("fx-corner");
     summaryToast = document.getElementById("fx-summary-toast");
@@ -631,6 +650,7 @@
     opened = true;
     resetTicket();   // a fresh lottery ticket each time you enter the market
     if (ageEl) ageEl.textContent = String(currentAge());
+    renderBalance();
     renderShelf(); renderCart(); refreshShelfUsed();
     receipt.classList.remove("show");
     say("market.npc.enter");

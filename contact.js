@@ -7,9 +7,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   const CONTACT_STATUS = {
@@ -268,7 +266,6 @@
   }
 
   // ---- 渲染 ----
-  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
   function scheduleRender() {
     if (renderScheduled) return; renderScheduled = true;
     requestAnimationFrame(() => { renderScheduled = false; renderAll(); });

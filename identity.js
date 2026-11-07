@@ -11,9 +11,7 @@
  */
 (() => {
   "use strict";
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 

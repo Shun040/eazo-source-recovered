@@ -6,9 +6,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   const el = {};
@@ -74,7 +72,6 @@
   function trainedCount() { const s = store(); return 127 + (s?.samples?.length || 0); }
 
   // 占位：后续 edit 填充
-  function esc(x) { return String(x).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
   function log(key, params) {
     const st = getState(); if (!st) return;
     if (!Array.isArray(st.appealLogs)) st.appealLogs = [];
