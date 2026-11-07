@@ -72,6 +72,7 @@
     "socialMismatch": "A backstage permission check ran before entry; public places now mark you as socially mismatched."
   },
   "log": {
+    "allowance": "Institutional age increased; allowance of {{n}} credits issued.",
     "title": "System log",
     "empty": "No records written yet.",
     "initial": "Initial institutional age recorded as {{age}}.",
@@ -438,6 +439,7 @@
     }
   },
   "market": {
+    "balanceLabel": "Balance",
     "title": "Night Supermarket",
     "ageLabel": "Institutional age",
     "openStatus": "Open",
@@ -487,6 +489,7 @@
       "filmoil": "Colored oil film"
     },
     "npc": {
+      "noFunds": "Insufficient balance. An allowance is issued when your age increases; prices will not be lowered.",
       "enter": "Good evening. None of the states sold here are permanent.",
       "linger": "You do not need to decide immediately. Business hours do not end.",
       "approved": "Request approved. Side effects have been added to the receipt.",

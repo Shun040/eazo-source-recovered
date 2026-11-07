@@ -32,6 +32,8 @@
   ];
 
   const DEFAULT_BALANCE = 50;
+  const BALANCE_CAP = 200;        // 余额上限，防止囤积
+  const ALLOWANCE_PER_YEAR = 2;   // 年龄每增长 1 岁，发放的津贴（制度年龄带来的“福利”）
 
   // 模拟对象（作品内部虚构状态）
   const SUBJECTS = [
@@ -103,6 +105,33 @@
     PRODUCT_DEFS.forEach(d => { if (!st.commerce.products[d.id]) st.commerce.products[d.id] = defaultProduct(d); });
     return st.commerce;
   }
+  // ---- 余额：收入 / 支出 ----
+  function notifyBalance() { window.dispatchEvent(new CustomEvent("eazo:balancechange")); }
+  function getBalance() { return store()?.balance ?? DEFAULT_BALANCE; }
+
+  /** 年龄增长时发放津贴。没有增长（保持年龄）就没有津贴。 */
+  function earnAllowance(years) {
+    const s = store(); if (!s || !(years > 0)) return 0;
+    const gain = Math.round(years * ALLOWANCE_PER_YEAR);
+    const before = s.balance;
+    s.balance = Math.min(BALANCE_CAP, s.balance + gain);
+    saveState(); notifyBalance();
+    return s.balance - before;
+  }
+
+  /** 结账扣费。items: [{ id, price }]。余额不足则整单拒绝，不扣任何钱。 */
+  function spend(items) {
+    const s = store(); if (!s) return { ok: true, balance: DEFAULT_BALANCE, total: 0 };
+    const total = items.reduce((sum, it) => sum + (it.price || 0), 0);
+    if (s.balance < total) return { ok: false, balance: s.balance, total };
+    s.balance -= total;
+    const at = Date.now();
+    items.forEach(it => s.transactions.push({ subjectId: "CURRENT", productId: it.id, price: it.price, at }));
+    if (s.transactions.length > 300) s.transactions = s.transactions.slice(-300);
+    saveState(); notifyBalance();
+    return { ok: true, balance: s.balance, total };
+  }
+
   function productData(id) { const s = store(); return s ? s.products[id] : null; }
 
   function log(key, params) {
@@ -946,6 +975,6 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 
-  window.eazoCommerce = { open, close, getMarketOffer, calculatePrice, subjectProfile };
+  window.eazoCommerce = { open, close, getMarketOffer, calculatePrice, subjectProfile, getBalance, earnAllowance, spend };
   window.eazoGetMarketOffer = getMarketOffer;
 })();

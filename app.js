@@ -624,6 +624,8 @@
     playAgeGrowthAnimation();
     applyAgeVisuals(before);              // updates #age-number → creature MutationObserver fires once
     addLog('log.change', { before, after });
+    const allowance = window.eazoCommerce?.earnAllowance?.(after - before) || 0;
+    if (allowance > 0) addLog('log.allowance', { n: allowance });
     if (before < 18 && after >= 18) addLog('log.age18');
     if (forcedFace) {
       addLog('log.forcedNoChoice');
