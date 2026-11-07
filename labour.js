@@ -7,9 +7,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   const DAY = 1440;          // 一天分钟数
@@ -85,7 +83,6 @@
     st.archiveViews = st.archiveViews.slice(0, 200);
   }
 
-  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
   function fmt(min) { const m = Math.max(0, Math.round(min)); const h = Math.floor(m / 60); return `${String(h).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`; }
   function snap(min) { return Math.round(min / GRID) * GRID; }
 

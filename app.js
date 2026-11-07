@@ -1526,66 +1526,20 @@
     if (which === 'creature') { window.eazoCreature?.open?.(); return; }
   };
 
+  const CONSOLE_MODULES = {
+    archive: 'eazoArchive', contact: 'eazoContact', visibility: 'eazoVisibility',
+    appeal: 'eazoAppeal', access: 'eazoAccess', commerce: 'eazoCommerce',
+    labour: 'eazoLabour', recovery: 'eazoRecovery', identity: 'eazoIdentity',
+    memory: 'eazoMemory', policy: 'eazoPolicy', root: 'eazoRoot'
+  };
+
   function openConsole(consoleId) {
     const item = consoleData.find(c => c.id === consoleId); if (!item) return;
-    if (consoleId === 'archive' && window.eazoArchive?.open) {
+    // 有独立界面的控制台：id → 模块名。新增控制台只需在这里加一行。
+    const mod = window[CONSOLE_MODULES[consoleId]];
+    if (mod?.open) {
       dimStarmapForArchive(true);
-      window.eazoArchive.open();
-      return;
-    }
-    if (consoleId === 'contact' && window.eazoContact?.open) {
-      dimStarmapForArchive(true);
-      window.eazoContact.open();
-      return;
-    }
-    if (consoleId === 'visibility' && window.eazoVisibility?.open) {
-      dimStarmapForArchive(true);
-      window.eazoVisibility.open();
-      return;
-    }
-    if (consoleId === 'appeal' && window.eazoAppeal?.open) {
-      dimStarmapForArchive(true);
-      window.eazoAppeal.open();
-      return;
-    }
-    if (consoleId === 'access' && window.eazoAccess?.open) {
-      dimStarmapForArchive(true);
-      window.eazoAccess.open();
-      return;
-    }
-    if (consoleId === 'commerce' && window.eazoCommerce?.open) {
-      dimStarmapForArchive(true);
-      window.eazoCommerce.open();
-      return;
-    }
-    if (consoleId === 'labour' && window.eazoLabour?.open) {
-      dimStarmapForArchive(true);
-      window.eazoLabour.open();
-      return;
-    }
-    if (consoleId === 'recovery' && window.eazoRecovery?.open) {
-      dimStarmapForArchive(true);
-      window.eazoRecovery.open();
-      return;
-    }
-    if (consoleId === 'identity' && window.eazoIdentity?.open) {
-      dimStarmapForArchive(true);
-      window.eazoIdentity.open();
-      return;
-    }
-    if (consoleId === 'memory' && window.eazoMemory?.open) {
-      dimStarmapForArchive(true);
-      window.eazoMemory.open();
-      return;
-    }
-    if (consoleId === 'policy' && window.eazoPolicy?.open) {
-      dimStarmapForArchive(true);
-      window.eazoPolicy.open();
-      return;
-    }
-    if (consoleId === 'root' && window.eazoRoot?.open) {
-      dimStarmapForArchive(true);
-      window.eazoRoot.open();
+      mod.open();
       return;
     }
     impactReview.hidden = true; pendingImpact = null;

@@ -6,9 +6,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState } = window.eazoUtil;
 
   const el = {};
   let mounted = false;

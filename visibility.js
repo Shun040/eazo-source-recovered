@@ -6,9 +6,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   const VISIBILITY_STATE = { FULL: "full", ANONYMOUS: "anonymous", OBSCURED: "obscured", HIDDEN: "hidden" };
@@ -90,7 +88,6 @@
   }
 
   // ---- 工具 ----
-  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
   function subName(id) { const s = SUBJECTS.find(x => x.id === id); return s ? t("visibility.subjects." + s.key) : id; }
   function audName(a) { return t("visibility.audiences." + a); }
   function stateName(s) { return t("visibility.states." + s); }

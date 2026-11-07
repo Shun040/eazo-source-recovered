@@ -7,9 +7,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   const PRODUCT_STATUS = { AVAILABLE: "available", SUSPENDED: "suspended", HIDDEN: "hidden", INVITATION_ONLY: "invitation-only", RATIONED: "rationed" };
@@ -237,7 +235,6 @@
   }
 
   // ---- 名称工具 ----
-  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
   function pname(id) { const v = t("commerce.products." + id); return (v && v !== "commerce.products." + id) ? v : id; }
   function statusName(s) { return t("commerce.status." + s); }
   function cur() { return t("commerce.currency"); }

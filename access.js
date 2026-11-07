@@ -7,9 +7,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   const ZONE_STATUS = { OPEN: "open", INVITATION_ONLY: "invitation-only", SUSPENDED: "suspended", MAINTENANCE: "maintenance", PROTECTED: "protected" };
@@ -203,7 +201,6 @@
   }
 
   // ---- 名称工具 ----
-  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
   function zoneName(id) { const v = t("access.zones." + id); return (v && v !== "access.zones." + id) ? v : id; }
   function statusName(s) { return t("access.status." + s); }
   function condName(type) { return t("access.conditions." + type); }

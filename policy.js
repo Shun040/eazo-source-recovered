@@ -19,9 +19,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   // ---------- 常量 ----------
@@ -119,7 +117,6 @@
     st.archiveViews.unshift({ at: Date.now(), kind, detail: detail || null });
     st.archiveViews = st.archiveViews.slice(0, 400);
   }
-  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
   function age() { return window.eazoGetAge?.() ?? (getState()?.age ?? 0); }
 
   // ---------- 规则求值与语言 ----------

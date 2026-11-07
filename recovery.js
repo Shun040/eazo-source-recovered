@@ -7,9 +7,7 @@
 (() => {
   "use strict";
 
-  const t = (k, p = {}) => (window.eazoI18n?.t ? window.eazoI18n.t(k, p) : k);
-  const getState = () => (window.eazoGetState?.() || window.eazoState || null);
-  const saveState = () => window.eazoSaveState?.();
+  const { t, getState, saveState, esc } = window.eazoUtil;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   // 失效状态
@@ -114,7 +112,6 @@
     st.archiveViews = st.archiveViews.slice(0, 200);
   }
 
-  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
 
   // ---------- 重建置信度计算 ----------
   // 五项指标：数据完整度 / 运行稳定度 / 关系连续性 / 身份冲突概率 / 预测服从度
